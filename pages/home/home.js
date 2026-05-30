@@ -52,7 +52,7 @@ Page({
   // switchTab 用于 tabBar 页面，navigateTo 用于普通页面
   onQuickAction(e) {
     const url = e.currentTarget.dataset.url
-    if (url === '/pages/index/index' || url === '/pages/recipe/list') {
+    if (url === '/pages/recipe/list') {
       wx.switchTab({ url })
     } else {
       wx.navigateTo({ url })
