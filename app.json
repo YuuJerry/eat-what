@@ -1,0 +1,53 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/recipe/list",
+    "pages/recipe/detail",
+    "pages/fridge/fridge",
+    "pages/diet/diet",
+    "pages/vote/lobby",
+    "pages/vote/room",
+    "pages/profile/profile",
+    "pages/index/index"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#FF6B6B",
+    "navigationBarTitleText": "今天吃什么",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#FFF5F5"
+  },
+  "tabBar": {
+    "color": "#999",
+    "selectedColor": "#FF6B6B",
+    "backgroundColor": "#fff",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "首页",
+        "iconPath": "images/tab/home.png",
+        "selectedIconPath": "images/tab/home-active.png"
+      },
+      {
+        "pagePath": "pages/recipe/list",
+        "text": "菜谱",
+        "iconPath": "images/tab/recipe.png",
+        "selectedIconPath": "images/tab/recipe-active.png"
+      },
+      {
+        "pagePath": "pages/vote/lobby",
+        "text": "投票",
+        "iconPath": "images/tab/vote.png",
+        "selectedIconPath": "images/tab/vote-active.png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的",
+        "iconPath": "images/tab/profile.png",
+        "selectedIconPath": "images/tab/profile-active.png"
+      }
+    ]
+  },
+  "cloud": true,
+  "style": "v2"
+}

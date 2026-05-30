@@ -1,0 +1,100 @@
+<!-- 转盘选餐页容器 -->
+<view class="container">
+  <!-- 结果展示区：显示当前抽选的食物名称和 emoji，旋转时添加动画效果 -->
+  <view class="result-area">
+    <view class="result-card {{isSpinning ? 'spinning' : ''}}">
+      <text class="result-emoji">{{resultEmoji}}</text>
+      <text class="result-name">{{resultName || '今天吃什么？'}}</text>
+      <text class="result-category" wx:if="{{resultName}}">{{resultCategory}}</text>
+    </view>
+  </view>
+
+  <!-- 转盘区域：Canvas 绘制的转盘和顶部指针 -->
+  <view class="wheel-container">
+    <canvas type="2d" id="wheelCanvas" class="wheel-canvas"></canvas>
+    <!-- 转盘指针：固定在顶部，指示选中的扇区 -->
+    <view class="pointer">
+      <text class="pointer-arrow">▼</text>
+    </view>
+  </view>
+
+  <!-- 操作按钮区：转盘旋转和随机推荐两个入口 -->
+  <view class="button-area">
+    <view class="btn-spin" bindtap="onSpinWheel" hover-class="btn-hover">
+      <text class="btn-text">🎰 转盘决定</text>
+    </view>
+    <view class="btn-random" bindtap="onRandom" hover-class="btn-hover">
+      <text class="btn-text">🎲 随机推荐</text>
+    </view>
+  </view>
+
+  <!-- 分类标签栏：水平滚动，切换食物分类 -->
+  <scroll-view scroll-x class="category-scroll" enable-flex>
+    <view
+      class="category-tag {{activeCategory === cat ? 'active' : ''}}"
+      wx:for="{{categories}}"
+      wx:key="*this"
+      bindtap="onCategoryChange"
+      data-cat="{{item}}"
+    >
+      <text>{{item}}</text>
+    </view>
+  </scroll-view>
+
+  <!-- 食物列表区域：展示当前分类下的所有食物 -->
+  <view class="food-list">
+    <!-- 列表头部：显示分类标题和添加按钮 -->
+    <view class="food-list-header">
+      <text class="food-list-title">📋 {{activeCategory === '全部' ? '全部食物' : activeCategory}} ({{filteredFoods.length}})</text>
+      <view class="btn-add" bindtap="onShowAdd">
+        <text>+ 添加</text>
+      </view>
+    </view>
+    <!-- 可滚动食物列表 -->
+    <scroll-view scroll-y class="food-scroll" enable-flex>
+      <!-- 单个食物项：显示 emoji、名称、分类标签，自定义食物可删除 -->
+      <view
+        class="food-item"
+        wx:for="{{filteredFoods}}"
+        wx:key="name"
+      >
+        <text class="food-emoji">{{item.emoji}}</text>
+        <text class="food-name">{{item.name}}</text>
+        <text class="food-tag">{{item.category}}</text>
+        <!-- 仅自定义食物显示删除按钮 -->
+        <text
+          class="food-delete"
+          wx:if="{{item.isCustom}}"
+          bindtap="onDeleteFood"
+          data-name="{{item.name}}"
+        >✕</text>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 添加食物弹窗：遮罩层 + 输入框 + 操作按钮 -->
+  <view class="modal-mask" wx:if="{{showAdd}}" bindtap="onHideAdd">
+    <!-- catchtap 阻止点击弹窗内部时关闭 -->
+    <view class="modal" catchtap>
+      <text class="modal-title">添加自定义食物</text>
+      <input
+        class="modal-input"
+        placeholder="输入食物名称"
+        value="{{newFoodName}}"
+        bindinput="onInputFood"
+        focus="{{showAdd}}"
+        confirm-type="done"
+        bindconfirm="onAddFood"
+      />
+      <!-- 弹窗操作按钮：取消和确认添加 -->
+      <view class="modal-btns">
+        <view class="modal-btn cancel" bindtap="onHideAdd">
+          <text>取消</text>
+        </view>
+        <view class="modal-btn confirm" bindtap="onAddFood">
+          <text>添加</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

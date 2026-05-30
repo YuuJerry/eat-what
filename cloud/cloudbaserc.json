@@ -1,0 +1,104 @@
+{
+  "envId": "eat-what-xxx",
+  "functionRoot": "functions",
+  "functions": [
+    {
+      "name": "getOpenid",
+      "timeout": 10,
+      "runtime": "Nodejs16",
+      "handler": "index.main"
+    },
+    {
+      "name": "getRecipes",
+      "timeout": 20,
+      "runtime": "Nodejs16",
+      "handler": "index.main"
+    },
+    {
+      "name": "getRecipeDetail",
+      "timeout": 10,
+      "runtime": "Nodejs16",
+      "handler": "index.main"
+    },
+    {
+      "name": "searchByIngredients",
+      "timeout": 30,
+      "runtime": "Nodejs16",
+      "handler": "index.main"
+    },
+    {
+      "name": "smartRecommend",
+      "timeout": 30,
+      "runtime": "Nodejs16",
+      "handler": "index.main"
+    },
+    {
+      "name": "getDietRecipes",
+      "timeout": 20,
+      "runtime": "Nodejs16",
+      "handler": "index.main"
+    },
+    {
+      "name": "createRoom",
+      "timeout": 10,
+      "runtime": "Nodejs16",
+      "handler": "index.main"
+    },
+    {
+      "name": "joinRoom",
+      "timeout": 10,
+      "runtime": "Nodejs16",
+      "handler": "index.main"
+    },
+    {
+      "name": "submitVote",
+      "timeout": 10,
+      "runtime": "Nodejs16",
+      "handler": "index.main"
+    },
+    {
+      "name": "getResult",
+      "timeout": 10,
+      "runtime": "Nodejs16",
+      "handler": "index.main"
+    },
+    {
+      "name": "saveProfile",
+      "timeout": 10,
+      "runtime": "Nodejs16",
+      "handler": "index.main"
+    },
+    {
+      "name": "toggleFavorite",
+      "timeout": 10,
+      "runtime": "Nodejs16",
+      "handler": "index.main"
+    }
+  ],
+  "database": [
+    {
+      "collections": [
+        {
+          "collectionName": "recipes",
+          "description": "菜谱数据"
+        },
+        {
+          "collectionName": "ingredients",
+          "description": "食材库"
+        },
+        {
+          "collectionName": "voting_rooms",
+          "description": "投票房间"
+        },
+        {
+          "collectionName": "user_profiles",
+          "description": "用户偏好"
+        },
+        {
+          "collectionName": "video_tutorials",
+          "description": "视频教程"
+        }
+      ]
+    }
+  ]
+}

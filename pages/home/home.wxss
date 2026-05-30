@@ -1,0 +1,201 @@
+/* 首页容器：底部留出安全区域 */
+.container {
+  padding-bottom: 120rpx;
+}
+
+/* ========== Banner 区域 ========== */
+/* 顶部渐变 Banner 卡片 */
+.banner {
+  margin: 24rpx;
+  padding: 40rpx 30rpx;
+  background: linear-gradient(135deg, #FF6B6B, #FF8E8E);
+  border-radius: 24rpx;
+  box-shadow: 0 8rpx 30rpx rgba(255, 107, 107, 0.3);
+}
+
+/* Banner 内容横向布局 */
+.banner-content {
+  display: flex;
+  align-items: center;
+}
+
+/* Banner 图标 emoji */
+.banner-emoji {
+  font-size: 80rpx;
+  margin-right: 24rpx;
+}
+
+/* Banner 文字区域纵向排列 */
+.banner-text {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Banner 主标题 */
+.banner-title {
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #fff;
+}
+
+/* Banner 副标题 */
+.banner-desc {
+  font-size: 26rpx;
+  color: rgba(255, 255, 255, 0.85);
+  margin-top: 6rpx;
+}
+
+/* ========== 通用区块样式 ========== */
+/* 内容区块外边距 */
+.section {
+  margin: 30rpx 0;
+}
+
+/* 区块头部：标题与操作项横向排列 */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 24rpx;
+  margin-bottom: 16rpx;
+}
+
+/* 区块标题样式 */
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  padding: 0 24rpx;
+  margin-bottom: 16rpx;
+}
+
+/* 区块头部内的标题去除多余间距 */
+.section-header .section-title {
+  padding: 0;
+  margin-bottom: 0;
+}
+
+/* ========== 快捷入口 ========== */
+/* 快捷操作网格容器 */
+.quick-actions {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 16rpx;
+}
+
+/* 单个快捷入口：每行 4 个 */
+.quick-action-item {
+  width: 25%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16rpx 0;
+}
+
+/* 快捷入口图标容器：白底圆角方块 */
+.quick-action-icon {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 24rpx;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+  margin-bottom: 10rpx;
+}
+
+/* 快捷入口标题文字 */
+.quick-action-title {
+  font-size: 24rpx;
+  color: #333;
+  font-weight: 500;
+}
+
+/* 快捷入口描述文字 */
+.quick-action-desc {
+  font-size: 20rpx;
+  color: #999;
+  margin-top: 2rpx;
+}
+
+/* ========== 加载状态 ========== */
+/* 加载提示居中显示 */
+.loading {
+  display: flex;
+  justify-content: center;
+  padding: 60rpx 0;
+}
+
+/* 加载提示文字 */
+.loading-text {
+  color: #999;
+  font-size: 28rpx;
+}
+
+/* ========== 推荐列表 ========== */
+/* 推荐菜谱列表外边距 */
+.recommend-list {
+  padding: 0 24rpx;
+}
+
+/* 单个菜谱卡片：横向布局，白底圆角阴影 */
+.recipe-card {
+  display: flex;
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 20rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+}
+
+/* 菜谱封面区域 */
+.recipe-cover {
+  width: 180rpx;
+  height: 180rpx;
+  border-radius: 16rpx;
+  flex-shrink: 0;
+}
+
+/* 菜谱封面 emoji 图标 */
+.recipe-cover-emoji {
+  font-size: 60rpx;
+}
+
+/* 菜谱信息区域：占据剩余空间，纵向居中 */
+.recipe-info {
+  flex: 1;
+  margin-left: 20rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* 菜谱名称 */
+.recipe-name {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10rpx;
+}
+
+/* 菜谱元数据（烹饪时间、卡路里）横向排列 */
+.recipe-meta {
+  display: flex;
+  gap: 20rpx;
+  margin-bottom: 12rpx;
+}
+
+/* 菜谱时间和卡路里文字 */
+.recipe-time, .recipe-cal {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 菜谱标签列表 */
+.recipe-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8rpx;
+}

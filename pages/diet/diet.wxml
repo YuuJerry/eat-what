@@ -1,0 +1,83 @@
+<!-- 减脂餐页面主容器 -->
+<view class="container">
+  <!-- 热量筛选栏：全部 / <300kcal / 300-500kcal -->
+  <view class="filter-bar">
+    <view
+      class="filter-item {{activeCalorie === item.key ? 'active' : ''}}"
+      wx:for="{{calorieFilters}}"
+      wx:key="key"
+      bindtap="onCalorieFilter"
+      data-cal="{{item.key}}"
+    >
+      <text>{{item.label}}</text>
+    </view>
+  </view>
+
+  <!-- 减脂餐列表：横向卡片布局 -->
+  <view class="recipe-list">
+    <!-- 单个减脂餐卡片 -->
+    <view
+      class="recipe-card card"
+      wx:for="{{recipes}}"
+      wx:key="_id"
+      bindtap="onRecipeTap"
+      data-id="{{item._id}}"
+    >
+      <!-- 封面占位图 -->
+      <view class="recipe-cover hand-drawn-placeholder">
+        <text class="cover-emoji">🥗</text>
+      </view>
+      <!-- 菜谱信息区域 -->
+      <view class="recipe-info">
+        <text class="recipe-name">{{item.name}}</text>
+        <!-- 热量和烹饪时间 -->
+        <view class="recipe-meta">
+          <text class="meta-cal">🔥 {{item.calories}}kcal</text>
+          <text class="meta-time">⏱ {{item.cookTime}}分钟</text>
+        </view>
+        <!-- 营养成分：蛋白质、脂肪、碳水 -->
+        <view class="recipe-nutrition">
+          <text class="nutrition-item">蛋白 {{item.nutritionInfo.protein}}g</text>
+          <text class="nutrition-item">脂肪 {{item.nutritionInfo.fat}}g</text>
+          <text class="nutrition-item">碳水 {{item.nutritionInfo.carbs}}g</text>
+        </view>
+        <!-- 标签区域：减脂标签 + 自定义标签（最多2个） -->
+        <view class="recipe-tags">
+          <text class="tag tag-active">减脂</text>
+          <text class="tag" wx:for="{{item.tags}}" wx:for-item="tag" wx:key="*this" wx:if="{{index < 2}}">{{tag}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 推荐博主区域 -->
+  <view class="blogger-section">
+    <text class="section-title">📹 推荐博主</text>
+    <view class="blogger-list">
+      <!-- 单个博主卡片 -->
+      <view
+        class="blogger-card"
+        wx:for="{{bloggers}}"
+        wx:key="name"
+        bindtap="onBloggerTap"
+        data-blogger="{{item}}"
+      >
+        <!-- 博主头像 emoji -->
+        <text class="blogger-avatar">{{item.avatar}}</text>
+        <!-- 博主信息：名称和简介 -->
+        <view class="blogger-info">
+          <text class="blogger-name">{{item.name}}</text>
+          <text class="blogger-desc">{{item.desc}}</text>
+        </view>
+        <!-- 平台标签：B站 或 抖音 -->
+        <text class="blogger-platform">{{item.platform === 'bilibili' ? 'B站' : '抖音'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态：无减脂餐数据时显示 -->
+  <view class="empty-state" wx:if="{{!isLoading && recipes.length === 0}}">
+    <text class="empty-emoji">🏃</text>
+    <text class="empty-text">暂无减脂餐</text>
+  </view>
+</view>

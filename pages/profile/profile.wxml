@@ -1,0 +1,124 @@
+<!-- 个人偏好设置页面模板 - 包含用户信息、快捷入口、口味偏好、饮食目标、过敏源和忌口设置 -->
+<view class="container">
+  <!-- 用户信息卡片 -->
+  <view class="user-card card">
+    <view class="avatar">
+      <text>👤</text>
+    </view>
+    <view class="user-info">
+      <text class="user-name">美食家</text>
+      <text class="user-desc">设置偏好，获取个性化推荐</text>
+    </view>
+  </view>
+
+  <!-- 快捷入口：收藏和浏览历史 -->
+  <view class="quick-links card">
+    <!-- 我的收藏入口 -->
+    <view class="quick-link" bindtap="onGoFavorites">
+      <text class="link-icon">❤️</text>
+      <text class="link-text">我的收藏</text>
+      <text class="link-arrow">›</text>
+    </view>
+    <!-- 浏览历史入口 -->
+    <view class="quick-link" bindtap="onGoHistory">
+      <text class="link-icon">🕐</text>
+      <text class="link-text">浏览历史</text>
+      <text class="link-arrow">›</text>
+    </view>
+  </view>
+
+  <!-- 口味偏好设置区：辣度、甜度、酸度滑块 -->
+  <view class="card">
+    <text class="section-title">👅 口味偏好</text>
+    <view class="slider-group">
+      <!-- 辣度滑块 -->
+      <view class="slider-item">
+        <text class="slider-label">🌶️ 辣度</text>
+        <slider
+          min="0" max="5" value="{{preferences.spicy}}"
+          activeColor="#FF6B6B" block-size="20"
+          bindchange="onSpicyChange"
+        />
+        <text class="slider-value">{{preferences.spicy}}</text>
+      </view>
+      <!-- 甜度滑块 -->
+      <view class="slider-item">
+        <text class="slider-label">🍬 甜度</text>
+        <slider
+          min="0" max="5" value="{{preferences.sweet}}"
+          activeColor="#FFE66D" block-size="20"
+          bindchange="onSweetChange"
+        />
+        <text class="slider-value">{{preferences.sweet}}</text>
+      </view>
+      <!-- 酸度滑块 -->
+      <view class="slider-item">
+        <text class="slider-label">🍋 酸度</text>
+        <slider
+          min="0" max="5" value="{{preferences.sour}}"
+          activeColor="#4ECDC4" block-size="20"
+          bindchange="onSourChange"
+        />
+        <text class="slider-value">{{preferences.sour}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 饮食目标选择区 -->
+  <view class="card">
+    <text class="section-title">🎯 饮食目标</text>
+    <view class="goal-list">
+      <!-- 遍历饮食目标选项，选中项高亮显示 -->
+      <view
+        class="goal-item {{dietGoal === item ? 'active' : ''}}"
+        wx:for="{{dietGoals}}"
+        wx:key="*this"
+        bindtap="onDietGoalChange"
+        data-idx="{{index}}"
+      >
+        <text>{{item}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 过敏源标签选择区 -->
+  <view class="card">
+    <text class="section-title">⚠️ 过敏源</text>
+    <view class="tag-list">
+      <!-- 遍历常见过敏源标签，选中项橙色高亮 -->
+      <view
+        class="tag-item {{allergies.includes(item) ? 'selected allergy' : ''}}"
+        wx:for="{{commonAllergies}}"
+        wx:key="*this"
+        bindtap="onToggleAllergy"
+        data-name="{{item}}"
+      >
+        <text>{{item}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 忌口食物标签选择区 -->
+  <view class="card">
+    <text class="section-title">🙅 不喜欢</text>
+    <view class="tag-list">
+      <!-- 遍历常见忌口标签，选中项红色高亮 -->
+      <view
+        class="tag-item {{dislikes.includes(item) ? 'selected dislike' : ''}}"
+        wx:for="{{commonDislikes}}"
+        wx:key="*this"
+        bindtap="onToggleDislike"
+        data-name="{{item}}"
+      >
+        <text>{{item}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 保存偏好按钮 -->
+  <view class="save-action">
+    <view class="btn-primary" bindtap="onSave">
+      <text>{{isSaving ? '保存中...' : '保存偏好'}}</text>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,252 @@
+[
+  {
+    "name": "番茄炒蛋",
+    "coverImg": "",
+    "category": "中餐",
+    "tags": ["家常", "快手", "减脂"],
+    "difficulty": 1,
+    "cookTime": 10,
+    "servings": 2,
+    "calories": 280,
+    "ingredients": [
+      { "name": "番茄", "amount": "2个", "icon": "" },
+      { "name": "鸡蛋", "amount": "3个", "icon": "" },
+      { "name": "盐", "amount": "适量", "icon": "" },
+      { "name": "糖", "amount": "少许", "icon": "" },
+      { "name": "葱花", "amount": "适量", "icon": "" }
+    ],
+    "steps": [
+      { "order": 1, "text": "番茄顶部划十字，开水烫30秒，去皮切块", "img": "" },
+      { "order": 2, "text": "鸡蛋打散，加少许盐和料酒搅拌均匀", "img": "" },
+      { "order": 3, "text": "锅中多放油，大火将蛋液炒至凝固盛出", "img": "" },
+      { "order": 4, "text": "锅留底油，放入番茄块翻炒出汁", "img": "" },
+      { "order": 5, "text": "加入盐、糖调味，倒入鸡蛋翻炒均匀", "img": "" },
+      { "order": 6, "text": "撒上葱花，出锅装盘", "img": "" }
+    ],
+    "videos": [
+      { "title": "番茄炒蛋的正确做法", "platform": "bilibili", "videoId": "BV1xx411c7mD", "author": "美食作家王刚" }
+    ],
+    "nutritionInfo": { "protein": 15, "fat": 12, "carbs": 20, "fiber": 2 },
+    "isDietFriendly": true,
+    "createdBy": "system",
+    "likes": 128
+  },
+  {
+    "name": "麻婆豆腐",
+    "coverImg": "",
+    "category": "中餐",
+    "tags": ["家常", "辣", "下饭"],
+    "difficulty": 2,
+    "cookTime": 20,
+    "servings": 3,
+    "calories": 350,
+    "ingredients": [
+      { "name": "嫩豆腐", "amount": "1块", "icon": "" },
+      { "name": "猪肉末", "amount": "100g", "icon": "" },
+      { "name": "豆瓣酱", "amount": "2勺", "icon": "" },
+      { "name": "花椒粉", "amount": "适量", "icon": "" },
+      { "name": "葱姜蒜", "amount": "适量", "icon": "" },
+      { "name": "淀粉", "amount": "1勺", "icon": "" }
+    ],
+    "steps": [
+      { "order": 1, "text": "豆腐切2cm方块，焯水备用", "img": "" },
+      { "order": 2, "text": "锅中热油，炒香肉末至变色", "img": "" },
+      { "order": 3, "text": "加入豆瓣酱、葱姜蒜炒出红油", "img": "" },
+      { "order": 4, "text": "加入适量水，放入豆腐块小火煮5分钟", "img": "" },
+      { "order": 5, "text": "水淀粉勾芡，撒花椒粉和葱花出锅", "img": "" }
+    ],
+    "videos": [
+      { "title": "正宗麻婆豆腐", "platform": "bilibili", "videoId": "BV1Ss411a76e", "author": "美食作家王刚" }
+    ],
+    "nutritionInfo": { "protein": 18, "fat": 20, "carbs": 15, "fiber": 3 },
+    "isDietFriendly": false,
+    "createdBy": "system",
+    "likes": 96
+  },
+  {
+    "name": "凉拌黄瓜",
+    "coverImg": "",
+    "category": "中餐",
+    "tags": ["凉菜", "快手", "减脂", "夏天"],
+    "difficulty": 1,
+    "cookTime": 5,
+    "servings": 2,
+    "calories": 80,
+    "ingredients": [
+      { "name": "黄瓜", "amount": "2根", "icon": "" },
+      { "name": "蒜", "amount": "3瓣", "icon": "" },
+      { "name": "醋", "amount": "2勺", "icon": "" },
+      { "name": "生抽", "amount": "1勺", "icon": "" },
+      { "name": "辣椒油", "amount": "1勺", "icon": "" },
+      { "name": "香油", "amount": "少许", "icon": "" }
+    ],
+    "steps": [
+      { "order": 1, "text": "黄瓜拍碎切段", "img": "" },
+      { "order": 2, "text": "蒜切末备用", "img": "" },
+      { "order": 3, "text": "将所有调料混合拌匀", "img": "" },
+      { "order": 4, "text": "浇在黄瓜上拌匀即可", "img": "" }
+    ],
+    "videos": [],
+    "nutritionInfo": { "protein": 2, "fat": 3, "carbs": 8, "fiber": 2 },
+    "isDietFriendly": true,
+    "createdBy": "system",
+    "likes": 75
+  },
+  {
+    "name": "宫保鸡丁",
+    "coverImg": "",
+    "category": "中餐",
+    "tags": ["家常", "辣", "下饭"],
+    "difficulty": 2,
+    "cookTime": 25,
+    "servings": 3,
+    "calories": 420,
+    "ingredients": [
+      { "name": "鸡胸肉", "amount": "300g", "icon": "" },
+      { "name": "花生米", "amount": "50g", "icon": "" },
+      { "name": "干辣椒", "amount": "8个", "icon": "" },
+      { "name": "花椒", "amount": "1小撮", "icon": "" },
+      { "name": "黄瓜", "amount": "半根", "icon": "" },
+      { "name": "胡萝卜", "amount": "半根", "icon": "" },
+      { "name": "淀粉", "amount": "1勺", "icon": "" }
+    ],
+    "steps": [
+      { "order": 1, "text": "鸡胸肉切丁，加盐、料酒、淀粉腌制15分钟", "img": "" },
+      { "order": 2, "text": "调宫保汁：醋2勺、生抽1勺、糖1勺、淀粉1勺", "img": "" },
+      { "order": 3, "text": "花生米小火炸至金黄备用", "img": "" },
+      { "order": 4, "text": "锅中热油，爆香干辣椒和花椒", "img": "" },
+      { "order": 5, "text": "放入鸡丁炒至变色，加入配菜翻炒", "img": "" },
+      { "order": 6, "text": "倒入宫保汁翻炒均匀，加入花生米出锅", "img": "" }
+    ],
+    "videos": [
+      { "title": "宫保鸡丁的正宗做法", "platform": "bilibili", "videoId": "BV1Ws411Y7Dc", "author": "美食作家王刚" }
+    ],
+    "nutritionInfo": { "protein": 35, "fat": 18, "carbs": 25, "fiber": 3 },
+    "isDietFriendly": false,
+    "createdBy": "system",
+    "likes": 110
+  },
+  {
+    "name": "鸡胸肉沙拉",
+    "coverImg": "",
+    "category": "西餐",
+    "tags": ["减脂", "轻食", "快手"],
+    "difficulty": 1,
+    "cookTime": 15,
+    "servings": 1,
+    "calories": 250,
+    "ingredients": [
+      { "name": "鸡胸肉", "amount": "150g", "icon": "" },
+      { "name": "生菜", "amount": "适量", "icon": "" },
+      { "name": "小番茄", "amount": "5个", "icon": "" },
+      { "name": "黄瓜", "amount": "半根", "icon": "" },
+      { "name": "橄榄油", "amount": "1勺", "icon": "" },
+      { "name": "柠檬汁", "amount": "适量", "icon": "" }
+    ],
+    "steps": [
+      { "order": 1, "text": "鸡胸肉加盐和黑胡椒，煎熟切片", "img": "" },
+      { "order": 2, "text": "生菜洗净撕碎铺底", "img": "" },
+      { "order": 3, "text": "小番茄对半切，黄瓜切片", "img": "" },
+      { "order": 4, "text": "所有食材摆盘，淋橄榄油和柠檬汁", "img": "" }
+    ],
+    "videos": [],
+    "nutritionInfo": { "protein": 35, "fat": 8, "carbs": 12, "fiber": 4 },
+    "isDietFriendly": true,
+    "createdBy": "system",
+    "likes": 88
+  },
+  {
+    "name": "日式咖喱饭",
+    "coverImg": "",
+    "category": "日料",
+    "tags": ["家常", "下饭", "暖胃"],
+    "difficulty": 2,
+    "cookTime": 40,
+    "servings": 3,
+    "calories": 550,
+    "ingredients": [
+      { "name": "鸡腿肉", "amount": "300g", "icon": "" },
+      { "name": "土豆", "amount": "2个", "icon": "" },
+      { "name": "胡萝卜", "amount": "1根", "icon": "" },
+      { "name": "洋葱", "amount": "1个", "icon": "" },
+      { "name": "咖喱块", "amount": "1盒", "icon": "" },
+      { "name": "米饭", "amount": "适量", "icon": "" }
+    ],
+    "steps": [
+      { "order": 1, "text": "鸡腿肉切块，土豆胡萝卜切滚刀块", "img": "" },
+      { "order": 2, "text": "洋葱切丝，锅中热油炒至透明", "img": "" },
+      { "order": 3, "text": "加入鸡块炒至变色", "img": "" },
+      { "order": 4, "text": "加入土豆和胡萝卜翻炒", "img": "" },
+      { "order": 5, "text": "加水没过食材，大火烧开转小火煮20分钟", "img": "" },
+      { "order": 6, "text": "关火放入咖喱块搅拌融化，再煮5分钟", "img": "" },
+      { "order": 7, "text": "配白饭食用", "img": "" }
+    ],
+    "videos": [
+      { "title": "超浓郁日式咖喱", "platform": "bilibili", "videoId": "BV1Zx411q7WB", "author": "日食记" }
+    ],
+    "nutritionInfo": { "protein": 25, "fat": 15, "carbs": 70, "fiber": 5 },
+    "isDietFriendly": false,
+    "createdBy": "system",
+    "likes": 92
+  },
+  {
+    "name": "韩式拌饭",
+    "coverImg": "",
+    "category": "韩餐",
+    "tags": ["下饭", "丰富", "DIY"],
+    "difficulty": 2,
+    "cookTime": 30,
+    "servings": 1,
+    "calories": 480,
+    "ingredients": [
+      { "name": "米饭", "amount": "1碗", "icon": "" },
+      { "name": "牛肉", "amount": "100g", "icon": "" },
+      { "name": "菠菜", "amount": "适量", "icon": "" },
+      { "name": "胡萝卜", "amount": "半根", "icon": "" },
+      { "name": "黄豆芽", "amount": "适量", "icon": "" },
+      { "name": "鸡蛋", "amount": "1个", "icon": "" },
+      { "name": "韩式辣酱", "amount": "2勺", "icon": "" }
+    ],
+    "steps": [
+      { "order": 1, "text": "各种蔬菜分别焯水，调味备用", "img": "" },
+      { "order": 2, "text": "牛肉切丝炒熟调味", "img": "" },
+      { "order": 3, "text": "石锅刷油，放入米饭", "img": "" },
+      { "order": 4, "text": "将蔬菜和牛肉摆放在饭上", "img": "" },
+      { "order": 5, "text": "中间放煎蛋，配辣酱食用", "img": "" }
+    ],
+    "videos": [],
+    "nutritionInfo": { "protein": 22, "fat": 14, "carbs": 55, "fiber": 4 },
+    "isDietFriendly": false,
+    "createdBy": "system",
+    "likes": 67
+  },
+  {
+    "name": "虾仁西兰花",
+    "coverImg": "",
+    "category": "中餐",
+    "tags": ["减脂", "快手", "清淡"],
+    "difficulty": 1,
+    "cookTime": 15,
+    "servings": 2,
+    "calories": 200,
+    "ingredients": [
+      { "name": "虾仁", "amount": "200g", "icon": "" },
+      { "name": "西兰花", "amount": "1朵", "icon": "" },
+      { "name": "蒜", "amount": "3瓣", "icon": "" },
+      { "name": "盐", "amount": "适量", "icon": "" },
+      { "name": "料酒", "amount": "1勺", "icon": "" }
+    ],
+    "steps": [
+      { "order": 1, "text": "虾仁去虾线，加料酒腌制10分钟", "img": "" },
+      { "order": 2, "text": "西兰花切小朵，焯水备用", "img": "" },
+      { "order": 3, "text": "锅中热油，爆香蒜末", "img": "" },
+      { "order": 4, "text": "放入虾仁炒至变色", "img": "" },
+      { "order": 5, "text": "加入西兰花翻炒，加盐调味出锅", "img": "" }
+    ],
+    "videos": [],
+    "nutritionInfo": { "protein": 30, "fat": 5, "carbs": 10, "fiber": 4 },
+    "isDietFriendly": true,
+    "createdBy": "system",
+    "likes": 82
+  }
+]

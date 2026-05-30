@@ -1,0 +1,277 @@
+/* 页面容器：内边距 */
+.container {
+  padding: 20rpx 24rpx 40rpx;
+}
+
+/* ===== 已选食材区域样式 ===== */
+/* 区块头部：标题和清空按钮左右分布 */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+/* 区块标题 */
+.section-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+/* 清空按钮：红色文字 */
+.clear-btn {
+  font-size: 26rpx;
+  color: #FF6B6B;
+}
+
+/* 已选食材标签列表：自动换行 */
+.selected-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+
+/* 已选食材标签：红色圆角胶囊 */
+.selected-tag {
+  background: #FF6B6B;
+  color: #fff;
+  font-size: 26rpx;
+  padding: 10rpx 20rpx;
+  border-radius: 30rpx;
+}
+
+/* 空状态占位文字 */
+.placeholder-text {
+  font-size: 26rpx;
+  color: #ccc;
+}
+
+/* ===== 搜索栏样式 ===== */
+.search-bar {
+  display: flex;
+  align-items: center;
+  margin: 20rpx 0;
+  background: #fff;
+  border-radius: 50rpx;
+  padding: 4rpx 24rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+}
+
+/* 搜索输入框 */
+.search-input {
+  flex: 1;
+  font-size: 28rpx;
+  height: 72rpx;
+}
+
+/* ===== 分类标签样式 ===== */
+.category-scroll {
+  white-space: nowrap;
+  margin-bottom: 20rpx;
+}
+
+.category-tab {
+  display: inline-flex;
+  align-items: center;
+  padding: 12rpx 28rpx;
+  margin-right: 16rpx;
+  border-radius: 40rpx;
+  background: #fff;
+  border: 2rpx solid #eee;
+  font-size: 26rpx;
+  color: #666;
+}
+
+/* 分类标签激活态：绿色高亮 */
+.category-tab.active {
+  background: #4ECDC4;
+  color: #fff;
+  border-color: #4ECDC4;
+}
+
+/* ===== 食材网格样式 ===== */
+.ingredient-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+  margin-bottom: 24rpx;
+}
+
+/* 食材项：四列布局，白色卡片带阴影 */
+.ingredient-item {
+  width: calc(25% - 12rpx);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16rpx 8rpx;
+  background: #fff;
+  border-radius: 16rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+  position: relative;
+}
+
+/* 食材选中态：绿色背景和阴影 */
+.ingredient-item.selected {
+  background: #E8F8F5;
+  box-shadow: 0 2rpx 8rpx rgba(78, 205, 196, 0.2);
+}
+
+/* 食材图标区域 */
+.ingredient-icon {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 16rpx;
+  margin-bottom: 8rpx;
+}
+
+/* 食材图标文字大小 */
+.ingredient-icon text {
+  font-size: 32rpx;
+}
+
+/* 食材名称 */
+.ingredient-name {
+  font-size: 24rpx;
+  color: #333;
+  text-align: center;
+}
+
+/* 选中标记：右上角绿色圆形对勾 */
+.check-mark {
+  position: absolute;
+  top: 8rpx;
+  right: 8rpx;
+  width: 32rpx;
+  height: 32rpx;
+  border-radius: 50%;
+  background: #4ECDC4;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20rpx;
+}
+
+/* ===== 搜索按钮样式 ===== */
+.search-action {
+  margin: 20rpx 0;
+}
+
+/* 搜索按钮：居中显示 */
+.search-recipes-btn {
+  text-align: center;
+}
+
+/* ===== 推荐结果样式 ===== */
+.results-section {
+  margin-top: 30rpx;
+}
+
+/* 结果卡片：重置外边距 */
+.result-card {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* 结果头部：封面 + 信息 + 匹配度横向排列 */
+.result-header {
+  display: flex;
+  align-items: center;
+}
+
+/* 结果封面占位图 */
+.result-cover {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 16rpx;
+  flex-shrink: 0;
+}
+
+/* 结果封面 emoji 大小 */
+.result-cover text {
+  font-size: 40rpx;
+}
+
+/* 结果信息区域 */
+.result-info {
+  flex: 1;
+  margin-left: 16rpx;
+}
+
+/* 菜谱名称 */
+.result-name {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+  display: block;
+}
+
+/* 结果元信息：烹饪时间、热量 */
+.result-meta {
+  display: flex;
+  gap: 16rpx;
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 6rpx;
+}
+
+/* 匹配度徽章：绿色背景 */
+.match-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8rpx 16rpx;
+  background: #E8F8F5;
+  border-radius: 12rpx;
+}
+
+/* 匹配度数值：绿色大字 */
+.match-rate {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #4ECDC4;
+}
+
+/* 匹配度标签 */
+.match-label {
+  font-size: 20rpx;
+  color: #4ECDC4;
+}
+
+/* 结果详情：食材匹配情况 */
+.result-detail {
+  margin-top: 12rpx;
+  padding-top: 12rpx;
+  border-top: 1rpx solid #f0f0f0;
+}
+
+/* 已有食材数量文字 */
+.owned-text {
+  font-size: 24rpx;
+  color: #4ECDC4;
+}
+
+/* 缺少食材列表 */
+.missing-list {
+  margin-top: 8rpx;
+}
+
+/* 缺少食材提示文字 */
+.missing-label {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 缺少食材名称：红色高亮 */
+.missing-items {
+  font-size: 24rpx;
+  color: #FF6B6B;
+}
+
+/* 空状态提示副文字 */
+.empty-hint {
+  font-size: 24rpx;
+  color: #ccc;
+  margin-top: 8rpx;
+}

@@ -1,0 +1,129 @@
+<!-- 冰箱页面主容器：根据已有食材推荐菜谱 -->
+<view class="container">
+  <!-- 已选食材区域：展示当前"冰箱里"的食材，点击可移除 -->
+  <view class="selected-section card">
+    <view class="section-header">
+      <text class="section-title">🧊 我的冰箱里有</text>
+      <text class="clear-btn" bindtap="onClearAll" wx:if="{{selectedIngredients.length > 0}}">清空</text>
+    </view>
+    <!-- 已选食材标签列表 -->
+    <view class="selected-list" wx:if="{{selectedIngredients.length > 0}}">
+      <view
+        class="selected-tag"
+        wx:for="{{selectedIngredients}}"
+        wx:key="*this"
+        bindtap="onRemoveIngredient"
+        data-name="{{item}}"
+      >
+        <text>{{item}} ✕</text>
+      </view>
+    </view>
+    <!-- 空状态提示 -->
+    <text class="placeholder-text" wx:if="{{selectedIngredients.length === 0}}">点击下方食材添加到冰箱</text>
+  </view>
+
+  <!-- 搜索食材输入框 -->
+  <view class="search-bar">
+    <input
+      class="search-input"
+      placeholder="搜索食材"
+      value="{{keyword}}"
+      bindinput="onSearchInput"
+      bindconfirm="onSearchIngredient"
+      confirm-type="search"
+    />
+  </view>
+
+  <!-- 食材分类标签栏：横向滚动切换分类 -->
+  <scroll-view scroll-x class="category-scroll" enable-flex>
+    <view
+      class="category-tab {{activeCategory === cat ? 'active' : ''}}"
+      wx:for="{{categories}}"
+      wx:key="*this"
+      bindtap="onCategoryChange"
+      data-cat="{{item}}"
+    >
+      <text>{{item}}</text>
+    </view>
+  </scroll-view>
+
+  <!-- 食材网格：四列布局，点击选中/取消 -->
+  <view class="ingredient-grid">
+    <view
+      class="ingredient-item {{selectedIngredients.includes(item) ? 'selected' : ''}}"
+      wx:for="{{ingredients}}"
+      wx:key="*this"
+      bindtap="onToggleIngredient"
+      data-name="{{item}}"
+    >
+      <!-- 食材图标 -->
+      <view class="ingredient-icon hand-drawn-placeholder">
+        <text>🥄</text>
+      </view>
+      <!-- 食材名称 -->
+      <text class="ingredient-name">{{item}}</text>
+      <!-- 选中标记 -->
+      <view class="check-mark" wx:if="{{selectedIngredients.includes(item)}}">
+        <text>✓</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 搜索按钮：根据已选食材推荐菜谱 -->
+  <view class="search-action">
+    <view class="btn-primary search-recipes-btn" bindtap="onSearchRecipes">
+      <text>{{isSearching ? '搜索中...' : '🍳 看看能做什么 (' + selectedIngredients.length + ')'}}</text>
+    </view>
+  </view>
+
+  <!-- 推荐结果区域 -->
+  <view class="results-section" wx:if="{{hasSearched}}">
+    <text class="section-title">🎯 推荐菜谱</text>
+
+    <!-- 有匹配结果时展示菜谱卡片列表 -->
+    <view wx:if="{{results.length > 0}}">
+      <view
+        class="result-card card"
+        wx:for="{{results}}"
+        wx:key="_id"
+        bindtap="onResultTap"
+        data-id="{{item._id}}"
+      >
+        <!-- 菜谱头部：封面 + 信息 + 匹配度 -->
+        <view class="result-header">
+          <view class="result-cover hand-drawn-placeholder">
+            <text>🍲</text>
+          </view>
+          <view class="result-info">
+            <text class="result-name">{{item.name}}</text>
+            <view class="result-meta">
+              <text>⏱ {{item.cookTime}}分钟</text>
+              <text wx:if="{{item.calories}}">🔥 {{item.calories}}kcal</text>
+            </view>
+          </view>
+          <!-- 匹配度徽章 -->
+          <view class="match-badge">
+            <text class="match-rate">{{item.matchRate}}%</text>
+            <text class="match-label">匹配</text>
+          </view>
+        </view>
+        <!-- 食材匹配详情：已有/缺少食材 -->
+        <view class="result-detail">
+          <text class="owned-text">已有 {{item.ownedCount}}/{{item.totalCount}} 种食材</text>
+          <!-- 缺少的食材列表 -->
+          <view class="missing-list" wx:if="{{item.missing.length > 0}}">
+            <text class="missing-label">还差：</text>
+            <text class="missing-items">{{item.missing.join('、')}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 无匹配结果时显示空状态 -->
+    <view class="empty-state" wx:if="{{results.length === 0}}">
+      <text class="empty-emoji">😅</text>
+      <text class="empty-text">没有找到匹配的菜谱</text>
+      <text class="empty-hint">试试选择更多食材？</text>
+    </view>
+  </view>
+</view>

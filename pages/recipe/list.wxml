@@ -1,0 +1,92 @@
+<!-- 菜谱列表页面主容器 -->
+<view class="container">
+  <!-- 搜索栏区域：支持按菜名或食材搜索 -->
+  <view class="search-bar">
+    <input
+      class="search-input"
+      placeholder="搜索菜谱或食材"
+      value="{{keyword}}"
+      bindinput="onSearchInput"
+      bindconfirm="onSearch"
+      confirm-type="search"
+    />
+    <view class="search-btn" bindtap="onSearch">
+      <text>🔍</text>
+    </view>
+  </view>
+
+  <!-- 分类标签栏：横向滚动，支持全部/中餐/西餐/日料/韩餐/减脂 -->
+  <scroll-view scroll-x class="category-scroll" enable-flex>
+    <view
+      class="category-tab {{activeCategory === cat ? 'active' : ''}}"
+      wx:for="{{categories}}"
+      wx:key="*this"
+      bindtap="onCategoryChange"
+      data-cat="{{item}}"
+    >
+      <text>{{item}}</text>
+    </view>
+  </scroll-view>
+
+  <!-- 排序栏：支持最热门/最快手/最低卡/最新四种排序 -->
+  <view class="sort-bar">
+    <view
+      class="sort-item {{activeSort === item.key ? 'active' : ''}}"
+      wx:for="{{sorts}}"
+      wx:key="key"
+      bindtap="onSortChange"
+      data-sort="{{item.key}}"
+    >
+      <text>{{item.label}}</text>
+    </view>
+  </view>
+
+  <!-- 菜谱列表网格：两列瀑布流布局 -->
+  <view class="recipe-grid">
+    <!-- 单个菜谱卡片 -->
+    <view
+      class="recipe-card"
+      wx:for="{{recipes}}"
+      wx:key="_id"
+      bindtap="onRecipeTap"
+      data-id="{{item._id}}"
+    >
+      <!-- 封面区域：根据是否减脂显示不同 emoji -->
+      <view class="recipe-cover hand-drawn-placeholder">
+        <text class="recipe-cover-emoji">{{item.isDietFriendly ? '🥗' : '🍲'}}</text>
+      </view>
+      <!-- 菜谱信息区域 -->
+      <view class="recipe-info">
+        <text class="recipe-name">{{item.name}}</text>
+        <view class="recipe-meta">
+          <text class="meta-item">⏱ {{item.cookTime}}分钟</text>
+          <text class="meta-item" wx:if="{{item.calories}}">🔥 {{item.calories}}kcal</text>
+        </view>
+        <view class="recipe-bottom">
+          <!-- 标签区域：显示减脂标签和自定义标签（最多1个） -->
+          <view class="recipe-tags">
+            <text class="tag {{item.isDietFriendly ? 'tag-active' : ''}}" wx:if="{{item.isDietFriendly}}">减脂</text>
+            <text class="tag" wx:for="{{item.tags}}" wx:for-item="tag" wx:key="*this" wx:if="{{index < 1}}">{{tag}}</text>
+          </view>
+          <!-- 点赞数 -->
+          <text class="recipe-likes">❤️ {{item.likes || 0}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载状态提示 -->
+  <view class="load-more" wx:if="{{isLoading}}">
+    <text>加载中...</text>
+  </view>
+  <!-- 没有更多数据提示 -->
+  <view class="load-more" wx:if="{{!isLoading && !hasMore && recipes.length > 0}}">
+    <text>没有更多了</text>
+  </view>
+
+  <!-- 空状态：无搜索结果时显示 -->
+  <view class="empty-state" wx:if="{{!isLoading && recipes.length === 0}}">
+    <text class="empty-emoji">🍽️</text>
+    <text class="empty-text">暂无菜谱</text>
+  </view>
+</view>

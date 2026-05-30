@@ -1,0 +1,162 @@
+/* 页面容器：底部留出安全距离 */
+.container {
+  padding-bottom: 120rpx;
+}
+
+/* ===== 搜索栏样式 ===== */
+.search-bar {
+  display: flex;
+  align-items: center;
+  margin: 20rpx 24rpx;
+  background: #fff;
+  border-radius: 50rpx;
+  padding: 4rpx 8rpx 4rpx 24rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+}
+
+.search-input {
+  flex: 1;
+  font-size: 28rpx;
+  height: 72rpx;
+}
+
+/* 搜索按钮：圆形红色背景 */
+.search-btn {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 50%;
+  background: #FF6B6B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30rpx;
+}
+
+/* ===== 分类标签样式 ===== */
+.category-scroll {
+  white-space: nowrap;
+  padding: 0 24rpx;
+  margin-bottom: 16rpx;
+}
+
+.category-tab {
+  display: inline-flex;
+  align-items: center;
+  padding: 12rpx 28rpx;
+  margin-right: 16rpx;
+  border-radius: 40rpx;
+  background: #fff;
+  border: 2rpx solid #eee;
+  font-size: 26rpx;
+  color: #666;
+}
+
+/* 分类标签激活态：红色高亮 */
+.category-tab.active {
+  background: #FF6B6B;
+  color: #fff;
+  border-color: #FF6B6B;
+}
+
+/* ===== 排序栏样式 ===== */
+.sort-bar {
+  display: flex;
+  padding: 0 24rpx;
+  margin-bottom: 20rpx;
+  gap: 24rpx;
+}
+
+.sort-item {
+  font-size: 26rpx;
+  color: #999;
+  padding: 8rpx 0;
+}
+
+/* 排序项激活态：红色加粗 + 底部指示条 */
+.sort-item.active {
+  color: #FF6B6B;
+  font-weight: bold;
+  border-bottom: 4rpx solid #FF6B6B;
+}
+
+/* ===== 菜谱网格布局 ===== */
+.recipe-grid {
+  padding: 0 24rpx;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+/* 菜谱卡片：两列布局，白色圆角卡片带阴影 */
+.recipe-card {
+  width: calc(50% - 8rpx);
+  background: #fff;
+  border-radius: 20rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+}
+
+/* 封面占位图：固定高度 */
+.recipe-cover {
+  width: 100%;
+  height: 220rpx;
+}
+
+/* 封面 emoji 图标 */
+.recipe-cover-emoji {
+  font-size: 60rpx;
+}
+
+/* 菜谱信息区域：内边距 */
+.recipe-info {
+  padding: 16rpx;
+}
+
+/* 菜谱名称 */
+.recipe-name {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+/* 菜谱元信息行：烹饪时间、热量等 */
+.recipe-meta {
+  display: flex;
+  gap: 16rpx;
+  margin-bottom: 10rpx;
+}
+
+/* 单个元信息项 */
+.meta-item {
+  font-size: 22rpx;
+  color: #999;
+}
+
+/* 底部行：标签和点赞数左右分布 */
+.recipe-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 标签容器 */
+.recipe-tags {
+  display: flex;
+  gap: 6rpx;
+}
+
+/* 点赞数 */
+.recipe-likes {
+  font-size: 22rpx;
+  color: #999;
+}
+
+/* ===== 加载提示 ===== */
+.load-more {
+  text-align: center;
+  padding: 30rpx 0;
+  color: #999;
+  font-size: 26rpx;
+}
