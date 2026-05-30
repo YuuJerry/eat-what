@@ -72,7 +72,7 @@
   <!-- 搜索按钮：根据已选食材推荐菜谱 -->
   <view class="search-action">
     <view class="btn-primary search-recipes-btn" bindtap="onSearchRecipes">
-      <text>{{isSearching ? '搜索中...' : '🍳 看看能做什么 (' + selectedIngredients.length + ')'}}</text>
+      <text>{{isSearching ? '搜索中...' : '🍳 确定并推荐 (' + selectedIngredients.length + ')'}}</text>
     </view>
   </view>
 

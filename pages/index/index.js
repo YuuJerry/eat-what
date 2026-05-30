@@ -36,7 +36,13 @@ Page({
     // 是否显示添加食物弹窗
     showAdd: false,
     // 新食物输入框内容
-    newFoodName: ''
+    newFoodName: '',
+    // 是否显示编辑食物弹窗
+    showEdit: false,
+    // 正在编辑的食物索引
+    editIndex: -1,
+    // 编辑食物名称输入框内容
+    editFoodName: ''
   },
 
   // Canvas 实例引用
@@ -380,5 +386,53 @@ Page({
         }
       }
     })
-  }
+  },
+
+  // 显示编辑食物弹窗：填充当前名称
+  onEditFood(e) {
+    const name = e.currentTarget.dataset.name
+    const idx = this.data.customFoods.findIndex(f => f.name === name)
+    if (idx === -1) return
+    this.setData({ showEdit: true, editIndex: idx, editFoodName: name })
+  },
+
+  // 监听编辑食物名称输入框变化
+  onInputEditFood(e) {
+    this.setData({ editFoodName: e.detail.value })
+  },
+
+  // 隐藏编辑食物弹窗
+  onHideEdit() {
+    this.setData({ showEdit: false, editIndex: -1, editFoodName: '' })
+  },
+
+  // 确认编辑食物：校验名称后更新
+  onConfirmEdit() {
+    const name = this.data.editFoodName.trim()
+    if (!name) {
+      wx.showToast({ title: '请输入食物名称', icon: 'none' })
+      return
+    }
+
+    const idx = this.data.editIndex
+    if (idx < 0 || idx >= this.data.customFoods.length) return
+
+    const oldName = this.data.customFoods[idx].name
+    // 检查新名称是否与其他食物重复（排除自身）
+    const exists = this.data.customFoods.some((f, i) => i !== idx && f.name === name)
+    if (exists) {
+      wx.showToast({ title: '这个食物已经存在了', icon: 'none' })
+      return
+    }
+
+    // 更新食物名称
+    const customFoods = [...this.data.customFoods]
+    customFoods[idx] = { ...customFoods[idx], name }
+    this.setData({ customFoods, showEdit: false, editIndex: -1, editFoodName: '' })
+    this.saveCustomFoods()
+    this.mergeFoods()
+    this.filterFoods(this.data.activeCategory)
+
+    wx.showToast({ title: '修改成功', icon: 'success' })
+  },
 })

@@ -61,7 +61,13 @@
         <text class="food-emoji">{{item.emoji}}</text>
         <text class="food-name">{{item.name}}</text>
         <text class="food-tag">{{item.category}}</text>
-        <!-- 仅自定义食物显示删除按钮 -->
+        <!-- 仅自定义食物显示编辑和删除按钮 -->
+        <text
+          class="food-edit"
+          wx:if="{{item.isCustom}}"
+          bindtap="onEditFood"
+          data-name="{{item.name}}"
+        >✎</text>
         <text
           class="food-delete"
           wx:if="{{item.isCustom}}"
@@ -93,6 +99,30 @@
         </view>
         <view class="modal-btn confirm" bindtap="onAddFood">
           <text>添加</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 编辑食物弹窗：遮罩层 + 输入框 + 操作按钮 -->
+  <view class="modal-mask" wx:if="{{showEdit}}" bindtap="onHideEdit">
+    <view class="modal" catchtap>
+      <text class="modal-title">修改食物名称</text>
+      <input
+        class="modal-input"
+        placeholder="输入新名称"
+        value="{{editFoodName}}"
+        bindinput="onInputEditFood"
+        focus="{{showEdit}}"
+        confirm-type="done"
+        bindconfirm="onConfirmEdit"
+      />
+      <view class="modal-btns">
+        <view class="modal-btn cancel" bindtap="onHideEdit">
+          <text>取消</text>
+        </view>
+        <view class="modal-btn confirm" bindtap="onConfirmEdit">
+          <text>确定</text>
         </view>
       </view>
     </view>

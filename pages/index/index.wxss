@@ -233,6 +233,13 @@
   margin-right: 12rpx;
 }
 
+/* 食物编辑按钮 */
+.food-edit {
+  font-size: 28rpx;
+  color: #4ECDC4;
+  padding: 8rpx 12rpx;
+}
+
 /* 食物删除按钮 */
 .food-delete {
   font-size: 28rpx;
