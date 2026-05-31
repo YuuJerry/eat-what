@@ -147,6 +147,15 @@
   font-size: 20rpx;
 }
 
+/* ===== 确定按钮 ===== */
+.search-action {
+  margin: 20rpx 0;
+}
+
+.search-recipes-btn {
+  text-align: center;
+}
+
 /* ===== 推荐结果 ===== */
 .results-section {
   margin-top: 30rpx;

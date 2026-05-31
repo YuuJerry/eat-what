@@ -64,6 +64,13 @@
     </view>
   </view>
 
+  <!-- 确定按钮 -->
+  <view class="search-action" wx:if="{{selectedIngredients.length > 0}}">
+    <view class="btn-primary search-recipes-btn" bindtap="onSearchRecipes">
+      <text>{{isSearching ? '搜索中...' : '🍳 确定并推荐 (' + selectedIngredients.length + ')'}}</text>
+    </view>
+  </view>
+
   <!-- 推荐结果区域 -->
   <view class="results-section" wx:if="{{hasSearched}}">
     <view class="section-header">
