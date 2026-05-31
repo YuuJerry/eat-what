@@ -110,28 +110,34 @@
     </view>
   </view>
 
-  <!-- 视频教程区域：关联的视频列表 -->
+  <!-- 视频教程区域：有视频时显示视频列表 -->
   <view class="section card" wx:if="{{recipe.videos && recipe.videos.length > 0}}">
     <text class="section-title">🎬 视频教程</text>
     <view class="video-list">
-      <!-- 单个视频项：点击尝试跳转B站 -->
       <view
         class="video-item"
         wx:for="{{recipe.videos}}"
-        wx:key="videoId"
+        wx:key="url"
         bindtap="onVideoTap"
         data-video="{{item}}"
       >
-        <!-- 视频封面占位 -->
         <view class="video-cover">
           <text>▶</text>
         </view>
-        <!-- 视频标题和作者 -->
         <view class="video-info">
           <text class="video-title">{{item.title}}</text>
-          <text class="video-author">{{item.author}}</text>
+          <text class="video-author">{{item.author}} · {{item.platform}}</text>
         </view>
       </view>
+    </view>
+  </view>
+
+  <!-- 无视频时：搜索教程按钮 -->
+  <view class="section card" wx:if="{{!recipe.videos || recipe.videos.length === 0}}">
+    <text class="section-title">🎬 视频教程</text>
+    <view class="video-search-btn" bindtap="onSearchVideo">
+      <text class="video-search-icon">🔍</text>
+      <text class="video-search-text">去 Bilibili 搜索「{{recipe.name}}」教程</text>
     </view>
   </view>
 

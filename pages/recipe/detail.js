@@ -117,21 +117,29 @@ Page({
     this.setData({ checkedIngredients: [...checked] })
   },
 
-  // 视频教程
+  // 点击视频教程
   onVideoTap(e) {
     const video = e.currentTarget.dataset.video
-    if (video.platform === 'bilibili') {
-      wx.navigateToMiniProgram({
-        appId: 'wx7564fd5313fa0a90',
-        path: `pages/video/video?bvid=${video.videoId}`,
-        fail() {
-          wx.setClipboardData({
-            data: `https://www.bilibili.com/video/${video.videoId}`,
-            success() { wx.showToast({ title: '链接已复制', icon: 'success' }) }
-          })
-        }
+    if (!video) return
+    const url = video.url || ''
+    if (url) {
+      // 复制链接让用户在浏览器打开
+      wx.setClipboardData({
+        data: url,
+        success() { wx.showToast({ title: '链接已复制，打开浏览器观看', icon: 'none' }) }
       })
     }
+  },
+
+  // 搜索 Bilibili 教程
+  onSearchVideo() {
+    const name = this.data.recipe?.name
+    if (!name) return
+    const url = recipeEngine.getBilibiliSearchUrl(name)
+    wx.setClipboardData({
+      data: url,
+      success() { wx.showToast({ title: '搜索链接已复制，打开 Bilibili 观看', icon: 'none' }) }
+    })
   },
 
   // 分享

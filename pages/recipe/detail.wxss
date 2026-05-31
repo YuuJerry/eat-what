@@ -301,6 +301,27 @@
   color: #999;
 }
 
+/* 搜索视频按钮 */
+.video-search-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24rpx;
+  background: #f0f7ff;
+  border-radius: 16rpx;
+  margin-top: 16rpx;
+}
+
+.video-search-icon {
+  font-size: 36rpx;
+  margin-right: 12rpx;
+}
+
+.video-search-text {
+  font-size: 28rpx;
+  color: #0066cc;
+}
+
 /* ===== 底部操作栏样式 ===== */
 .bottom-bar {
   position: fixed;

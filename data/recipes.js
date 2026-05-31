@@ -1,340 +1,529 @@
-// 预置菜谱数据库
-// 完整数据由 utils/recipe-engine.js 引用
+// 预置菜谱数据库 v2
+// 80+ 道菜，含 isHot 标记、详细步骤、视频链接
 
 const RECIPES = [
-  // ===== 中餐 =====
+  // ===== 中餐（35道）=====
   {
-    name: "番茄炒蛋", category: "中餐", tags: ["家常","快手","减脂"], difficulty: 1,
-    cookTime: 10, servings: 2, calories: 280, isDietFriendly: true,
-    ingredients: [{name:"番茄",amount:"2个"},{name:"鸡蛋",amount:"3个"},{name:"盐",amount:"适量"},{name:"糖",amount:"少许"},{name:"葱花",amount:"适量"}],
-    steps: ["番茄顶部划十字，开水烫30秒去皮切块","鸡蛋打散加少许盐和料酒搅匀","锅中多放油，大火炒蛋至凝固盛出","锅留底油炒番茄出汁","加盐糖调味，倒入鸡蛋翻炒","撒葱花出锅"],
-    nutritionInfo: {protein:15,fat:12,carbs:20,fiber:2}
+    name:"番茄炒蛋",category:"中餐",tags:["家常","快手","减脂"],difficulty:1,
+    cookTime:10,servings:2,calories:280,isDietFriendly:true,isHot:true,
+    ingredients:[{name:"番茄",amount:"2个"},{name:"鸡蛋",amount:"3个"},{name:"盐",amount:"适量"},{name:"糖",amount:"少许"},{name:"葱花",amount:"适量"}],
+    steps:["番茄顶部划十字，开水烫30秒去皮切块","鸡蛋打入碗中，加少许盐和几滴料酒充分搅匀","锅中多放油，大火烧热后倒入蛋液","蛋液边缘凝固时用筷子快速划散，八成熟盛出","锅留底油，中火放入番茄块翻炒","炒至番茄出汁变软，加盐和少许糖提鲜","倒入炒好的鸡蛋翻炒均匀","撒葱花出锅装盘"],
+    nutritionInfo:{protein:15,fat:12,carbs:20,fiber:2},videos:[]
   },
   {
-    name: "麻婆豆腐", category: "中餐", tags: ["家常","辣","下饭"], difficulty: 2,
-    cookTime: 20, servings: 3, calories: 350, isDietFriendly: false,
-    ingredients: [{name:"嫩豆腐",amount:"1块"},{name:"猪肉末",amount:"100g"},{name:"豆瓣酱",amount:"2勺"},{name:"花椒粉",amount:"适量"},{name:"葱姜蒜",amount:"适量"},{name:"淀粉",amount:"1勺"}],
-    steps: ["豆腐切2cm方块焯水备用","锅中热油炒香肉末至变色","加豆瓣酱葱姜蒜炒出红油","加水放入豆腐小火煮5分钟","水淀粉勾芡撒花椒粉出锅"],
-    nutritionInfo: {protein:18,fat:20,carbs:15,fiber:3}
+    name:"麻婆豆腐",category:"中餐",tags:["家常","辣","下饭"],difficulty:2,
+    cookTime:20,servings:3,calories:350,isDietFriendly:false,isHot:true,
+    ingredients:[{name:"嫩豆腐",amount:"1块"},{name:"猪肉末",amount:"100g"},{name:"豆瓣酱",amount:"2勺"},{name:"花椒粉",amount:"适量"},{name:"葱姜蒜",amount:"适量"},{name:"淀粉",amount:"1勺"}],
+    steps:["嫩豆腐切成2cm方块，开水加盐焯水2分钟去豆腥捞出","锅中热油，中火炒散肉末至变色出油","加入豆瓣酱小火炒出红油","放入葱花姜末蒜末爆香","加入半碗热水烧开","轻轻放入豆腐块，晃锅使汤汁浸入","小火煮5分钟让豆腐入味","水淀粉勾薄芡，撒花椒粉和葱花出锅"],
+    nutritionInfo:{protein:18,fat:20,carbs:15,fiber:3},videos:[]
   },
   {
-    name: "凉拌黄瓜", category: "中餐", tags: ["凉菜","快手","减脂"], difficulty: 1,
-    cookTime: 5, servings: 2, calories: 80, isDietFriendly: true,
-    ingredients: [{name:"黄瓜",amount:"2根"},{name:"蒜",amount:"3瓣"},{name:"醋",amount:"2勺"},{name:"生抽",amount:"1勺"},{name:"辣椒油",amount:"1勺"},{name:"香油",amount:"少许"}],
-    steps: ["黄瓜拍碎切段","蒜切末备用","将所有调料混合拌匀","浇在黄瓜上拌匀即可"],
-    nutritionInfo: {protein:2,fat:3,carbs:8,fiber:2}
+    name:"凉拌黄瓜",category:"中餐",tags:["凉菜","快手","减脂"],difficulty:1,
+    cookTime:5,servings:2,calories:80,isDietFriendly:true,isHot:true,
+    ingredients:[{name:"黄瓜",amount:"2根"},{name:"蒜",amount:"3瓣"},{name:"醋",amount:"2勺"},{name:"生抽",amount:"1勺"},{name:"辣椒油",amount:"1勺"},{name:"香油",amount:"少许"}],
+    steps:["黄瓜洗净去两头，用刀面拍碎再切段","蒜剥皮切末备用","将醋、生抽、辣椒油、香油、蒜末混合调汁","把调好的汁浇在黄瓜上","充分拌匀后腌制2分钟即可食用"],
+    nutritionInfo:{protein:2,fat:3,carbs:8,fiber:2},videos:[]
   },
   {
-    name: "宫保鸡丁", category: "中餐", tags: ["家常","辣","下饭"], difficulty: 2,
-    cookTime: 25, servings: 3, calories: 420, isDietFriendly: false,
-    ingredients: [{name:"鸡胸肉",amount:"300g"},{name:"花生米",amount:"50g"},{name:"干辣椒",amount:"8个"},{name:"花椒",amount:"1小撮"},{name:"黄瓜",amount:"半根"},{name:"胡萝卜",amount:"半根"},{name:"淀粉",amount:"1勺"}],
-    steps: ["鸡胸肉切丁加盐料酒淀粉腌15分钟","调宫保汁：醋2勺生抽1勺糖1勺淀粉1勺","花生米小火炸至金黄备用","爆香干辣椒和花椒","放入鸡丁炒变色加配菜翻炒","倒入宫保汁翻炒加花生米出锅"],
-    nutritionInfo: {protein:35,fat:18,carbs:25,fiber:3}
+    name:"宫保鸡丁",category:"中餐",tags:["家常","辣","下饭"],difficulty:2,
+    cookTime:25,servings:3,calories:420,isDietFriendly:false,isHot:true,
+    ingredients:[{name:"鸡胸肉",amount:"300g"},{name:"花生米",amount:"50g"},{name:"干辣椒",amount:"8个"},{name:"花椒",amount:"1小撮"},{name:"黄瓜",amount:"半根"},{name:"胡萝卜",amount:"半根"},{name:"淀粉",amount:"1勺"}],
+    steps:["鸡胸肉切1.5cm丁，加盐、料酒、蛋清、淀粉抓匀腌15分钟","调宫保汁：醋2勺、生抽1勺、糖1勺、淀粉1勺、少许水搅匀","花生米小火冷油下锅炸至金黄捞出沥油","干辣椒剪段去籽，花椒备用","锅中热油，中火爆香干辣椒和花椒（别炒糊）","放入鸡丁大火翻炒至表面变白","加入黄瓜丁和胡萝卜丁翻炒30秒","倒入宫保汁翻炒均匀，最后加入花生米出锅"],
+    nutritionInfo:{protein:35,fat:18,carbs:25,fiber:3},videos:[]
   },
   {
-    name: "红烧肉", category: "中餐", tags: ["家常","硬菜","下饭"], difficulty: 3,
-    cookTime: 60, servings: 4, calories: 650, isDietFriendly: false,
-    ingredients: [{name:"五花肉",amount:"500g"},{name:"冰糖",amount:"30g"},{name:"生抽",amount:"3勺"},{name:"老抽",amount:"1勺"},{name:"料酒",amount:"2勺"},{name:"八角",amount:"2个"},{name:"桂皮",amount:"1块"},{name:"姜",amount:"4片"}],
-    steps: ["五花肉切3cm方块冷水焯水去血沫","锅中少油放冰糖小火炒糖色","放入肉块翻炒上色","加生抽老抽料酒八角桂皮姜","加热水没过肉大火烧开","转小火炖40分钟至软烂","大火收汁出锅"],
-    nutritionInfo: {protein:25,fat:45,carbs:15,fiber:0}
+    name:"红烧肉",category:"中餐",tags:["家常","硬菜","下饭"],difficulty:3,
+    cookTime:60,servings:4,calories:650,isDietFriendly:false,isHot:true,
+    ingredients:[{name:"五花肉",amount:"500g"},{name:"冰糖",amount:"30g"},{name:"生抽",amount:"3勺"},{name:"老抽",amount:"1勺"},{name:"料酒",amount:"2勺"},{name:"八角",amount:"2个"},{name:"桂皮",amount:"1块"},{name:"姜",amount:"4片"}],
+    steps:["五花肉洗净切3cm方块，冷水下锅加姜片料酒焯水5分钟捞出","锅中少许油放入冰糖，小火慢炒至枣红色（注意别炒糊）","放入焯好的肉块快速翻炒，让每块肉都裹上糖色","加入生抽、老抽翻炒上色","放入八角、桂皮、姜片炒出香味","加入热水没过肉面，大火烧开","转小火盖盖慢炖40分钟，中途翻动一次","大火收汁至汤汁浓稠包裹肉块，出锅装盘"],
+    nutritionInfo:{protein:25,fat:45,carbs:15,fiber:0},videos:[]
   },
   {
-    name: "糖醋排骨", category: "中餐", tags: ["家常","酸甜","硬菜"], difficulty: 2,
-    cookTime: 35, servings: 3, calories: 480, isDietFriendly: false,
-    ingredients: [{name:"排骨",amount:"500g"},{name:"醋",amount:"3勺"},{name:"糖",amount:"2勺"},{name:"生抽",amount:"2勺"},{name:"料酒",amount:"1勺"},{name:"姜",amount:"3片"},{name:"葱",amount:"适量"}],
-    steps: ["排骨冷水下锅焯水去血沫沥干","调糖醋汁：醋3勺糖2勺生抽2勺料酒1勺","锅中热油将排骨煎至两面金黄","加姜片翻炒出香味","倒入糖醋汁和适量热水","大火烧开转中小火炖25分钟","大火收汁撒葱花出锅"],
-    nutritionInfo: {protein:30,fat:25,carbs:30,fiber:0}
+    name:"糖醋排骨",category:"中餐",tags:["家常","酸甜","硬菜"],difficulty:2,
+    cookTime:35,servings:3,calories:480,isDietFriendly:false,isHot:true,
+    ingredients:[{name:"排骨",amount:"500g"},{name:"醋",amount:"3勺"},{name:"糖",amount:"2勺"},{name:"生抽",amount:"2勺"},{name:"料酒",amount:"1勺"},{name:"姜",amount:"3片"},{name:"葱",amount:"适量"}],
+    steps:["排骨剁成小段，冷水下锅焯水去血沫捞出沥干","提前调好糖醋汁：醋3勺、白糖2勺、生抽2勺、料酒1勺搅匀","锅中热油，中火将排骨煎至两面金黄微焦","放入姜片翻炒出香味","倒入调好的糖醋汁翻炒均匀","加入热水没过排骨，大火烧开","转中小火炖25分钟至排骨软烂","大火收汁至汤汁浓亮，撒葱花出锅"],
+    nutritionInfo:{protein:30,fat:25,carbs:30,fiber:0},videos:[]
   },
   {
-    name: "鱼香肉丝", category: "中餐", tags: ["家常","下饭","经典"], difficulty: 2,
-    cookTime: 20, servings: 3, calories: 380, isDietFriendly: false,
-    ingredients: [{name:"猪里脊",amount:"250g"},{name:"木耳",amount:"适量"},{name:"胡萝卜",amount:"半根"},{name:"青椒",amount:"1个"},{name:"泡椒",amount:"3个"},{name:"醋",amount:"2勺"},{name:"糖",amount:"1勺"},{name:"淀粉",amount:"适量"}],
-    steps: ["里脊肉切丝加盐料酒淀粉腌10分钟","木耳泡发切丝，胡萝卜青椒切丝","调鱼香汁：醋2勺糖1勺生抽1勺淀粉1勺","锅中热油滑炒肉丝至变色盛出","爆香泡椒姜蒜，加入配菜翻炒","倒回肉丝加鱼香汁翻炒均匀出锅"],
-    nutritionInfo: {protein:28,fat:15,carbs:20,fiber:3}
+    name:"鱼香肉丝",category:"中餐",tags:["家常","下饭","经典"],difficulty:2,
+    cookTime:20,servings:3,calories:380,isDietFriendly:false,isHot:true,
+    ingredients:[{name:"猪里脊",amount:"250g"},{name:"木耳",amount:"适量"},{name:"胡萝卜",amount:"半根"},{name:"青椒",amount:"1个"},{name:"泡椒",amount:"3个"},{name:"醋",amount:"2勺"},{name:"糖",amount:"1勺"},{name:"淀粉",amount:"适量"}],
+    steps:["里脊肉切细丝，加盐、料酒、淀粉抓匀腌10分钟","木耳提前泡发切丝，胡萝卜和青椒也切细丝","调鱼香汁：醋2勺、糖1勺、生抽1勺、淀粉1勺、少许水搅匀","锅中多油烧热，大火滑炒肉丝至变色立即盛出","锅留底油，爆香泡椒碎、姜末、蒜末出红油","放入胡萝卜丝、木耳丝大火翻炒1分钟","放入青椒丝和肉丝翻炒均匀","倒入鱼香汁快速翻炒至芡汁裹匀出锅"],
+    nutritionInfo:{protein:28,fat:15,carbs:20,fiber:3},videos:[]
   },
   {
-    name: "蒜蓉西兰花", category: "中餐", tags: ["快手","清淡","减脂"], difficulty: 1,
-    cookTime: 10, servings: 2, calories: 120, isDietFriendly: true,
-    ingredients: [{name:"西兰花",amount:"1朵"},{name:"蒜",amount:"5瓣"},{name:"盐",amount:"适量"},{name:"蚝油",amount:"1勺"}],
-    steps: ["西兰花切小朵焯水1分钟捞出","锅中热油爆香蒜末","放入西兰花翻炒","加蚝油和盐调味出锅"],
-    nutritionInfo: {protein:6,fat:5,carbs:12,fiber:5}
+    name:"蒜蓉西兰花",category:"中餐",tags:["快手","清淡","减脂"],difficulty:1,
+    cookTime:10,servings:2,calories:120,isDietFriendly:true,
+    ingredients:[{name:"西兰花",amount:"1朵"},{name:"蒜",amount:"5瓣"},{name:"盐",amount:"适量"},{name:"蚝油",amount:"1勺"}],
+    steps:["西兰花切小朵，淡盐水浸泡10分钟去虫卵","烧开水加少许盐和油，焯西兰花1分钟捞出沥干","蒜剥皮切成细末","锅中热油，中火爆香蒜末至微黄","放入西兰花大火翻炒30秒","加蚝油和少许盐调味","翻炒均匀即可出锅（不要炒太久保持脆嫩）"],
+    nutritionInfo:{protein:6,fat:5,carbs:12,fiber:5},videos:[]
   },
   {
-    name: "土豆炖牛肉", category: "中餐", tags: ["家常","硬菜","暖胃"], difficulty: 2,
-    cookTime: 50, servings: 4, calories: 580, isDietFriendly: false,
-    ingredients: [{name:"牛肉",amount:"400g"},{name:"土豆",amount:"2个"},{name:"胡萝卜",amount:"1根"},{name:"洋葱",amount:"1个"},{name:"番茄",amount:"1个"},{name:"八角",amount:"2个"},{name:"生抽",amount:"3勺"}],
-    steps: ["牛肉切块冷水焯水去血沫","土豆胡萝卜切滚刀块，洋葱切块","锅中热油炒香洋葱","放入牛肉翻炒加生抽上色","加热水没过牛肉放八角大火烧开","转小火炖30分钟加土豆胡萝卜","继续炖15分钟至土豆软烂"],
-    nutritionInfo: {protein:35,fat:20,carbs:40,fiber:4}
+    name:"土豆炖牛肉",category:"中餐",tags:["家常","硬菜","暖胃"],difficulty:2,
+    cookTime:50,servings:4,calories:580,isDietFriendly:false,
+    ingredients:[{name:"牛肉",amount:"400g"},{name:"土豆",amount:"2个"},{name:"胡萝卜",amount:"1根"},{name:"洋葱",amount:"1个"},{name:"番茄",amount:"1个"},{name:"八角",amount:"2个"},{name:"生抽",amount:"3勺"}],
+    steps:["牛肉切3cm块，冷水下锅焯水去血沫捞出","土豆、胡萝卜去皮切滚刀块，洋葱切块，番茄切块","锅中热油，炒香洋葱至透明出香","放入牛肉块翻炒至表面微焦","加生抽、老抽翻炒上色","放入八角和番茄块，加热水没过食材","大火烧开转小火炖30分钟","放入土豆和胡萝卜块继续炖15分钟至软烂，调味出锅"],
+    nutritionInfo:{protein:35,fat:20,carbs:40,fiber:4},videos:[]
   },
   {
-    name: "清炒时蔬", category: "中餐", tags: ["快手","清淡","减脂"], difficulty: 1,
-    cookTime: 8, servings: 2, calories: 90, isDietFriendly: true,
-    ingredients: [{name:"青菜",amount:"300g"},{name:"蒜",amount:"3瓣"},{name:"盐",amount:"适量"},{name:"油",amount:"1勺"}],
-    steps: ["青菜洗净沥干","锅中热油爆香蒜末","大火翻炒青菜至断生","加盐调味出锅"],
-    nutritionInfo: {protein:3,fat:4,carbs:8,fiber:3}
+    name:"清炒时蔬",category:"中餐",tags:["快手","清淡","减脂"],difficulty:1,
+    cookTime:8,servings:2,calories:90,isDietFriendly:true,
+    ingredients:[{name:"青菜",amount:"300g"},{name:"蒜",amount:"3瓣"},{name:"盐",amount:"适量"},{name:"油",amount:"1勺"}],
+    steps:["青菜洗净沥干水分，大的可以掰成小段","蒜切片或拍碎备用","锅烧热加油，放入蒜片爆香","大火放入青菜快速翻炒","炒至叶片变软颜色变深绿","加盐调味翻炒均匀出锅（全程大火不超过1分钟）"],
+    nutritionInfo:{protein:3,fat:4,carbs:8,fiber:3},videos:[]
   },
   {
-    name: "回锅肉", category: "中餐", tags: ["家常","辣","下饭"], difficulty: 2,
-    cookTime: 25, servings: 3, calories: 450, isDietFriendly: false,
-    ingredients: [{name:"五花肉",amount:"300g"},{name:"青椒",amount:"2个"},{name:"豆瓣酱",amount:"1勺"},{name:"蒜苗",amount:"2根"},{name:"姜",amount:"3片"},{name:"豆豉",amount:"1勺"}],
-    steps: ["五花肉冷水下锅加姜片煮20分钟捞出切薄片","青椒切块蒜苗切段","锅中少油放入肉片煸出油脂","加豆瓣酱豆豉炒出红油","放入青椒蒜苗大火翻炒","加少许糖调味出锅"],
-    nutritionInfo: {protein:20,fat:35,carbs:8,fiber:2}
+    name:"回锅肉",category:"中餐",tags:["家常","辣","下饭"],difficulty:2,
+    cookTime:25,servings:3,calories:450,isDietFriendly:false,isHot:true,
+    ingredients:[{name:"五花肉",amount:"300g"},{name:"青椒",amount:"2个"},{name:"豆瓣酱",amount:"1勺"},{name:"蒜苗",amount:"2根"},{name:"姜",amount:"3片"},{name:"豆豉",amount:"1勺"}],
+    steps:["五花肉冷水下锅，加姜片和料酒，煮20分钟至筷子能插入","捞出放凉后切成大薄片（越薄越好）","青椒去籽切块，蒜苗切斜段","锅中少油，放入肉片中火煸炒","煸至肉片微卷出油脂、边缘微焦","推到一边，在油中炒香豆瓣酱和豆豉出红油","放入青椒大火翻炒至断生","加蒜苗段翻炒几下，加少许糖提味出锅"],
+    nutritionInfo:{protein:20,fat:35,carbs:8,fiber:2},videos:[]
   },
   {
-    name: "西红柿牛腩", category: "中餐", tags: ["家常","暖胃","汤"], difficulty: 2,
-    cookTime: 45, servings: 3, calories: 420, isDietFriendly: false,
-    ingredients: [{name:"牛腩",amount:"400g"},{name:"番茄",amount:"3个"},{name:"土豆",amount:"1个"},{name:"洋葱",amount:"半个"},{name:"姜",amount:"3片"},{name:"番茄酱",amount:"2勺"}],
-    steps: ["牛腩切块焯水去血沫","番茄顶部划十字烫去皮切块","锅中热油炒香洋葱和姜","放入牛腩翻炒加番茄酱","加番茄块和热水大火烧开","转小火炖30分钟加土豆块","继续炖15分钟调味出锅"],
-    nutritionInfo: {protein:30,fat:15,carbs:30,fiber:4}
+    name:"西红柿牛腩",category:"中餐",tags:["家常","暖胃","汤"],difficulty:2,
+    cookTime:45,servings:3,calories:420,isDietFriendly:false,isHot:true,
+    ingredients:[{name:"牛腩",amount:"400g"},{name:"番茄",amount:"3个"},{name:"土豆",amount:"1个"},{name:"洋葱",amount:"半个"},{name:"姜",amount:"3片"},{name:"番茄酱",amount:"2勺"}],
+    steps:["牛腩切3cm块，冷水下锅焯水去血沫捞出","番茄顶部划十字，开水烫30秒去皮切大块","洋葱切丝，土豆去皮切滚刀块","锅中热油炒香洋葱和姜片","放入牛腩翻炒，加番茄酱炒匀上色","放入番茄块翻炒出汁，加热水没过食材","大火烧开转小火炖30分钟","放入土豆块继续炖15分钟至土豆软烂，调味出锅"],
+    nutritionInfo:{protein:30,fat:15,carbs:30,fiber:4},videos:[]
   },
   {
-    name: "干煸四季豆", category: "中餐", tags: ["家常","辣","下饭"], difficulty: 2,
-    cookTime: 15, servings: 2, calories: 200, isDietFriendly: false,
-    ingredients: [{name:"四季豆",amount:"300g"},{name:"猪肉末",amount:"100g"},{name:"干辣椒",amount:"5个"},{name:"花椒",amount:"少许"},{name:"蒜",amount:"3瓣"},{name:"芽菜",amount:"2勺"}],
-    steps: ["四季豆摘段洗净沥干水分","宽油炸至表皮起皱捞出","锅留底油炒香肉末","加干辣椒花椒蒜末爆香","放入四季豆和芽菜翻炒","加盐和少许糖调味出锅"],
-    nutritionInfo: {protein:12,fat:12,carbs:15,fiber:5}
+    name:"干煸四季豆",category:"中餐",tags:["家常","辣","下饭"],difficulty:2,
+    cookTime:15,servings:2,calories:200,isDietFriendly:false,
+    ingredients:[{name:"四季豆",amount:"300g"},{name:"猪肉末",amount:"100g"},{name:"干辣椒",amount:"5个"},{name:"花椒",amount:"少许"},{name:"蒜",amount:"3瓣"},{name:"芽菜",amount:"2勺"}],
+    steps:["四季豆摘去两头和老筋，掰成段洗净沥干水分","宽油烧至七成热，放入四季豆炸至表皮起皱捞出沥油","锅留少许底油，中火炒散肉末至出油","加入干辣椒段、花椒粒和蒜末爆香","放入芽菜翻炒出香味","倒入炸好的四季豆大火翻炒","加少许盐和糖调味，翻炒均匀出锅"],
+    nutritionInfo:{protein:12,fat:12,carbs:15,fiber:5},videos:[]
   },
   {
-    name: "酸辣土豆丝", category: "中餐", tags: ["快手","酸辣","下饭"], difficulty: 1,
-    cookTime: 10, servings: 2, calories: 180, isDietFriendly: true,
-    ingredients: [{name:"土豆",amount:"2个"},{name:"干辣椒",amount:"4个"},{name:"醋",amount:"2勺"},{name:"花椒",amount:"少许"},{name:"葱",amount:"适量"},{name:"蒜",amount:"2瓣"}],
-    steps: ["土豆去皮切细丝泡水洗去淀粉","锅中热油爆香花椒干辣椒蒜末","大火翻炒土豆丝1-2分钟","沿锅边烹入醋翻炒","加盐调味撒葱花出锅"],
-    nutritionInfo: {protein:4,fat:5,carbs:30,fiber:3}
+    name:"酸辣土豆丝",category:"中餐",tags:["快手","酸辣","下饭"],difficulty:1,
+    cookTime:10,servings:2,calories:180,isDietFriendly:true,isHot:true,
+    ingredients:[{name:"土豆",amount:"2个"},{name:"干辣椒",amount:"4个"},{name:"醋",amount:"2勺"},{name:"花椒",amount:"少许"},{name:"葱",amount:"适量"},{name:"蒜",amount:"2瓣"}],
+    steps:["土豆去皮切成细丝（越细越好），泡入清水中洗去淀粉","捞出沥干水分备用，干辣椒剪段、蒜切片","锅中热油，小火爆香花椒粒（捞出花椒）","放入干辣椒段和蒜片爆香","大火倒入土豆丝快速翻炒","沿锅边烹入醋（锅边醋更香）","翻炒1-2分钟至土豆丝断生但仍脆","加盐和葱花翻炒出锅"],
+    nutritionInfo:{protein:4,fat:5,carbs:30,fiber:3},videos:[]
   },
   {
-    name: "虾仁西兰花", category: "中餐", tags: ["减脂","快手","清淡"], difficulty: 1,
-    cookTime: 15, servings: 2, calories: 200, isDietFriendly: true,
-    ingredients: [{name:"虾仁",amount:"200g"},{name:"西兰花",amount:"1朵"},{name:"蒜",amount:"3瓣"},{name:"盐",amount:"适量"},{name:"料酒",amount:"1勺"}],
-    steps: ["虾仁去虾线加料酒腌10分钟","西兰花切小朵焯水备用","锅中热油爆香蒜末","放入虾仁炒至变色","加入西兰花翻炒加盐出锅"],
-    nutritionInfo: {protein:30,fat:5,carbs:10,fiber:4}
+    name:"虾仁西兰花",category:"中餐",tags:["减脂","快手","清淡"],difficulty:1,
+    cookTime:15,servings:2,calories:200,isDietFriendly:true,
+    ingredients:[{name:"虾仁",amount:"200g"},{name:"西兰花",amount:"1朵"},{name:"蒜",amount:"3瓣"},{name:"盐",amount:"适量"},{name:"料酒",amount:"1勺"}],
+    steps:["虾仁去虾线洗净，加料酒和少许盐腌10分钟","西兰花切小朵焯水30秒捞出过冷水保持翠绿","蒜切末备用","锅中热油，大火炒虾仁至变色卷曲盛出","锅留底油爆香蒜末","放入西兰花翻炒30秒","倒入虾仁翻炒均匀，加盐调味出锅"],
+    nutritionInfo:{protein:30,fat:5,carbs:10,fiber:4},videos:[]
   },
   {
-    name: "可乐鸡翅", category: "中餐", tags: ["家常","甜","简单"], difficulty: 1,
-    cookTime: 25, servings: 2, calories: 400, isDietFriendly: false,
-    ingredients: [{name:"鸡翅",amount:"8个"},{name:"可乐",amount:"1罐"},{name:"生抽",amount:"2勺"},{name:"老抽",amount:"1勺"},{name:"姜",amount:"3片"},{name:"料酒",amount:"1勺"}],
-    steps: ["鸡翅两面划刀加料酒姜片焯水","锅中少油煎鸡翅至两面金黄","加生抽老抽翻炒上色","倒入可乐没过鸡翅","大火烧开转中火炖15分钟","大火收汁至浓稠出锅"],
-    nutritionInfo: {protein:25,fat:18,carbs:30,fiber:0}
+    name:"可乐鸡翅",category:"中餐",tags:["家常","甜","简单"],difficulty:1,
+    cookTime:25,servings:2,calories:400,isDietFriendly:false,isHot:true,
+    ingredients:[{name:"鸡翅",amount:"8个"},{name:"可乐",amount:"1罐"},{name:"生抽",amount:"2勺"},{name:"老抽",amount:"1勺"},{name:"姜",amount:"3片"},{name:"料酒",amount:"1勺"}],
+    steps:["鸡翅两面各划两刀方便入味","冷水下锅加姜片料酒焯水去腥捞出沥干","锅中少油，中火将鸡翅煎至两面金黄","加入生抽和老抽翻炒上色","倒入可乐没过鸡翅（约一罐）","放入姜片，大火烧开","转中火炖15分钟至鸡翅熟透","大火收汁至汤汁浓稠裹住鸡翅出锅"],
+    nutritionInfo:{protein:25,fat:18,carbs:30,fiber:0},videos:[]
   },
   {
-    name: "蚝油生菜", category: "中餐", tags: ["快手","清淡","减脂"], difficulty: 1,
-    cookTime: 5, servings: 2, calories: 60, isDietFriendly: true,
-    ingredients: [{name:"生菜",amount:"1棵"},{name:"蚝油",amount:"2勺"},{name:"蒜",amount:"3瓣"},{name:"油",amount:"1勺"}],
-    steps: ["生菜洗净掰开","烧开水焯生菜10秒捞出摆盘","锅中热油爆香蒜末","加蚝油和少许水调汁","浇在生菜上即可"],
-    nutritionInfo: {protein:2,fat:3,carbs:6,fiber:2}
+    name:"蚝油生菜",category:"中餐",tags:["快手","清淡","减脂"],difficulty:1,
+    cookTime:5,servings:2,calories:60,isDietFriendly:true,
+    ingredients:[{name:"生菜",amount:"1棵"},{name:"蚝油",amount:"2勺"},{name:"蒜",amount:"3瓣"},{name:"油",amount:"1勺"}],
+    steps:["生菜掰开洗净沥干水分","烧一大锅开水，加少许盐和几滴油","放入生菜焯10秒立即捞出沥水摆盘","蒜切末，锅中热油爆香蒜末","加入蚝油和少许水调成芡汁","将芡汁均匀浇在生菜上即可"],
+    nutritionInfo:{protein:2,fat:3,carbs:6,fiber:2},videos:[]
   },
   {
-    name: "木须肉", category: "中餐", tags: ["家常","营养均衡"], difficulty: 2,
-    cookTime: 20, servings: 3, calories: 350, isDietFriendly: false,
-    ingredients: [{name:"猪瘦肉",amount:"200g"},{name:"鸡蛋",amount:"3个"},{name:"木耳",amount:"适量"},{name:"黄瓜",amount:"1根"},{name:"胡萝卜",amount:"半根"},{name:"生抽",amount:"2勺"}],
-    steps: ["瘦肉切片加盐淀粉腌10分钟","木耳泡发撕小朵，黄瓜胡萝卜切片","鸡蛋炒散盛出备用","锅中热油滑炒肉片至变色","加木耳胡萝卜翻炒","放入黄瓜和鸡蛋加生抽调味出锅"],
-    nutritionInfo: {protein:25,fat:15,carbs:12,fiber:3}
+    name:"木须肉",category:"中餐",tags:["家常","营养均衡"],difficulty:2,
+    cookTime:20,servings:3,calories:350,isDietFriendly:false,
+    ingredients:[{name:"猪瘦肉",amount:"200g"},{name:"鸡蛋",amount:"3个"},{name:"木耳",amount:"适量"},{name:"黄瓜",amount:"1根"},{name:"胡萝卜",amount:"半根"},{name:"生抽",amount:"2勺"}],
+    steps:["瘦肉切薄片，加盐、料酒、淀粉抓匀腌10分钟","木耳提前泡发撕小朵，黄瓜和胡萝卜切菱形片","鸡蛋打散，锅中热油炒成大块盛出备用","锅中再放油，大火滑炒肉片至变色盛出","锅留底油，放入胡萝卜片翻炒1分钟","加入木耳翻炒30秒","放入黄瓜片、鸡蛋和肉片翻炒均匀","加生抽和少许盐调味出锅"],
+    nutritionInfo:{protein:25,fat:15,carbs:12,fiber:3},videos:[]
   },
   {
-    name: "地三鲜", category: "中餐", tags: ["家常","下饭","东北"], difficulty: 2,
-    cookTime: 20, servings: 3, calories: 380, isDietFriendly: false,
-    ingredients: [{name:"茄子",amount:"2个"},{name:"土豆",amount:"1个"},{name:"青椒",amount:"2个"},{name:"蒜",amount:"4瓣"},{name:"生抽",amount:"2勺"},{name:"糖",amount:"1勺"},{name:"淀粉",amount:"1勺"}],
-    steps: ["茄子土豆切滚刀块青椒切片","宽油分别炸软捞出沥油","调汁：生抽糖淀粉加水搅匀","锅留底油爆香蒜末","倒入炸好的蔬菜翻炒","淋入调好的汁翻匀出锅"],
-    nutritionInfo: {protein:6,fat:20,carbs:35,fiber:5}
-  },
-  // ===== 西餐 =====
-  {
-    name: "鸡胸肉沙拉", category: "西餐", tags: ["减脂","轻食","快手"], difficulty: 1,
-    cookTime: 15, servings: 1, calories: 250, isDietFriendly: true,
-    ingredients: [{name:"鸡胸肉",amount:"150g"},{name:"生菜",amount:"适量"},{name:"小番茄",amount:"5个"},{name:"黄瓜",amount:"半根"},{name:"橄榄油",amount:"1勺"},{name:"柠檬汁",amount:"适量"}],
-    steps: ["鸡胸肉加盐和黑胡椒煎熟切片","生菜洗净撕碎铺底","小番茄对半切黄瓜切片","所有食材摆盘淋橄榄油和柠檬汁"],
-    nutritionInfo: {protein:35,fat:8,carbs:12,fiber:4}
+    name:"地三鲜",category:"中餐",tags:["家常","下饭","东北"],difficulty:2,
+    cookTime:20,servings:3,calories:380,isDietFriendly:false,isHot:true,
+    ingredients:[{name:"茄子",amount:"2个"},{name:"土豆",amount:"1个"},{name:"青椒",amount:"2个"},{name:"蒜",amount:"4瓣"},{name:"生抽",amount:"2勺"},{name:"糖",amount:"1勺"},{name:"淀粉",amount:"1勺"}],
+    steps:["茄子切滚刀块，撒少许盐腌5分钟后挤出水分（减少吸油）","土豆去皮切滚刀块，青椒去籽切块","宽油烧热，分别炸土豆至金黄、炸茄子至软、炸青椒至虎皮捞出","调碗汁：生抽2勺、糖1勺、淀粉1勺、少许水搅匀","锅留少许底油，爆香蒜末","倒入炸好的三种蔬菜翻炒均匀","淋入碗汁快速翻炒至芡汁裹匀","出锅装盘"],
+    nutritionInfo:{protein:6,fat:20,carbs:35,fiber:5},videos:[]
   },
   {
-    name: "意大利肉酱面", category: "西餐", tags: ["经典","下饭","西式"], difficulty: 2,
-    cookTime: 30, servings: 2, calories: 550, isDietFriendly: false,
-    ingredients: [{name:"意面",amount:"200g"},{name:"牛肉末",amount:"200g"},{name:"番茄",amount:"3个"},{name:"洋葱",amount:"半个"},{name:"蒜",amount:"3瓣"},{name:"番茄酱",amount:"3勺"},{name:"橄榄油",amount:"适量"},{name:"罗勒",amount:"少许"}],
-    steps: ["番茄去皮切丁洋葱切末蒜切末","锅中热橄榄油炒香洋葱和蒜","放入牛肉末炒散炒至变色","加番茄丁和番茄酱翻炒","加少许水小火炖15分钟成肉酱","煮意面至al dente捞出","浇上肉酱撒罗勒叶即可"],
-    nutritionInfo: {protein:25,fat:18,carbs:65,fiber:4}
+    name:"红烧排骨",category:"中餐",tags:["家常","硬菜","下饭"],difficulty:2,
+    cookTime:40,servings:3,calories:520,isDietFriendly:false,
+    ingredients:[{name:"排骨",amount:"500g"},{name:"生抽",amount:"3勺"},{name:"老抽",amount:"1勺"},{name:"冰糖",amount:"20g"},{name:"料酒",amount:"2勺"},{name:"八角",amount:"2个"},{name:"姜",amount:"4片"},{name:"葱",amount:"适量"}],
+    steps:["排骨剁小段冷水下锅焯水去血沫捞出洗净","锅中少许油放入冰糖小火炒至琥珀色","放入排骨快速翻炒裹上糖色","加入生抽老抽料酒翻炒上色","放入八角姜片炒出香味","加热水没过排骨大火烧开","转小火炖30分钟至排骨软烂","大火收汁撒葱花出锅"],
+    nutritionInfo:{protein:30,fat:28,carbs:18,fiber:0},videos:[]
   },
   {
-    name: "黑椒牛排", category: "西餐", tags: ["硬菜","西式","简单"], difficulty: 1,
-    cookTime: 15, servings: 1, calories: 450, isDietFriendly: false,
-    ingredients: [{name:"牛排",amount:"1块(200g)"},{name:"黑胡椒",amount:"适量"},{name:"黄油",amount:"20g"},{name:"蒜",amount:"3瓣"},{name:"迷迭香",amount:"1枝"},{name:"盐",amount:"适量"}],
-    steps: ["牛排提前回温30分钟撒盐和黑胡椒","锅大火烧热加少许油","放入牛排煎2-3分钟翻面","加黄油蒜和迷迭香","用勺子浇融化的黄油在牛排上","煎至喜欢的熟度静置3分钟切片"],
-    nutritionInfo: {protein:40,fat:30,carbs:2,fiber:0}
+    name:"清蒸鲈鱼",category:"中餐",tags:["清淡","高蛋白","宴客"],difficulty:2,
+    cookTime:15,servings:2,calories:220,isDietFriendly:true,
+    ingredients:[{name:"鲈鱼",amount:"1条"},{name:"姜",amount:"4片"},{name:"葱",amount:"2根"},{name:"蒸鱼豉油",amount:"2勺"},{name:"料酒",amount:"1勺"}],
+    steps:["鲈鱼处理干净，鱼身两面各划三刀方便入味","抹上料酒和少许盐，鱼肚塞姜片腌10分钟","盘底垫筷子架空鱼身（蒸汽流通更均匀）","水烧至大开后放入鱼，大火蒸8分钟","取出倒掉盘中蒸出的腥水","铺上姜丝和葱丝","淋蒸鱼豉油","浇上烧至冒烟的热油激香出锅"],
+    nutritionInfo:{protein:35,fat:8,carbs:2,fiber:0},videos:[]
   },
   {
-    name: "奶油蘑菇汤", category: "西餐", tags: ["汤","西式","暖胃"], difficulty: 2,
-    cookTime: 25, servings: 2, calories: 280, isDietFriendly: false,
-    ingredients: [{name:"蘑菇",amount:"200g"},{name:"洋葱",amount:"半个"},{name:"黄油",amount:"20g"},{name:"面粉",amount:"2勺"},{name:"牛奶",amount:"300ml"},{name:"盐",amount:"适量"},{name:"黑胡椒",amount:"适量"}],
-    steps: ["蘑菇切片洋葱切末","锅中融化黄油炒香洋葱","放入蘑菇炒软出水","撒入面粉翻炒均匀","慢慢倒入牛奶不停搅拌","小火煮5分钟至浓稠","加盐和黑胡椒调味用料理棒打碎"],
-    nutritionInfo: {protein:8,fat:15,carbs:20,fiber:2}
+    name:"水煮肉片",category:"中餐",tags:["川菜","辣","硬菜"],difficulty:3,
+    cookTime:25,servings:3,calories:450,isDietFriendly:false,
+    ingredients:[{name:"猪里脊",amount:"300g"},{name:"豆芽",amount:"200g"},{name:"豆瓣酱",amount:"2勺"},{name:"干辣椒",amount:"10个"},{name:"花椒",amount:"1勺"},{name:"蒜",amount:"5瓣"},{name:"淀粉",amount:"适量"},{name:"蛋清",amount:"1个"}],
+    steps:["里脊肉逆纹切大薄片，加盐、蛋清、淀粉抓匀上浆腌15分钟","豆芽洗净焯水铺在碗底备用","锅中热油，小火炒香豆瓣酱出红油","加入姜蒜末爆香，倒入适量热水烧开","逐片放入肉片，轻轻拨散防粘连","肉片变色即熟（约1分钟），连汤倒在豆芽碗里","肉片上撒蒜末、干辣椒段、花椒粒","另起锅烧热油至冒烟，浇在辣椒花椒上激香出锅"],
+    nutritionInfo:{protein:28,fat:25,carbs:15,fiber:2},videos:[]
   },
   {
-    name: "凯撒沙拉", category: "西餐", tags: ["轻食","快手","减脂"], difficulty: 1,
-    cookTime: 10, servings: 1, calories: 220, isDietFriendly: true,
-    ingredients: [{name:"生菜",amount:"半棵"},{name:"面包丁",amount:"适量"},{name:"帕尔马干酪",amount:"20g"},{name:"凯撒酱",amount:"2勺"},{name:"培根",amount:"2片"}],
-    steps: ["生菜洗净掰碎沥干水分","培根煎脆切碎","面包丁烤至金黄","生菜铺底淋凯撒酱","撒培根碎面包丁和干酪片拌匀"],
-    nutritionInfo: {protein:12,fat:14,carbs:10,fiber:2}
+    name:"蒜蓉粉丝蒸虾",category:"中餐",tags:["宴客","清淡","海鲜"],difficulty:2,
+    cookTime:20,servings:2,calories:280,isDietFriendly:true,
+    ingredients:[{name:"大虾",amount:"10只"},{name:"粉丝",amount:"1把"},{name:"蒜",amount:"1头"},{name:"生抽",amount:"2勺"},{name:"蚝油",amount:"1勺"},{name:"葱花",amount:"适量"}],
+    steps:["粉丝温水泡软铺在盘底","大虾去虾线从背部剖开（不要切断）平铺在粉丝上","蒜切成细末","锅中热油，放入一半蒜末小火炒至金黄（金银蒜）","将生抽蚝油和少许水调汁浇在虾上","铺上金银蒜混合物","水烧开大火蒸6-8分钟","出锅撒葱花浇热油激香"],
+    nutritionInfo:{protein:25,fat:8,carbs:25,fiber:1},videos:[]
   },
   {
-    name: "番茄浓汤", category: "西餐", tags: ["汤","简单","暖胃"], difficulty: 1,
-    cookTime: 20, servings: 2, calories: 150, isDietFriendly: true,
-    ingredients: [{name:"番茄",amount:"4个"},{name:"洋葱",amount:"半个"},{name:"蒜",amount:"2瓣"},{name:"黄油",amount:"15g"},{name:"番茄酱",amount:"2勺"},{name:"盐",amount:"适量"}],
-    steps: ["番茄去皮切块洋葱切末","锅中融化黄油炒香洋葱和蒜","放入番茄块炒软出汁","加番茄酱和适量水煮10分钟","用料理棒打成浓汤","加盐和黑胡椒调味"],
-    nutritionInfo: {protein:4,fat:6,carbs:18,fiber:4}
+    name:"辣子鸡",category:"中餐",tags:["川菜","辣","硬菜"],difficulty:3,
+    cookTime:30,servings:3,calories:480,isDietFriendly:false,
+    ingredients:[{name:"鸡腿肉",amount:"500g"},{name:"干辣椒",amount:"50g"},{name:"花椒",amount:"2勺"},{name:"蒜",amount:"5瓣"},{name:"姜",amount:"4片"},{name:"料酒",amount:"1勺"},{name:"淀粉",amount:"适量"}],
+    steps:["鸡腿去骨切2cm小块，加盐、料酒、生抽、淀粉抓匀腌20分钟","干辣椒剪成小段去籽，花椒备用","宽油烧至六成热，放入鸡块炸至金黄捞出","油温升高至八成热，复炸30秒至酥脆捞出","锅留少许底油，小火炒香干辣椒和花椒（注意别糊）","放入姜片蒜片爆香","倒入炸好的鸡块大火翻炒均匀","加少许糖和盐调味，翻炒出锅"],
+    nutritionInfo:{protein:35,fat:22,carbs:20,fiber:1},videos:[]
   },
   {
-    name: "培根蛋酱意面", category: "西餐", tags: ["经典","快手","西式"], difficulty: 1,
-    cookTime: 20, servings: 2, calories: 520, isDietFriendly: false,
-    ingredients: [{name:"意面",amount:"200g"},{name:"培根",amount:"100g"},{name:"鸡蛋",amount:"2个"},{name:"帕尔马干酪",amount:"30g"},{name:"黑胡椒",amount:"适量"},{name:"蒜",amount:"2瓣"}],
-    steps: ["煮意面保留一杯面水","培根切条煎出油脂","鸡蛋打散加干酪和黑胡椒拌匀","意面捞入培根锅关火","快速倒入蛋液拌匀利用余温凝固","太干加面水调节撒黑胡椒"],
-    nutritionInfo: {protein:22,fat:25,carbs:55,fiber:2}
-  },
-  // ===== 日料 =====
-  {
-    name: "日式咖喱饭", category: "日料", tags: ["家常","下饭","暖胃"], difficulty: 2,
-    cookTime: 40, servings: 3, calories: 550, isDietFriendly: false,
-    ingredients: [{name:"鸡腿肉",amount:"300g"},{name:"土豆",amount:"2个"},{name:"胡萝卜",amount:"1根"},{name:"洋葱",amount:"1个"},{name:"咖喱块",amount:"1盒"},{name:"米饭",amount:"适量"}],
-    steps: ["鸡腿肉切块土豆胡萝卜切滚刀块","洋葱切丝锅中热油炒至透明","加入鸡块炒至变色","加入土豆和胡萝卜翻炒","加水没过食材大火烧开转小火20分钟","关火放入咖喱块搅拌融化再煮5分钟","配白饭食用"],
-    nutritionInfo: {protein:25,fat:15,carbs:70,fiber:5}
+    name:"冬瓜排骨汤",category:"中餐",tags:["汤","清淡","家常"],difficulty:1,
+    cookTime:40,servings:3,calories:250,isDietFriendly:true,
+    ingredients:[{name:"排骨",amount:"400g"},{name:"冬瓜",amount:"300g"},{name:"姜",amount:"3片"},{name:"枸杞",amount:"少许"},{name:"盐",amount:"适量"}],
+    steps:["排骨剁小段冷水下锅焯水去血沫捞出洗净","冬瓜去皮去瓤切块备用","砂锅中放入排骨和姜片","加入足量清水大火烧开","撇去浮沫转小火炖25分钟","放入冬瓜块继续炖10分钟至冬瓜透明","放入枸杞煮2分钟","加盐调味即可出锅"],
+    nutritionInfo:{protein:22,fat:12,carbs:15,fiber:2},videos:[]
   },
   {
-    name: "寿司卷", category: "日料", tags: ["日式","简单","减脂"], difficulty: 2,
-    cookTime: 30, servings: 2, calories: 350, isDietFriendly: true,
-    ingredients: [{name:"寿司米",amount:"2杯"},{name:"海苔",amount:"4片"},{name:"黄瓜",amount:"1根"},{name:"牛油果",amount:"1个"},{name:"蟹棒",amount:"4条"},{name:"寿司醋",amount:"2勺"}],
-    steps: ["寿司米煮熟拌入寿司醋放凉","黄瓜牛油果切条","海苔铺竹帘上铺一层薄米饭","中间放黄瓜牛油果蟹棒","借助竹帘卷紧","刀沾水切段蘸酱油芥末食用"],
-    nutritionInfo: {protein:12,fat:8,carbs:55,fiber:3}
+    name:"虎皮青椒",category:"中餐",tags:["家常","简单","下饭"],difficulty:1,
+    cookTime:10,servings:2,calories:120,isDietFriendly:true,
+    ingredients:[{name:"青椒",amount:"6个"},{name:"蒜",amount:"3瓣"},{name:"生抽",amount:"2勺"},{name:"醋",amount:"1勺"},{name:"糖",amount:"少许"}],
+    steps:["青椒去蒂去籽洗净沥干水分（整个不切）","蒜切末，调碗汁：生抽、醋、糖搅匀","锅中不放油，干煸青椒至表皮起虎皮斑","用锅铲压扁青椒使其均匀出皱","沿锅边淋少许油继续煸至两面微焦","拨到一边，在油中爆香蒜末","翻炒均匀后淋入碗汁","收汁出锅"],
+    nutritionInfo:{protein:3,fat:5,carbs:12,fiber:3},videos:[]
   },
   {
-    name: "味噌汤", category: "日料", tags: ["汤","简单","日式"], difficulty: 1,
-    cookTime: 10, servings: 2, calories: 80, isDietFriendly: true,
-    ingredients: [{name:"味噌",amount:"2勺"},{name:"豆腐",amount:"半块"},{name:"海带",amount:"适量"},{name:"葱花",amount:"适量"}],
-    steps: ["水烧开放入海带煮2分钟","豆腐切小丁放入","取少量热水化开味噌","味噌倒入锅中搅匀关火","撒葱花即可"],
-    nutritionInfo: {protein:6,fat:3,carbs:6,fiber:1}
+    name:"青椒肉丝",category:"中餐",tags:["家常","快手","下饭"],difficulty:1,
+    cookTime:15,servings:2,calories:300,isDietFriendly:false,
+    ingredients:[{name:"猪瘦肉",amount:"200g"},{name:"青椒",amount:"3个"},{name:"生抽",amount:"2勺"},{name:"淀粉",amount:"适量"},{name:"蒜",amount:"2瓣"}],
+    steps:["瘦肉切细丝，加生抽、料酒、淀粉抓匀腌10分钟","青椒去籽切细丝，蒜切末","锅中热油，大火滑炒肉丝至变色盛出","锅留底油爆香蒜末","放入青椒丝大火翻炒至断生","倒入肉丝翻炒均匀","加生抽和少许盐调味出锅"],
+    nutritionInfo:{protein:22,fat:12,carbs:10,fiber:2},videos:[]
+  },
+  // ===== 西餐（15道）=====
+  {
+    name:"鸡胸肉沙拉",category:"西餐",tags:["减脂","轻食","快手"],difficulty:1,
+    cookTime:15,servings:1,calories:250,isDietFriendly:true,
+    ingredients:[{name:"鸡胸肉",amount:"150g"},{name:"生菜",amount:"适量"},{name:"小番茄",amount:"5个"},{name:"黄瓜",amount:"半根"},{name:"橄榄油",amount:"1勺"},{name:"柠檬汁",amount:"适量"}],
+    steps:["鸡胸肉加盐和黑胡椒腌10分钟","平底锅热少许油，中火煎鸡胸肉至两面金黄熟透","取出静置3分钟后切片","生菜洗净撕碎铺在碗底","小番茄对半切、黄瓜切片摆上","放上鸡胸肉片","淋橄榄油和柠檬汁，撒少许盐和黑胡椒"],
+    nutritionInfo:{protein:35,fat:8,carbs:12,fiber:4},videos:[]
   },
   {
-    name: "照烧鸡腿", category: "日料", tags: ["日式","甜","简单"], difficulty: 1,
-    cookTime: 20, servings: 2, calories: 380, isDietFriendly: false,
-    ingredients: [{name:"鸡腿",amount:"2个"},{name:"酱油",amount:"3勺"},{name:"味醂",amount:"2勺"},{name:"糖",amount:"1勺"},{name:"料酒",amount:"1勺"},{name:"姜",amount:"2片"}],
-    steps: ["鸡腿去骨用刀背拍松","调照烧汁：酱油味醂糖料酒","锅中少油煎鸡腿皮朝下至金黄","翻面煎至两面上色","倒入照烧汁和姜片收汁","切片配饭食用"],
-    nutritionInfo: {protein:30,fat:15,carbs:18,fiber:0}
+    name:"意大利肉酱面",category:"西餐",tags:["经典","下饭","西式"],difficulty:2,
+    cookTime:30,servings:2,calories:550,isDietFriendly:false,isHot:true,
+    ingredients:[{name:"意面",amount:"200g"},{name:"牛肉末",amount:"200g"},{name:"番茄",amount:"3个"},{name:"洋葱",amount:"半个"},{name:"蒜",amount:"3瓣"},{name:"番茄酱",amount:"3勺"},{name:"橄榄油",amount:"适量"},{name:"罗勒",amount:"少许"}],
+    steps:["番茄顶部划十字开水烫去皮切丁，洋葱蒜切末","锅中热橄榄油炒香洋葱末和蒜末","放入牛肉末大火炒散至变色出油","加入番茄丁翻炒出汁","加入番茄酱和少许水搅匀","转小火炖15分钟至酱汁浓稠","另起锅烧水煮意面至包装标注时间减1分钟","捞出意面拌入肉酱，撒罗勒叶和黑胡椒碎出锅"],
+    nutritionInfo:{protein:25,fat:18,carbs:65,fiber:4},videos:[]
   },
   {
-    name: "亲子丼", category: "日料", tags: ["日式","下饭","快手"], difficulty: 1,
-    cookTime: 15, servings: 1, calories: 450, isDietFriendly: false,
-    ingredients: [{name:"鸡腿肉",amount:"150g"},{name:"鸡蛋",amount:"2个"},{name:"洋葱",amount:"半个"},{name:"酱油",amount:"2勺"},{name:"味醂",amount:"1勺"},{name:"米饭",amount:"1碗"}],
-    steps: ["鸡腿肉切块洋葱切丝","锅中加酱油味醂和少许水烧开","放入洋葱和鸡肉煮5分钟","鸡蛋打散淋入锅中半凝固关火","盖在热米饭上撒葱花"],
-    nutritionInfo: {protein:28,fat:18,carbs:50,fiber:2}
+    name:"黑椒牛排",category:"西餐",tags:["硬菜","西式","简单"],difficulty:1,
+    cookTime:15,servings:1,calories:450,isDietFriendly:false,
+    ingredients:[{name:"牛排",amount:"1块(200g)"},{name:"黑胡椒",amount:"适量"},{name:"黄油",amount:"20g"},{name:"蒜",amount:"3瓣"},{name:"迷迭香",amount:"1枝"},{name:"盐",amount:"适量"}],
+    steps:["牛排提前从冰箱取出回温30分钟","两面均匀撒上盐和现磨黑胡椒","铸铁锅大火烧至冒烟，加少许油","放入牛排不要移动，煎2-3分钟至底面焦化","翻面，加入黄油蒜瓣和迷迭香","用勺子不断将融化的黄油浇在牛排上","煎至喜欢的熟度（按压弹性判断）","取出放在盘中静置5分钟再切片"],
+    nutritionInfo:{protein:40,fat:30,carbs:2,fiber:0},videos:[]
   },
   {
-    name: "日式炸猪排", category: "日料", tags: ["日式","硬菜","炸"], difficulty: 2,
-    cookTime: 25, servings: 2, calories: 500, isDietFriendly: false,
-    ingredients: [{name:"猪里脊",amount:"2块"},{name:"鸡蛋",amount:"1个"},{name:"面粉",amount:"适量"},{name:"面包糠",amount:"适量"},{name:"卷心菜",amount:"适量"},{name:"猪排酱",amount:"适量"}],
-    steps: ["猪排用刀背拍松撒盐和胡椒","依次裹面粉、蛋液、面包糠","油温170度炸至金黄约4分钟","翻面再炸3分钟","捞出切条配卷心菜丝和猪排酱"],
-    nutritionInfo: {protein:30,fat:22,carbs:35,fiber:2}
-  },
-  // ===== 韩餐 =====
-  {
-    name: "韩式拌饭", category: "韩餐", tags: ["下饭","丰富","DIY"], difficulty: 2,
-    cookTime: 30, servings: 1, calories: 480, isDietFriendly: false,
-    ingredients: [{name:"米饭",amount:"1碗"},{name:"牛肉",amount:"100g"},{name:"菠菜",amount:"适量"},{name:"胡萝卜",amount:"半根"},{name:"黄豆芽",amount:"适量"},{name:"鸡蛋",amount:"1个"},{name:"韩式辣酱",amount:"2勺"}],
-    steps: ["各种蔬菜分别焯水调味备用","牛肉切丝炒熟调味","石锅刷油放入米饭","将蔬菜和牛肉摆放在饭上","中间放煎蛋配辣酱食用"],
-    nutritionInfo: {protein:22,fat:14,carbs:55,fiber:4}
+    name:"奶油蘑菇汤",category:"西餐",tags:["汤","西式","暖胃"],difficulty:2,
+    cookTime:25,servings:2,calories:280,isDietFriendly:false,
+    ingredients:[{name:"蘑菇",amount:"200g"},{name:"洋葱",amount:"半个"},{name:"黄油",amount:"20g"},{name:"面粉",amount:"2勺"},{name:"牛奶",amount:"300ml"},{name:"盐",amount:"适量"},{name:"黑胡椒",amount:"适量"}],
+    steps:["蘑菇切片洋葱切末","锅中融化黄油炒香洋葱末至透明","放入蘑菇片炒软出水（约3分钟）","撒入面粉快速翻炒均匀（不要结块）","慢慢倒入牛奶不停搅拌防结底","小火煮5分钟至汤汁浓稠","加盐和黑胡椒调味","用料理棒打碎部分蘑菇（留些口感）或全部打成浓汤"],
+    nutritionInfo:{protein:8,fat:15,carbs:20,fiber:2},videos:[]
   },
   {
-    name: "韩式泡菜炒饭", category: "韩餐", tags: ["快手","辣","下饭"], difficulty: 1,
-    cookTime: 10, servings: 1, calories: 400, isDietFriendly: false,
-    ingredients: [{name:"米饭",amount:"1碗"},{name:"泡菜",amount:"100g"},{name:"鸡蛋",amount:"1个"},{name:"培根",amount:"2片"},{name:"葱花",amount:"适量"},{name:"香油",amount:"少许"}],
-    steps: ["培根切小片煎脆","泡菜切碎连汁备用","锅中放入培根和泡菜翻炒","加入米饭大火翻炒均匀","煎一个溏心蛋盖在饭上","撒葱花淋香油拌匀食用"],
-    nutritionInfo: {protein:15,fat:18,carbs:45,fiber:2}
+    name:"凯撒沙拉",category:"西餐",tags:["轻食","快手","减脂"],difficulty:1,
+    cookTime:10,servings:1,calories:220,isDietFriendly:true,
+    ingredients:[{name:"生菜",amount:"半棵"},{name:"面包丁",amount:"适量"},{name:"帕尔马干酪",amount:"20g"},{name:"凯撒酱",amount:"2勺"},{name:"培根",amount:"2片"}],
+    steps:["生菜掰碎洗净充分沥干水分","培根切小片煎至酥脆捞出","面包切丁烤箱180度烤5分钟至金黄","生菜铺在大碗中","淋上凯撒酱拌匀","撒上培根碎和面包丁","刨上帕尔马干酪片即可"],
+    nutritionInfo:{protein:12,fat:14,carbs:10,fiber:2},videos:[]
   },
   {
-    name: "部队锅", category: "韩餐", tags: ["辣","丰富","暖胃"], difficulty: 1,
-    cookTime: 20, servings: 2, calories: 500, isDietFriendly: false,
-    ingredients: [{name:"泡面",amount:"1包"},{name:"午餐肉",amount:"半罐"},{name:"香肠",amount:"2根"},{name:"豆腐",amount:"半块"},{name:"泡菜",amount:"适量"},{name:"芝士",amount:"2片"},{name:"韩式辣酱",amount:"2勺"},{name:"年糕",amount:"适量"}],
-    steps: ["所有食材切片摆入锅中","中间放泡面饼和芝士","加水至食材八分满","放入辣酱大火烧开","煮至面熟食材热透","拌匀食用"],
-    nutritionInfo: {protein:20,fat:25,carbs:50,fiber:2}
+    name:"番茄浓汤",category:"西餐",tags:["汤","简单","暖胃"],difficulty:1,
+    cookTime:20,servings:2,calories:150,isDietFriendly:true,
+    ingredients:[{name:"番茄",amount:"4个"},{name:"洋葱",amount:"半个"},{name:"蒜",amount:"2瓣"},{name:"黄油",amount:"15g"},{name:"番茄酱",amount:"2勺"},{name:"盐",amount:"适量"}],
+    steps:["番茄顶部划十字开水烫30秒去皮切块","洋葱切末蒜切末","锅中融化黄油炒香洋葱末和蒜末","放入番茄块中火炒软出汁","加入番茄酱翻炒均匀","加适量水煮10分钟","用料理棒打成细腻浓汤","加盐和黑胡椒调味，可配烤面包丁食用"],
+    nutritionInfo:{protein:4,fat:6,carbs:18,fiber:4},videos:[]
   },
   {
-    name: "韩式炸鸡", category: "韩餐", tags: ["硬菜","甜辣","炸"], difficulty: 2,
-    cookTime: 35, servings: 3, calories: 550, isDietFriendly: false,
-    ingredients: [{name:"鸡翅",amount:"12个"},{name:"淀粉",amount:"适量"},{name:"韩式辣酱",amount:"3勺"},{name:"番茄酱",amount:"2勺"},{name:"蜂蜜",amount:"2勺"},{name:"蒜",amount:"5瓣"},{name:"芝麻",amount:"适量"}],
-    steps: ["鸡翅洗净沥干裹淀粉","油温170度炸8分钟至金黄","捞出升高油温复炸2分钟更脆","调酱：辣酱番茄酱蜂蜜蒜末","锅中少许油炒香酱料","放入炸鸡翻裹均匀撒芝麻"],
-    nutritionInfo: {protein:30,fat:25,carbs:35,fiber:1}
+    name:"培根蛋酱意面",category:"西餐",tags:["经典","快手","西式"],difficulty:1,
+    cookTime:20,servings:2,calories:520,isDietFriendly:false,
+    ingredients:[{name:"意面",amount:"200g"},{name:"培根",amount:"100g"},{name:"鸡蛋",amount:"2个"},{name:"帕尔马干酪",amount:"30g"},{name:"黑胡椒",amount:"适量"},{name:"蒜",amount:"2瓣"}],
+    steps:["煮意面水多放盐（像海水一样咸），煮至包装时间减1分钟","培根切条蒜切片","另起锅不放油，中火煎培根至出油微焦","鸡蛋打散加入磨碎的帕尔马干酪和大量黑胡椒搅匀","保留一杯煮面水，捞出意面放入培根锅","关火！利用锅的余温","快速倒入蛋液不断翻拌（余温让蛋液成奶油状）","太干加煮面水调节，立即出锅食用"],
+    nutritionInfo:{protein:22,fat:25,carbs:55,fiber:2},videos:[]
   },
   {
-    name: "石锅豆腐", category: "韩餐", tags: ["简单","辣","下饭"], difficulty: 1,
-    cookTime: 15, servings: 2, calories: 250, isDietFriendly: true,
-    ingredients: [{name:"老豆腐",amount:"1块"},{name:"韩式辣酱",amount:"2勺"},{name:"洋葱",amount:"半个"},{name:"葱",amount:"适量"},{name:"蒜",amount:"2瓣"},{name:"芝麻油",amount:"少许"}],
-    steps: ["豆腐切厚片洋葱切丝","石锅刷芝麻油铺洋葱","摆上豆腐片","调酱：辣酱蒜末少许水搅匀","浇在豆腐上开火煮5分钟","撒葱花即可"],
-    nutritionInfo: {protein:15,fat:10,carbs:12,fiber:2}
-  },
-  // ===== 减脂 =====
-  {
-    name: "水煮鸡胸肉", category: "减脂", tags: ["减脂","简单","高蛋白"], difficulty: 1,
-    cookTime: 15, servings: 1, calories: 180, isDietFriendly: true,
-    ingredients: [{name:"鸡胸肉",amount:"200g"},{name:"姜",amount:"3片"},{name:"料酒",amount:"1勺"},{name:"盐",amount:"适量"},{name:"黑胡椒",amount:"适量"}],
-    steps: ["鸡胸肉冷水下锅加姜片料酒","大火烧开撇去浮沫","转小火煮12分钟","捞出放凉切片","撒盐和黑胡椒调味"],
-    nutritionInfo: {protein:40,fat:3,carbs:2,fiber:0}
+    name:"希腊沙拉",category:"西餐",tags:["轻食","减脂","快手"],difficulty:1,
+    cookTime:10,servings:1,calories:180,isDietFriendly:true,
+    ingredients:[{name:"黄瓜",amount:"1根"},{name:"小番茄",amount:"6个"},{name:"紫洋葱",amount:"1/4个"},{name:"菲达奶酪",amount:"50g"},{name:"橄榄",amount:"5个"},{name:"橄榄油",amount:"2勺"},{name:"柠檬汁",amount:"适量"}],
+    steps:["黄瓜切厚片，小番茄对半切","紫洋葱切薄丝泡冷水去辛辣","所有蔬菜放入大碗","菲达奶酪切块放在蔬菜上","放上黑橄榄","调油醋汁：橄榄油+柠檬汁+盐+干牛至","浇上油醋汁轻轻拌匀即可"],
+    nutritionInfo:{protein:8,fat:12,carbs:10,fiber:3},videos:[]
   },
   {
-    name: "蒸蛋", category: "减脂", tags: ["减脂","简单","快手"], difficulty: 1,
-    cookTime: 12, servings: 1, calories: 120, isDietFriendly: true,
-    ingredients: [{name:"鸡蛋",amount:"2个"},{name:"温水",amount:"适量"},{name:"盐",amount:"少许"},{name:"生抽",amount:"少许"},{name:"香油",amount:"少许"}],
-    steps: ["鸡蛋打散加1.5倍温水","加少许盐搅匀撇去浮沫","盖保鲜膜扎几个小孔","大火烧开水放入蒸8分钟","关火焖2分钟淋生抽和香油"],
-    nutritionInfo: {protein:12,fat:8,carbs:2,fiber:0}
+    name:"奶油培根意面",category:"西餐",tags:["西式","快手","奶油"],difficulty:1,
+    cookTime:20,servings:2,calories:550,isDietFriendly:false,
+    ingredients:[{name:"意面",amount:"200g"},{name:"培根",amount:"100g"},{name:"淡奶油",amount:"200ml"},{name:"蒜",amount:"2瓣"},{name:"帕尔马干酪",amount:"20g"},{name:"黑胡椒",amount:"适量"}],
+    steps:["烧水加盐煮意面至包装时间减1分钟","培根切条蒜切片","锅中不放油煎培根至出油微焦","加入蒜片炒香","倒入淡奶油小火煮至微沸","捞出意面放入奶油锅中翻拌","加少许煮面水调节浓稠度","撒干酪和黑胡椒出锅"],
+    nutritionInfo:{protein:18,fat:28,carbs:55,fiber:2},videos:[]
   },
   {
-    name: "凉拌鸡丝", category: "减脂", tags: ["减脂","快手","高蛋白"], difficulty: 1,
-    cookTime: 15, servings: 2, calories: 200, isDietFriendly: true,
-    ingredients: [{name:"鸡胸肉",amount:"200g"},{name:"黄瓜",amount:"1根"},{name:"蒜",amount:"3瓣"},{name:"醋",amount:"2勺"},{name:"生抽",amount:"1勺"},{name:"辣椒油",amount:"1勺"},{name:"花椒油",amount:"少许"}],
-    steps: ["鸡胸肉冷水下锅煮熟捞出放凉","手撕成细丝备用","黄瓜切丝铺底","调汁：醋生抽蒜末辣椒油花椒油","鸡丝放在黄瓜丝上浇汁拌匀"],
-    nutritionInfo: {protein:35,fat:5,carbs:8,fiber:2}
+    name:"烤鸡腿",category:"西餐",tags:["简单","硬菜","西式"],difficulty:1,
+    cookTime:40,servings:2,calories:420,isDietFriendly:false,
+    ingredients:[{name:"鸡腿",amount:"2个"},{name:"橄榄油",amount:"2勺"},{name:"蒜粉",amount:"适量"},{name:"迷迭香",amount:"少许"},{name:"柠檬",amount:"半个"},{name:"盐",amount:"适量"},{name:"黑胡椒",amount:"适量"}],
+    steps:["鸡腿洗净擦干表面水分","两面抹上盐、黑胡椒、蒜粉","淋橄榄油和柠檬汁涂抹均匀","撒上迷迭香碎腌制15分钟","烤箱预热200度","鸡腿皮朝上放在烤盘上","烤35-40分钟至表皮金黄酥脆","静置5分钟后食用"],
+    nutritionInfo:{protein:32,fat:22,carbs:3,fiber:0},videos:[]
   },
   {
-    name: "西兰花炒虾仁", category: "减脂", tags: ["减脂","快手","高蛋白"], difficulty: 1,
-    cookTime: 12, servings: 1, calories: 180, isDietFriendly: true,
-    ingredients: [{name:"虾仁",amount:"150g"},{name:"西兰花",amount:"半朵"},{name:"蒜",amount:"2瓣"},{name:"料酒",amount:"1勺"},{name:"盐",amount:"适量"}],
-    steps: ["虾仁去虾线加料酒腌5分钟","西兰花切小朵焯水30秒捞出","锅中热油爆香蒜末","放入虾仁炒至变色卷曲","加入西兰花翻炒加盐出锅"],
-    nutritionInfo: {protein:28,fat:3,carbs:8,fiber:4}
+    name:"法式洋葱汤",category:"西餐",tags:["汤","经典","暖胃"],difficulty:2,
+    cookTime:45,servings:2,calories:300,isDietFriendly:false,
+    ingredients:[{name:"洋葱",amount:"3个"},{name:"黄油",amount:"30g"},{name:"牛肉高汤",amount:"500ml"},{name:"法棍",amount:"2片"},{name:"芝士",amount:"适量"},{name:"白葡萄酒",amount:"50ml"}],
+    steps:["洋葱切细丝（切时刀蘸水防流泪）","锅中融化黄油放入洋葱丝","中火慢炒20-30分钟至洋葱深棕色焦糖化","倒入白葡萄酒煮至酒精蒸发","加入牛肉高汤大火烧开","转小火煮15分钟加盐和黑胡椒调味","盛入烤碗放法棍片和芝士","烤箱200度烤5分钟至芝士融化起泡"],
+    nutritionInfo:{protein:12,fat:15,carbs:25,fiber:3},videos:[]
   },
   {
-    name: "燕麦粥", category: "减脂", tags: ["减脂","早餐","简单"], difficulty: 1,
-    cookTime: 10, servings: 1, calories: 200, isDietFriendly: true,
-    ingredients: [{name:"燕麦",amount:"50g"},{name:"牛奶",amount:"200ml"},{name:"香蕉",amount:"半根"},{name:"蓝莓",amount:"适量"},{name:"蜂蜜",amount:"少许"}],
-    steps: ["牛奶倒入锅中加热","放入燕麦搅拌煮3分钟","倒入碗中","放上香蕉片和蓝莓","淋少许蜂蜜即可"],
-    nutritionInfo: {protein:8,fat:5,carbs:35,fiber:4}
+    name:"玛格丽特披萨",category:"西餐",tags:["经典","西式","分享"],difficulty:2,
+    cookTime:25,servings:2,calories:600,isDietFriendly:false,
+    ingredients:[{name:"披萨面团",amount:"1份"},{name:"番茄酱",amount:"3勺"},{name:"马苏里拉芝士",amount:"150g"},{name:"新鲜罗勒",amount:"适量"},{name:"橄榄油",amount:"适量"},{name:"盐",amount:"少许"}],
+    steps:["烤箱预热至最高温（250度以上）","面团擀成圆形薄饼放在烤盘上","刷一层薄橄榄油","均匀涂抹番茄酱留出边缘","撒上撕碎的马苏里拉芝士","撒少许盐","放入烤箱烤10-12分钟至边缘金黄鼓起","出炉后放上新鲜罗勒叶，淋少许橄榄油"],
+    nutritionInfo:{protein:22,fat:20,carbs:70,fiber:3},videos:[]
   },
   {
-    name: "清蒸鲈鱼", category: "减脂", tags: ["减脂","清淡","高蛋白"], difficulty: 2,
-    cookTime: 15, servings: 2, calories: 220, isDietFriendly: true,
-    ingredients: [{name:"鲈鱼",amount:"1条"},{name:"姜",amount:"4片"},{name:"葱",amount:"2根"},{name:"蒸鱼豉油",amount:"2勺"},{name:"料酒",amount:"1勺"}],
-    steps: ["鲈鱼处理干净两面划刀抹盐和料酒","鱼身铺姜片腌10分钟","水烧开放入大火蒸8分钟","取出倒掉蒸出的水铺葱丝姜丝","淋蒸鱼豉油","浇热油激香出锅"],
-    nutritionInfo: {protein:35,fat:8,carbs:2,fiber:0}
+    name:"蒜香黄油虾",category:"西餐",tags:["快手","海鲜","西式"],difficulty:1,
+    cookTime:10,servings:2,calories:280,isDietFriendly:false,
+    ingredients:[{name:"大虾",amount:"300g"},{name:"黄油",amount:"30g"},{name:"蒜",amount:"5瓣"},{name:"白葡萄酒",amount:"50ml"},{name:"柠檬",amount:"半个"},{name:"欧芹",amount:"适量"}],
+    steps:["大虾去壳留尾开背去虾线","蒜切薄片备用","锅中融化黄油放入蒜片小火煎至金黄","放入虾大火煎至两面变色","沿锅边淋入白葡萄酒","挤入柠檬汁翻炒均匀","撒上切碎的欧芹即可出锅","配面包蘸汁食用更佳"],
+    nutritionInfo:{protein:28,fat:15,carbs:5,fiber:0},videos:[]
   },
   {
-    name: "蔬菜沙拉", category: "减脂", tags: ["减脂","轻食","快手"], difficulty: 1,
-    cookTime: 5, servings: 1, calories: 100, isDietFriendly: true,
-    ingredients: [{name:"生菜",amount:"适量"},{name:"小番茄",amount:"5个"},{name:"黄瓜",amount:"半根"},{name:"紫甘蓝",amount:"适量"},{name:"橄榄油",amount:"1勺"},{name:"醋",amount:"1勺"},{name:"盐",amount:"少许"}],
-    steps: ["所有蔬菜洗净沥干","生菜撕碎小番茄对半切","黄瓜切片紫甘蓝切丝","所有蔬菜放入大碗","调油醋汁：橄榄油醋盐搅匀","浇在蔬菜上拌匀即可"],
-    nutritionInfo: {protein:3,fat:5,carbs:10,fiber:3}
+    name:"罗宋汤",category:"西餐",tags:["汤","暖胃","家常"],difficulty:2,
+    cookTime:35,servings:3,calories:220,isDietFriendly:true,
+    ingredients:[{name:"牛肉",amount:"200g"},{name:"番茄",amount:"2个"},{name:"土豆",amount:"1个"},{name:"胡萝卜",amount:"1根"},{name:"洋葱",amount:"半个"},{name:"卷心菜",amount:"1/4个"},{name:"番茄酱",amount:"2勺"}],
+    steps:["牛肉切小块焯水去血沫","番茄去皮切丁，其他蔬菜切小块","锅中热油炒香洋葱","放入牛肉翻炒至变色","加入番茄丁和番茄酱炒出汁","加热水大火烧开转小火炖20分钟","放入土豆、胡萝卜、卷心菜煮10分钟","加盐和黑胡椒调味出锅"],
+    nutritionInfo:{protein:18,fat:8,carbs:20,fiber:4},videos:[]
+  },
+  // ===== 日料（10道）=====
+  {
+    name:"日式咖喱饭",category:"日料",tags:["家常","下饭","暖胃"],difficulty:2,
+    cookTime:40,servings:3,calories:550,isDietFriendly:false,isHot:true,
+    ingredients:[{name:"鸡腿肉",amount:"300g"},{name:"土豆",amount:"2个"},{name:"胡萝卜",amount:"1根"},{name:"洋葱",amount:"1个"},{name:"咖喱块",amount:"1盒"},{name:"米饭",amount:"适量"}],
+    steps:["鸡腿肉切块，土豆胡萝卜切滚刀块，洋葱切丝","锅中热油炒洋葱至透明微黄（约5分钟）","放入鸡块翻炒至表面变色","加入土豆和胡萝卜翻炒2分钟","加水没过食材约2cm，大火烧开","撇去浮沫转小火煮20分钟至蔬菜软","关火，放入咖喱块搅拌至完全融化","再开小火煮5分钟至浓稠，配白饭食用"],
+    nutritionInfo:{protein:25,fat:15,carbs:70,fiber:5},videos:[]
   },
   {
-    name: "豆腐蔬菜汤", category: "减脂", tags: ["减脂","汤","清淡"], difficulty: 1,
-    cookTime: 10, servings: 2, calories: 120, isDietFriendly: true,
-    ingredients: [{name:"豆腐",amount:"半块"},{name:"番茄",amount:"1个"},{name:"青菜",amount:"适量"},{name:"香菇",amount:"3朵"},{name:"盐",amount:"适量"},{name:"香油",amount:"少许"}],
-    steps: ["豆腐切丁番茄切块香菇切片","锅中加水烧开放入番茄","放入豆腐和香菇煮3分钟","加青菜煮1分钟","加盐调味淋香油出锅"],
-    nutritionInfo: {protein:8,fat:3,carbs:10,fiber:3}
+    name:"寿司卷",category:"日料",tags:["日式","简单","减脂"],difficulty:2,
+    cookTime:30,servings:2,calories:350,isDietFriendly:true,
+    ingredients:[{name:"寿司米",amount:"2杯"},{name:"海苔",amount:"4片"},{name:"黄瓜",amount:"1根"},{name:"牛油果",amount:"1个"},{name:"蟹棒",amount:"4条"},{name:"寿司醋",amount:"2勺"}],
+    steps:["寿司米淘洗干净煮熟（比平时少放一点水）","趁热拌入寿司醋，用切拌手法降温至体温","黄瓜切条，牛油果切片","海苔铺在竹帘上，手蘸醋水防粘","将米饭均匀铺在海苔上留出上边1cm","中间放黄瓜条、牛油果片和蟹棒","借助竹帘从下往上卷紧压实","刀蘸水切成6-8段，蘸酱油芥末食用"],
+    nutritionInfo:{protein:12,fat:8,carbs:55,fiber:3},videos:[]
   },
   {
-    name: "全麦三明治", category: "减脂", tags: ["减脂","早餐","快手"], difficulty: 1,
-    cookTime: 5, servings: 1, calories: 280, isDietFriendly: true,
-    ingredients: [{name:"全麦面包",amount:"2片"},{name:"鸡蛋",amount:"1个"},{name:"生菜",amount:"2片"},{name:"番茄",amount:"3片"},{name:"鸡胸肉",amount:"50g"}],
-    steps: ["鸡蛋煎成荷包蛋","全麦面包烤至微脆","面包上依次铺生菜番茄片","放上荷包蛋和鸡胸肉片","盖上另一片面包对角切开"],
-    nutritionInfo: {protein:22,fat:8,carbs:30,fiber:4}
+    name:"味噌汤",category:"日料",tags:["汤","简单","日式"],difficulty:1,
+    cookTime:10,servings:2,calories:80,isDietFriendly:true,
+    ingredients:[{name:"味噌",amount:"2勺"},{name:"豆腐",amount:"半块"},{name:"海带",amount:"适量"},{name:"葱花",amount:"适量"}],
+    steps:["干海带用湿布擦净（不要洗掉白霜，那是鲜味来源）","冷水放入海带中火煮至快沸腾时捞出海带","豆腐切1cm小丁放入汤中","取少许热汤在小碗中化开味噌","将味噌倒回锅中搅匀（不要大火煮，会失去香味）","撒上葱花即可关火","趁热食用（味噌汤不宜久放）"],
+    nutritionInfo:{protein:6,fat:3,carbs:6,fiber:1},videos:[]
   },
   {
-    name: "金枪鱼饭团", category: "减脂", tags: ["减脂","日式","快手"], difficulty: 1,
-    cookTime: 10, servings: 2, calories: 250, isDietFriendly: true,
-    ingredients: [{name:"米饭",amount:"1碗"},{name:"金枪鱼罐头",amount:"半罐"},{name:"海苔",amount:"2片"},{name:"盐",amount:"少许"},{name:"芝麻",amount:"适量"}],
-    steps: ["米饭趁热拌入少许盐","金枪鱼沥干油备用","保鲜膜上铺米饭中间放金枪鱼","捏成三角形饭团","贴上海苔片撒芝麻"],
-    nutritionInfo: {protein:18,fat:5,carbs:40,fiber:1}
+    name:"照烧鸡腿",category:"日料",tags:["日式","甜","简单"],difficulty:1,
+    cookTime:20,servings:2,calories:380,isDietFriendly:false,
+    ingredients:[{name:"鸡腿",amount:"2个"},{name:"酱油",amount:"3勺"},{name:"味醂",amount:"2勺"},{name:"糖",amount:"1勺"},{name:"料酒",amount:"1勺"},{name:"姜",amount:"2片"}],
+    steps:["鸡腿去骨用刀背轻拍松（防止煎时收缩）","调照烧汁：酱油3勺、味醂2勺、糖1勺、料酒1勺搅匀","锅中少油，皮朝下中火煎鸡腿至皮金黄（约4分钟）","翻面再煎2分钟至两面金黄","倒入照烧汁放入姜片","不断翻面让鸡腿裹匀酱汁","收汁至酱汁浓稠冒泡","取出切片配白饭食用"],
+    nutritionInfo:{protein:30,fat:15,carbs:18,fiber:0},videos:[]
+  },
+  {
+    name:"亲子丼",category:"日料",tags:["日式","下饭","快手"],difficulty:1,
+    cookTime:15,servings:1,calories:450,isDietFriendly:false,
+    ingredients:[{name:"鸡腿肉",amount:"150g"},{name:"鸡蛋",amount:"2个"},{name:"洋葱",amount:"半个"},{name:"酱油",amount:"2勺"},{name:"味醂",amount:"1勺"},{name:"米饭",amount:"1碗"}],
+    steps:["鸡腿肉切一口大小块，洋葱切丝","鸡蛋打散（不要打太匀，留些蛋清花纹）","锅中加入酱油、味醂、少许水和木鱼花烧开","放入洋葱丝煮1分钟","放入鸡肉块煮3-4分钟至熟","将蛋液画圈淋入锅中（留1/3蛋液）","盖盖焖30秒至蛋液半凝固","倒在热米饭上，倒入剩余蛋液，撒葱花"],
+    nutritionInfo:{protein:28,fat:18,carbs:50,fiber:2},videos:[]
+  },
+  {
+    name:"日式炸猪排",category:"日料",tags:["日式","硬菜","炸"],difficulty:2,
+    cookTime:25,servings:2,calories:500,isDietFriendly:false,
+    ingredients:[{name:"猪里脊",amount:"2块"},{name:"鸡蛋",amount:"1个"},{name:"面粉",amount:"适量"},{name:"面包糠",amount:"适量"},{name:"卷心菜",amount:"适量"},{name:"猪排酱",amount:"适量"}],
+    steps:["猪排用刀背两面拍松，修去筋膜","撒盐和黑胡椒腌5分钟","准备三个盘子：面粉、打散的蛋液、面包糠","猪排先裹薄面粉（抖掉多余的）","再裹蛋液，最后按压裹满面包糠","油温170度（筷子入油冒小泡）","放入猪排炸4分钟翻面再炸3分钟至金黄","捞出沥油2分钟后切条，配卷心菜丝和猪排酱"],
+    nutritionInfo:{protein:30,fat:22,carbs:35,fiber:2},videos:[]
+  },
+  {
+    name:"冷荞麦面",category:"日料",tags:["日式","减脂","夏天"],difficulty:1,
+    cookTime:15,servings:1,calories:280,isDietFriendly:true,
+    ingredients:[{name:"荞麦面",amount:"150g"},{name:"海苔",amount:"适量"},{name:"葱花",amount:"适量"},{name:"芥末",amount:"少许"},{name:"酱油",amount:"3勺"},{name:"味醂",amount:"1勺"},{name:"柴鱼片",amount:"适量"}],
+    steps:["调蘸汁：酱油、味醂、少许水混合加热","放入柴鱼片浸泡5分钟，过滤放冰箱冷藏","烧大量水煮荞麦面（水要多）","煮至面条中心无白芯（约4分钟）","捞出放入冰水中搓洗去表面淀粉","沥干水分整齐码在竹帘上","撒海苔丝和葱花","配冰蘸汁和芥末食用"],
+    nutritionInfo:{protein:10,fat:2,carbs:55,fiber:3},videos:[]
+  },
+  {
+    name:"茶碗蒸",category:"日料",tags:["日式","清淡","简单"],difficulty:1,
+    cookTime:20,servings:2,calories:100,isDietFriendly:true,
+    ingredients:[{name:"鸡蛋",amount:"2个"},{name:"出汁",amount:"200ml"},{name:"虾仁",amount:"2只"},{name:"香菇",amount:"1朵"},{name:"鱼板",amount:"2片"},{name:"酱油",amount:"少许"}],
+    steps:["鸡蛋打散（不要打出气泡）","加入等量的冷出汁搅匀","过滤蛋液2次去掉泡沫和系带","碗中放入虾仁、香菇片、鱼板","缓缓倒入蛋液","碗口盖保鲜膜防止水滴","水烧开后转小火放入蒸碗","蒸12-15分钟至蛋液凝固（竹签插入不倒即可）"],
+    nutritionInfo:{protein:10,fat:5,carbs:4,fiber:0},videos:[]
+  },
+  {
+    name:"天妇罗",category:"日料",tags:["日式","炸","海鲜"],difficulty:2,
+    cookTime:20,servings:2,calories:350,isDietFriendly:false,
+    ingredients:[{name:"大虾",amount:"6只"},{name:"南瓜",amount:"4片"},{name:"茄子",amount:"1个"},{name:"低筋面粉",amount:"100g"},{name:"冰水",amount:"150ml"},{name:"鸡蛋",amount:"1个"},{name:"天妇罗汁",amount:"适量"}],
+    steps:["大虾去壳留尾开背去虾线，腹部划几刀防卷曲","南瓜切薄片，茄子切花刀","冰水中打入鸡蛋搅匀，加入面粉粗粗搅几下（有颗粒没关系）","油温170度","食材蘸薄面粉再蘸面糊","放入油中炸至面衣金黄酥脆（虾约2分钟，蔬菜约3分钟）","捞出放在网架上沥油","配天妇罗汁和萝卜泥食用"],
+    nutritionInfo:{protein:18,fat:15,carbs:30,fiber:2},videos:[]
+  },
+  {
+    name:"烤秋刀鱼",category:"日料",tags:["日式","简单","下酒"],difficulty:1,
+    cookTime:15,servings:1,calories:200,isDietFriendly:true,
+    ingredients:[{name:"秋刀鱼",amount:"1条"},{name:"盐",amount:"适量"},{name:"柠檬",amount:"2片"},{name:"萝卜泥",amount:"适量"}],
+    steps:["秋刀鱼去内脏洗净擦干水分","两面撒盐腌10分钟","烤箱预热200度（或用烤架）","鱼身刷薄油放在烤架上","烤10-12分钟至表皮微焦鱼肉熟透","取出挤柠檬汁在鱼身上","配萝卜泥和酱油食用"],
+    nutritionInfo:{protein:20,fat:12,carbs:2,fiber:0},videos:[]
+  },
+  // ===== 韩餐（8道）=====
+  {
+    name:"韩式拌饭",category:"韩餐",tags:["下饭","丰富","DIY"],difficulty:2,
+    cookTime:30,servings:1,calories:480,isDietFriendly:false,isHot:true,
+    ingredients:[{name:"米饭",amount:"1碗"},{name:"牛肉",amount:"100g"},{name:"菠菜",amount:"适量"},{name:"胡萝卜",amount:"半根"},{name:"黄豆芽",amount:"适量"},{name:"鸡蛋",amount:"1个"},{name:"韩式辣酱",amount:"2勺"}],
+    steps:["菠菜焯水挤干切段拌蒜末和盐","胡萝卜切丝炒熟调味","黄豆芽焯水拌蒜末和盐","牛肉切丝加酱油糖炒熟","煎一个溏心蛋（蛋白凝固蛋黄流心）","石锅内壁刷香油，放入米饭压实","将蔬菜和牛肉按颜色间隔摆在饭上","中间放煎蛋，配辣酱食用，吃前拌匀"],
+    nutritionInfo:{protein:22,fat:14,carbs:55,fiber:4},videos:[]
+  },
+  {
+    name:"韩式泡菜炒饭",category:"韩餐",tags:["快手","辣","下饭"],difficulty:1,
+    cookTime:10,servings:1,calories:400,isDietFriendly:false,
+    ingredients:[{name:"米饭",amount:"1碗"},{name:"泡菜",amount:"100g"},{name:"鸡蛋",amount:"1个"},{name:"培根",amount:"2片"},{name:"葱花",amount:"适量"},{name:"香油",amount:"少许"}],
+    steps:["培根切小片煎至酥脆","泡菜切碎（泡菜汁留着备用）","锅中放入培根和泡菜翻炒出香味","加入泡菜汁和少许糖","放入隔夜米饭大火翻炒至粒粒分明","煎一个溏心蛋放在饭上","撒葱花淋香油","拌匀食用（隔夜饭更干爽好炒）"],
+    nutritionInfo:{protein:15,fat:18,carbs:45,fiber:2},videos:[]
+  },
+  {
+    name:"部队锅",category:"韩餐",tags:["辣","丰富","暖胃"],difficulty:1,
+    cookTime:20,servings:2,calories:500,isDietFriendly:false,
+    ingredients:[{name:"泡面",amount:"1包"},{name:"午餐肉",amount:"半罐"},{name:"香肠",amount:"2根"},{name:"豆腐",amount:"半块"},{name:"泡菜",amount:"适量"},{name:"芝士",amount:"2片"},{name:"韩式辣酱",amount:"2勺"},{name:"年糕",amount:"适量"}],
+    steps:["午餐肉切厚片，香肠切花刀，豆腐切块","韩式辣酱加少许水和糖调匀","所有食材按颜色摆入锅中","中间放泡面饼和芝士片","加水至食材八分满","放入辣酱大火烧开","煮至面饼散开食材熟透（约5分钟）","拌匀食用"],
+    nutritionInfo:{protein:20,fat:25,carbs:50,fiber:2},videos:[]
+  },
+  {
+    name:"韩式炸鸡",category:"韩餐",tags:["硬菜","甜辣","炸"],difficulty:2,
+    cookTime:35,servings:3,calories:550,isDietFriendly:false,
+    ingredients:[{name:"鸡翅",amount:"12个"},{name:"淀粉",amount:"适量"},{name:"韩式辣酱",amount:"3勺"},{name:"番茄酱",amount:"2勺"},{name:"蜂蜜",amount:"2勺"},{name:"蒜",amount:"5瓣"},{name:"芝麻",amount:"适量"}],
+    steps:["鸡翅洗净擦干水分裹薄淀粉","油温160度炸8分钟至浅金黄捞出","油温升高至180度复炸2分钟至酥脆（双重炸是关键）","调酱：韩式辣酱、番茄酱、蜂蜜、蒜末搅匀","锅中少许油倒入酱料小火炒至冒泡","放入炸好的鸡翅快速翻裹均匀","撒上白芝麻","搭配腌萝卜食用解腻"],
+    nutritionInfo:{protein:30,fat:25,carbs:35,fiber:1},videos:[]
+  },
+  {
+    name:"石锅豆腐",category:"韩餐",tags:["简单","辣","下饭"],difficulty:1,
+    cookTime:15,servings:2,calories:250,isDietFriendly:true,
+    ingredients:[{name:"老豆腐",amount:"1块"},{name:"韩式辣酱",amount:"2勺"},{name:"洋葱",amount:"半个"},{name:"葱",amount:"适量"},{name:"蒜",amount:"2瓣"},{name:"芝麻油",amount:"少许"}],
+    steps:["豆腐切1cm厚片，洋葱切丝","石锅内刷一层芝麻油","底部铺洋葱丝","摆上豆腐片","调酱：辣酱、蒜末、少许糖和水搅匀","浇在豆腐上","开中火煮5分钟至底部有锅巴","撒葱花即可端锅上桌"],
+    nutritionInfo:{protein:15,fat:10,carbs:12,fiber:2},videos:[]
+  },
+  {
+    name:"辣炒年糕",category:"韩餐",tags:["韩式","辣","小吃"],difficulty:1,
+    cookTime:15,servings:2,calories:350,isDietFriendly:false,
+    ingredients:[{name:"年糕",amount:"300g"},{name:"鱼饼",amount:"2片"},{name:"韩式辣酱",amount:"3勺"},{name:"糖",amount:"1勺"},{name:"葱",amount:"适量"},{name:"煮鸡蛋",amount:"2个"}],
+    steps:["年糕条泡水10分钟变软，鱼饼切三角块","调酱汁：辣酱3勺、糖1勺、少许水搅匀","锅中放入酱汁和适量水烧开","放入年糕中火煮5分钟至年糕变软","加入鱼饼块翻炒","煮至汤汁浓稠裹住年糕","放入对半切的煮鸡蛋","撒葱花出锅"],
+    nutritionInfo:{protein:12,fat:8,carbs:55,fiber:1},videos:[]
+  },
+  {
+    name:"参鸡汤",category:"韩餐",tags:["汤","滋补","暖胃"],difficulty:3,
+    cookTime:60,servings:2,calories:400,isDietFriendly:true,
+    ingredients:[{name:"童子鸡",amount:"1只"},{name:"糯米",amount:"半杯"},{name:"人参",amount:"1根"},{name:"红枣",amount:"5个"},{name:"蒜",amount:"1头"},{name:"姜",amount:"3片"},{name:"葱",amount:"适量"}],
+    steps:["糯米提前浸泡2小时沥干","童子鸡洗净去头和爪","将糯米、人参、红枣、蒜瓣塞入鸡腹","用牙签封住鸡肚子","放入深锅加水没过鸡身","放入姜片和葱段大火烧开","撇去浮沫转小火炖40分钟至鸡肉软烂","加盐调味，撒葱花出锅（可配盐和胡椒蘸食）"],
+    nutritionInfo:{protein:35,fat:12,carbs:30,fiber:1},videos:[]
+  },
+  {
+    name:"韩式烤肉",category:"韩餐",tags:["韩式","硬菜","聚会"],difficulty:1,
+    cookTime:20,servings:2,calories:450,isDietFriendly:false,
+    ingredients:[{name:"五花肉",amount:"300g"},{name:"生菜",amount:"适量"},{name:"蒜",amount:"5瓣"},{name:"韩式辣酱",amount:"2勺"},{name:"芝麻油",amount:"1勺"},{name:"盐",amount:"适量"}],
+    steps:["五花肉切0.5cm厚大片","平底锅或烤盘不放油中火加热","放入五花肉片煎至两面金黄微焦","用剪刀剪成一口大小","生菜洗净沥干铺在盘中","蒜切片，辣酱和芝麻油调匀作蘸料","用生菜包一片烤肉+蒜片+辣酱","一口食用"],
+    nutritionInfo:{protein:22,fat:32,carbs:5,fiber:1},videos:[]
+  },
+  // ===== 减脂（15道）=====
+  {
+    name:"水煮鸡胸肉",category:"减脂",tags:["减脂","简单","高蛋白"],difficulty:1,
+    cookTime:15,servings:1,calories:180,isDietFriendly:true,
+    ingredients:[{name:"鸡胸肉",amount:"200g"},{name:"姜",amount:"3片"},{name:"料酒",amount:"1勺"},{name:"盐",amount:"适量"},{name:"黑胡椒",amount:"适量"}],
+    steps:["鸡胸肉从中间横片成两片（更易熟）","冷水下锅加姜片和料酒","大火烧开后撇去浮沫","转小火保持微沸煮12分钟","关火焖5分钟（利用余热让肉更嫩）","捞出放凉后顺纹路切片","撒盐和黑胡椒调味","可配蘸汁：生抽+醋+蒜末+小米辣"],
+    nutritionInfo:{protein:40,fat:3,carbs:2,fiber:0},videos:[]
+  },
+  {
+    name:"蒸蛋",category:"减脂",tags:["减脂","简单","快手"],difficulty:1,
+    cookTime:12,servings:1,calories:120,isDietFriendly:true,
+    ingredients:[{name:"鸡蛋",amount:"2个"},{name:"温水",amount:"适量"},{name:"盐",amount:"少许"},{name:"生抽",amount:"少许"},{name:"香油",amount:"少许"}],
+    steps:["鸡蛋打入碗中充分搅散","加入1.5倍温水（蛋液：水=1:1.5）","加少许盐搅匀","用滤网过滤掉气泡和系带","碗口盖保鲜膜用牙签扎几个小孔","水烧开后放入蒸碗","中火蒸8-10分钟至蛋液凝固","关火焖2分钟，淋生抽和香油即可"],
+    nutritionInfo:{protein:12,fat:8,carbs:2,fiber:0},videos:[]
+  },
+  {
+    name:"凉拌鸡丝",category:"减脂",tags:["减脂","快手","高蛋白"],difficulty:1,
+    cookTime:15,servings:2,calories:200,isDietFriendly:true,
+    ingredients:[{name:"鸡胸肉",amount:"200g"},{name:"黄瓜",amount:"1根"},{name:"蒜",amount:"3瓣"},{name:"醋",amount:"2勺"},{name:"生抽",amount:"1勺"},{name:"辣椒油",amount:"1勺"},{name:"花椒油",amount:"少许"}],
+    steps:["鸡胸肉冷水下锅加姜片料酒煮15分钟至熟透","捞出放凉后用手顺纹路撕成细丝","黄瓜切丝铺在盘底","调汁：醋、生抽、蒜末、辣椒油、花椒油搅匀","将鸡丝放在黄瓜丝上","浇上调好的汁","拌匀后撒白芝麻和葱花即可"],
+    nutritionInfo:{protein:35,fat:5,carbs:8,fiber:2},videos:[]
+  },
+  {
+    name:"西兰花炒虾仁",category:"减脂",tags:["减脂","快手","高蛋白"],difficulty:1,
+    cookTime:12,servings:1,calories:180,isDietFriendly:true,
+    ingredients:[{name:"虾仁",amount:"150g"},{name:"西兰花",amount:"半朵"},{name:"蒜",amount:"2瓣"},{name:"料酒",amount:"1勺"},{name:"盐",amount:"适量"}],
+    steps:["虾仁去虾线加料酒和少许盐腌5分钟","西兰花切小朵焯水30秒捞出过冷水保持翠绿","蒜切末","锅中热油大火炒虾仁至变色卷曲盛出","锅留底油爆香蒜末","放入西兰花翻炒30秒","倒入虾仁翻炒均匀加盐调味出锅"],
+    nutritionInfo:{protein:28,fat:3,carbs:8,fiber:4},videos:[]
+  },
+  {
+    name:"燕麦粥",category:"减脂",tags:["减脂","早餐","简单"],difficulty:1,
+    cookTime:10,servings:1,calories:200,isDietFriendly:true,
+    ingredients:[{name:"燕麦",amount:"50g"},{name:"牛奶",amount:"200ml"},{name:"香蕉",amount:"半根"},{name:"蓝莓",amount:"适量"},{name:"蜂蜜",amount:"少许"}],
+    steps:["牛奶倒入小锅中火加热","放入燕麦片不断搅拌","煮3分钟至燕麦变软浓稠","倒入碗中稍放凉","香蕉切片摆上","撒蓝莓和少许坚果碎","淋蜂蜜即可食用","也可前一晚用冷牛奶泡燕麦冷藏（隔夜燕麦）"],
+    nutritionInfo:{protein:8,fat:5,carbs:35,fiber:4},videos:[]
+  },
+  {
+    name:"清蒸鲈鱼",category:"减脂",tags:["减脂","清淡","高蛋白"],difficulty:2,
+    cookTime:15,servings:2,calories:220,isDietFriendly:true,
+    ingredients:[{name:"鲈鱼",amount:"1条"},{name:"姜",amount:"4片"},{name:"葱",amount:"2根"},{name:"蒸鱼豉油",amount:"2勺"},{name:"料酒",amount:"1勺"}],
+    steps:["鲈鱼处理干净两面划刀抹盐和料酒腌10分钟","盘底放两根筷子架空鱼身（蒸汽流通）","水大开后放入鱼大火蒸8分钟","取出倒掉盘中蒸出的腥水（关键步骤）","铺上姜丝和葱丝","淋蒸鱼豉油","浇上烧至冒烟的热油激香","趁热食用"],
+    nutritionInfo:{protein:35,fat:8,carbs:2,fiber:0},videos:[]
+  },
+  {
+    name:"蔬菜沙拉",category:"减脂",tags:["减脂","轻食","快手"],difficulty:1,
+    cookTime:5,servings:1,calories:100,isDietFriendly:true,
+    ingredients:[{name:"生菜",amount:"适量"},{name:"小番茄",amount:"5个"},{name:"黄瓜",amount:"半根"},{name:"紫甘蓝",amount:"适量"},{name:"橄榄油",amount:"1勺"},{name:"醋",amount:"1勺"},{name:"盐",amount:"少许"}],
+    steps:["所有蔬菜洗净充分沥干水分","生菜撕碎铺在碗底","小番茄对半切放上","黄瓜切片放上","紫甘蓝切细丝点缀","调油醋汁：橄榄油+醋+盐+少许黑胡椒搅匀","浇在蔬菜上","拌匀即可食用"],
+    nutritionInfo:{protein:3,fat:5,carbs:10,fiber:3},videos:[]
+  },
+  {
+    name:"豆腐蔬菜汤",category:"减脂",tags:["减脂","汤","清淡"],difficulty:1,
+    cookTime:10,servings:2,calories:120,isDietFriendly:true,
+    ingredients:[{name:"豆腐",amount:"半块"},{name:"番茄",amount:"1个"},{name:"青菜",amount:"适量"},{name:"香菇",amount:"3朵"},{name:"盐",amount:"适量"},{name:"香油",amount:"少许"}],
+    steps:["豆腐切1cm小丁，番茄切块","香菇切片，青菜洗净","锅中加水放入番茄煮出汤色","放入豆腐丁和香菇煮3分钟","放入青菜煮1分钟至断生","加盐调味","淋几滴香油出锅"],
+    nutritionInfo:{protein:8,fat:3,carbs:10,fiber:3},videos:[]
+  },
+  {
+    name:"全麦三明治",category:"减脂",tags:["减脂","早餐","快手"],difficulty:1,
+    cookTime:5,servings:1,calories:280,isDietFriendly:true,
+    ingredients:[{name:"全麦面包",amount:"2片"},{name:"鸡蛋",amount:"1个"},{name:"生菜",amount:"2片"},{name:"番茄",amount:"3片"},{name:"鸡胸肉",amount:"50g"}],
+    steps:["鸡蛋煎成荷包蛋（蛋白凝固蛋黄微溏）","全麦面包放入烤面包机烤至微脆","面包上抹一层薄黄芥末酱（可选）","依次铺上生菜、番茄片","放上荷包蛋和鸡胸肉片","盖上另一片面包","对角切开用保鲜膜包紧","方便携带外出食用"],
+    nutritionInfo:{protein:22,fat:8,carbs:30,fiber:4},videos:[]
+  },
+  {
+    name:"金枪鱼饭团",category:"减脂",tags:["减脂","日式","快手"],difficulty:1,
+    cookTime:10,servings:2,calories:250,isDietFriendly:true,
+    ingredients:[{name:"米饭",amount:"1碗"},{name:"金枪鱼罐头",amount:"半罐"},{name:"海苔",amount:"2片"},{name:"盐",amount:"少许"},{name:"芝麻",amount:"适量"}],
+    steps:["米饭趁热拌入少许盐和芝麻","金枪鱼沥干油备用","保鲜膜上铺适量米饭压平","中间放金枪鱼","提起保鲜膜将饭团捏成三角形","去掉保鲜膜贴上海苔片","完成（可微波30秒让海苔变脆）"],
+    nutritionInfo:{protein:18,fat:5,carbs:40,fiber:1},videos:[]
+  },
+  {
+    name:"烤红薯",category:"减脂",tags:["减脂","简单","粗粮"],difficulty:1,
+    cookTime:45,servings:1,calories:180,isDietFriendly:true,
+    ingredients:[{name:"红薯",amount:"1个(约200g)"}],
+    steps:["红薯洗净不用去皮","用叉子在表面戳几个洞（防烤爆）","烤箱预热200度","红薯放在烤架上（下面放烤盘接汁）","烤40-50分钟","用筷子能轻松插入即熟","取出对半切开食用","也可用微波炉高火8-10分钟（包湿纸巾）"],
+    nutritionInfo:{protein:2,fat:0,carbs:40,fiber:4},videos:[]
+  },
+  {
+    name:"鸡胸肉蔬菜卷",category:"减脂",tags:["减脂","高蛋白","快手"],difficulty:1,
+    cookTime:10,servings:1,calories:200,isDietFriendly:true,
+    ingredients:[{name:"鸡胸肉",amount:"150g"},{name:"生菜",amount:"4片"},{name:"黄瓜",amount:"半根"},{name:"胡萝卜",amount:"半根"},{name:"甜面酱",amount:"1勺"}],
+    steps:["鸡胸肉切薄片或丝","加少许盐和料酒腌5分钟","锅中少油大火炒至熟透","黄瓜和胡萝卜切丝","生菜叶洗净沥干铺平","放上鸡胸肉和蔬菜丝","挤上甜面酱","卷起来食用"],
+    nutritionInfo:{protein:30,fat:5,carbs:8,fiber:3},videos:[]
+  },
+  {
+    name:"番茄鸡蛋汤",category:"减脂",tags:["减脂","汤","简单"],difficulty:1,
+    cookTime:8,servings:2,calories:80,isDietFriendly:true,
+    ingredients:[{name:"番茄",amount:"1个"},{name:"鸡蛋",amount:"2个"},{name:"葱花",amount:"适量"},{name:"盐",amount:"适量"},{name:"香油",amount:"少许"}],
+    steps:["番茄去皮切小块","鸡蛋打散备用","锅中少许油炒番茄至出汁","加水烧开","转小火让汤保持微沸","沿锅边缓缓倒入蛋液（不要搅动）","等蛋花浮起后轻轻推散","加盐调味撒葱花淋香油出锅"],
+    nutritionInfo:{protein:8,fat:4,carbs:6,fiber:1},videos:[]
+  },
+  {
+    name:"白灼虾",category:"减脂",tags:["减脂","快手","高蛋白"],difficulty:1,
+    cookTime:8,servings:2,calories:150,isDietFriendly:true,
+    ingredients:[{name:"基围虾",amount:"300g"},{name:"姜",amount:"3片"},{name:"料酒",amount:"1勺"},{name:"生抽",amount:"2勺"},{name:"醋",amount:"1勺"},{name:"芥末",amount:"少许"}],
+    steps:["虾洗净剪去虾须和虾脚","烧一大锅水放入姜片和料酒","水大开后放入虾","大火煮至虾身弯曲变红（约2分钟）","立即捞出放入冰水中过凉（保持弹嫩）","调蘸汁：生抽+醋+芥末","摆盘食用"],
+    nutritionInfo:{protein:28,fat:2,carbs:2,fiber:0},videos:[]
+  },
+  {
+    name:"秋葵拌豆腐",category:"减脂",tags:["减脂","日式","简单"],difficulty:1,
+    cookTime:8,servings:1,calories:120,isDietFriendly:true,
+    ingredients:[{name:"秋葵",amount:"5根"},{name:"嫩豆腐",amount:"半块"},{name:"柴鱼片",amount:"适量"},{name:"酱油",amount:"1勺"},{name:"味醂",amount:"少许"}],
+    steps:["秋葵用盐搓洗去表面绒毛","开水焯2分钟捞出过冰水","切去蒂头切薄片","嫩豆腐放入碗中","摆上秋葵片","淋酱油和味醂","撒上柴鱼片即可食用"],
+    nutritionInfo:{protein:10,fat:4,carbs:8,fiber:3},videos:[]
   }
 ]
 

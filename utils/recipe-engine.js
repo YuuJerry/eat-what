@@ -103,14 +103,17 @@ function recommend(recipes, options = {}) {
 // ===== 对外接口（与 ai-recipes.js 兼容）=====
 
 /**
- * 获取首页热门推荐
+ * 获取首页热门推荐（优先 isHot 标记的菜谱）
  */
 function getHotRecipes(forceRefresh) {
   if (!forceRefresh) {
     const cached = loadCache('hot')
     if (cached) return cached
   }
-  const result = recommend(ALL_RECIPES, { count: 4 })
+  const hotRecipes = ALL_RECIPES.filter(r => r.isHot)
+  // 从热门菜中随机取 4 道，每次刷新不同
+  const shuffled = hotRecipes.sort(() => Math.random() - 0.5)
+  const result = shuffled.slice(0, 4)
   saveCache('hot', result)
   return result
 }
@@ -271,6 +274,13 @@ function saveCache(key, data) {
   } catch (e) { /* ignore */ }
 }
 
+/**
+ * 生成 Bilibili 搜索链接（视频 fallback）
+ */
+function getBilibiliSearchUrl(recipeName) {
+  return 'https://search.bilibili.com/all?keyword=' + encodeURIComponent(recipeName + ' 做法')
+}
+
 module.exports = {
   getHotRecipes,
   getRecipesByCategory,
@@ -280,5 +290,6 @@ module.exports = {
   preloadHotRecipes,
   matchByIngredients,
   aiRecommendByIngredients,
+  getBilibiliSearchUrl,
   ALL_RECIPES
 }
