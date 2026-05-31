@@ -17,14 +17,14 @@ Page({
     isCreating: false   // 创建中的加载状态标记
   },
 
-  // 页面加载时，根据参数决定进入模式（通过房间码加入/通过房间ID加载/默认创建）
+  // 页面加载时，根据参数决定进入模式
   onLoad(options) {
-    if (options.code) {
-      // 携带房间码，通过房间码加入已有投票
+    if (options.code && options.fileID) {
+      // 通过分享链接加入（带 fileID）
+      this.joinByFileID(options.code, decodeURIComponent(options.fileID))
+    } else if (options.code) {
+      // 通过房间码加入（本地缓存 fileID）
       this.joinByCode(options.code)
-    } else if (options.id) {
-      // 携带房间ID，加载已有房间
-      this.loadRoom(options.id)
     }
     // 无参数时默认进入创建模式
   },
@@ -89,21 +89,12 @@ Page({
     this.setData({ isCreating: false })
   },
 
-  // 通过房间码加入投票房间
-  async joinByCode(code) {
+  // 通过分享链接加入（带 fileID）
+  async joinByFileID(code, fileID) {
     try {
-      const res = await voteApi.joinRoom(code)
+      const res = await voteApi.joinRoomByFileID(code, fileID)
       if (res && res.success) {
-        const room = res.data
-        // 检查用户是否已投票
-        const openid = getApp().globalData.openid || 'user_' + Date.now()
-        const myVote = (room.voters && room.voters[openid]) || ''
-        if (myVote) {
-          this.setData({ room, myVote })
-          this.loadResult()
-        } else {
-          this.setData({ room, mode: 'vote' })
-        }
+        this.enterRoom(res.data)
       } else {
         wx.showToast({ title: '房间不存在或已过期', icon: 'none' })
       }
@@ -112,7 +103,33 @@ Page({
     }
   },
 
-  // 通过房间码加载已有房间
+  // 通过房间码加入（本地缓存 fileID）
+  async joinByCode(code) {
+    try {
+      const res = await voteApi.joinRoom(code)
+      if (res && res.success) {
+        this.enterRoom(res.data)
+      } else {
+        wx.showToast({ title: '房间不存在或已过期', icon: 'none' })
+      }
+    } catch (e) {
+      wx.showToast({ title: '加入失败', icon: 'none' })
+    }
+  },
+
+  // 进入投票房间（统一处理）
+  enterRoom(room) {
+    const openid = getApp().globalData.openid || 'user_' + Date.now()
+    const myVote = (room.voters && room.voters[openid]) || ''
+    if (myVote) {
+      this.setData({ room, myVote })
+      this.loadResult()
+    } else {
+      this.setData({ room, mode: 'vote' })
+    }
+  },
+
+  // 加载已有房间
   async loadRoom(roomCode) {
     this.joinByCode(roomCode)
   },
@@ -161,13 +178,15 @@ Page({
     }
   },
 
-  // 微信分享配置：有房间时分享房间链接，否则分享投票大厅
+  // 微信分享配置：带 fileID 确保接收者能加入
   onShareAppMessage() {
     const room = this.data.room
     if (room) {
+      const fileID = voteApi.getFileID(room.roomCode)
+      const fidParam = fileID ? `&fileID=${encodeURIComponent(fileID)}` : ''
       return {
         title: `来投票：${room.title}`,
-        path: `/pages/vote/room?code=${room.roomCode}`
+        path: `/pages/vote/room?code=${room.roomCode}${fidParam}`
       }
     }
     return {

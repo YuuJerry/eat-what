@@ -126,9 +126,10 @@ const recipeApi = {
   }
 }
 
-// ========== 投票相关 API（基于云文件存储，无需数据库）==========
+// ========== 投票相关 API（云文件存储 + 版本控制 + 重试）==========
 const ROOM_CHARS = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789'
-const VOTE_DIR = 'eat-what-votes/' // 云存储中的投票文件目录
+const VOTE_DIR = 'eat-what-votes/'
+const MAX_RETRIES = 3
 
 function generateRoomCode() {
   let code = ''
@@ -138,32 +139,57 @@ function generateRoomCode() {
   return code
 }
 
-// 上传投票数据到云存储
-async function uploadVoteData(roomCode, data) {
-  const filePath = VOTE_DIR + roomCode + '.json'
-  const tempPath = `${wx.env.USER_DATA_PATH}/vote_${roomCode}.json`
-  const fs = wx.getFileSystemManager()
-  fs.writeFileSync(tempPath, JSON.stringify(data), 'utf-8')
-  await wx.cloud.uploadFile({
-    cloudPath: filePath,
-    filePath: tempPath
-  })
+function getTempPath(roomCode) {
+  return `${wx.env.USER_DATA_PATH}/vote_${roomCode}.json`
 }
 
-// 从云存储下载投票数据
-async function downloadVoteData(roomCode) {
-  const filePath = VOTE_DIR + roomCode + '.json'
-  try {
-    const res = await wx.cloud.downloadFile({ fileID: `cloud://${getApp().globalData.openid ? '' : ''}${filePath}` })
-    // fileID 需要完整路径，用 getTempFileURL 更可靠
-  } catch (e) {
-    // 文件不存在
-  }
-  return null
+function writeTempFile(roomCode, data) {
+  const fs = wx.getFileSystemManager()
+  fs.writeFileSync(getTempPath(roomCode), JSON.stringify(data), 'utf-8')
+}
+
+function readTempFile(tempFilePath) {
+  const fs = wx.getFileSystemManager()
+  return JSON.parse(fs.readFileSync(tempFilePath, 'utf-8'))
+}
+
+// 上传投票文件，返回 fileID
+async function uploadVote(roomCode, data) {
+  writeTempFile(roomCode, data)
+  const res = await wx.cloud.uploadFile({
+    cloudPath: VOTE_DIR + roomCode + '.json',
+    filePath: getTempPath(roomCode)
+  })
+  return res.fileID
+}
+
+// 通过 fileID 下载投票数据
+async function downloadVote(fileID) {
+  const dlRes = await wx.cloud.downloadFile({ fileID })
+  return readTempFile(dlRes.tempFilePath)
+}
+
+// 保存 fileID 到本地历史
+function saveFileID(roomCode, fileID, title) {
+  const history = wx.getStorageSync('vote_fileids') || {}
+  history[roomCode] = { fileID, title, savedAt: Date.now() }
+  wx.setStorageSync('vote_fileids', history)
+  // 同时保存历史列表
+  const list = wx.getStorageSync('vote_history') || []
+  const existing = list.findIndex(r => r.roomCode === roomCode)
+  if (existing > -1) list.splice(existing, 1)
+  list.unshift({ roomCode, title, fileID, createdAt: Date.now() })
+  wx.setStorageSync('vote_history', list.slice(0, 50))
+}
+
+// 获取 fileID（优先本地缓存）
+function getFileID(roomCode) {
+  const history = wx.getStorageSync('vote_fileids') || {}
+  return history[roomCode]?.fileID || null
 }
 
 const voteApi = {
-  // 创建投票房间（存到云存储）
+  // 创建投票房间
   async createRoom({ title, options, maxVoters = 20 }) {
     try {
       const code = generateRoomCode()
@@ -174,14 +200,12 @@ const voteApi = {
         voters: {},
         status: 'active',
         maxVoters,
+        version: 1,
         createdAt: Date.now(),
         expiresAt: Date.now() + 24 * 60 * 60 * 1000
       }
-      await uploadVoteData(code, roomData)
-      // 同时保存到本地历史
-      const history = wx.getStorageSync('vote_history') || []
-      history.unshift({ roomCode: code, title, createdAt: Date.now() })
-      wx.setStorageSync('vote_history', history.slice(0, 50))
+      const fileID = await uploadVote(code, roomData)
+      saveFileID(code, fileID, title)
       return { success: true, roomId: code, roomCode: code }
     } catch (e) {
       console.error('创建投票失败', e)
@@ -189,21 +213,15 @@ const voteApi = {
     }
   },
 
-  // 通过房间码加入投票（从云存储读取）
+  // 通过房间码加入投票（本地缓存 fileID）
   async joinRoom(roomCode) {
     try {
       const code = roomCode.toUpperCase()
-      const filePath = VOTE_DIR + code + '.json'
-      // 通过云存储下载
-      const dlRes = await wx.cloud.downloadFile({ cloudPath: filePath })
-      const fs = wx.getFileSystemManager()
-      const content = fs.readFileSync(dlRes.tempFilePath, 'utf-8')
-      const roomData = JSON.parse(content)
+      const fileID = getFileID(code)
+      if (!fileID) return null
+      const roomData = await downloadVote(fileID)
       if (roomData.status !== 'active') return null
-      if (roomData.expiresAt < Date.now()) {
-        roomData.status = 'closed'
-        return null
-      }
+      if (roomData.expiresAt < Date.now()) return null
       return { success: true, data: roomData }
     } catch (e) {
       console.error('加入投票失败', e)
@@ -211,35 +229,59 @@ const voteApi = {
     }
   },
 
-  // 提交投票（下载-修改-上传）
-  async submitVote(roomCode, option) {
+  // 通过 fileID 直接加入（分享链接用）
+  async joinRoomByFileID(roomCode, fileID) {
     try {
-      const filePath = VOTE_DIR + roomCode + '.json'
-      const dlRes = await wx.cloud.downloadFile({ cloudPath: filePath })
-      const fs = wx.getFileSystemManager()
-      const content = fs.readFileSync(dlRes.tempFilePath, 'utf-8')
-      const roomData = JSON.parse(content)
-      const openid = getApp().globalData.openid || 'user_' + Date.now()
-      roomData.voters[openid] = option
-      // 上传更新后的数据
-      const tempPath = `${wx.env.USER_DATA_PATH}/vote_${roomCode}.json`
-      fs.writeFileSync(tempPath, JSON.stringify(roomData), 'utf-8')
-      await wx.cloud.uploadFile({ cloudPath: filePath, filePath: tempPath })
-      return { success: true }
+      const code = roomCode.toUpperCase()
+      const roomData = await downloadVote(fileID)
+      // 缓存 fileID
+      saveFileID(code, fileID, roomData.title)
+      if (roomData.status !== 'active') return null
+      if (roomData.expiresAt < Date.now()) return null
+      return { success: true, data: roomData }
     } catch (e) {
-      console.error('提交投票失败', e)
+      console.error('加入投票失败', e)
       return null
     }
+  },
+
+  // 获取 fileID（外部用）
+  getFileID(roomCode) {
+    return getFileID(roomCode)
+  },
+
+  // 提交投票（带版本控制和重试）
+  async submitVote(roomCode, option) {
+    const code = roomCode.toUpperCase()
+    const fileID = getFileID(code)
+    if (!fileID) return null
+
+    for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
+      try {
+        const roomData = await downloadVote(fileID)
+        const openid = getApp().globalData.openid || 'user_' + Date.now()
+        roomData.voters[openid] = option
+        roomData.version = (roomData.version || 0) + 1
+        const newFileID = await uploadVote(code, roomData)
+        saveFileID(code, newFileID, roomData.title)
+        return { success: true }
+      } catch (e) {
+        console.error(`投票尝试 ${attempt + 1} 失败:`, e)
+        if (attempt < MAX_RETRIES - 1) {
+          await new Promise(r => setTimeout(r, 500 * (attempt + 1)))
+        }
+      }
+    }
+    return null
   },
 
   // 获取投票结果
   async getResult(roomCode) {
     try {
-      const filePath = VOTE_DIR + roomCode + '.json'
-      const dlRes = await wx.cloud.downloadFile({ cloudPath: filePath })
-      const fs = wx.getFileSystemManager()
-      const content = fs.readFileSync(dlRes.tempFilePath, 'utf-8')
-      const roomData = JSON.parse(content)
+      const code = roomCode.toUpperCase()
+      const fileID = getFileID(code)
+      if (!fileID) return null
+      const roomData = await downloadVote(fileID)
       const voters = roomData.voters || {}
       const tally = {}
       Object.values(voters).forEach(v => { tally[v] = (tally[v] || 0) + 1 })
@@ -261,17 +303,17 @@ const voteApi = {
     }
   },
 
-  // 获取用户投票历史（从本地存储）
+  // 获取用户投票历史
   async getMyRooms() {
     try {
-      const history = wx.getStorageSync('vote_history') || []
-      return { success: true, data: history }
+      const list = wx.getStorageSync('vote_history') || []
+      return { success: true, data: list }
     } catch (e) {
       return { success: true, data: [] }
     }
   },
 
-  // 通过房间码获取投票（别名）
+  // 通过房间码获取投票
   async getRoom(roomCode) {
     return this.joinRoom(roomCode)
   }
