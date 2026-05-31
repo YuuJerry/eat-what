@@ -108,7 +108,6 @@
   box-shadow: 0 2rpx 8rpx rgba(78, 205, 196, 0.2);
 }
 
-/* 手绘图标容器 */
 .ingredient-icon {
   width: 64rpx;
   height: 64rpx;
@@ -131,7 +130,6 @@
   text-align: center;
 }
 
-/* 选中标记 */
 .check-mark {
   position: absolute;
   top: 8rpx;
@@ -147,23 +145,39 @@
   font-size: 20rpx;
 }
 
-/* ===== 确定按钮 ===== */
-.search-action {
+/* ===== 操作按钮区 ===== */
+.action-buttons {
+  display: flex;
+  gap: 16rpx;
   margin: 20rpx 0;
 }
 
-.search-recipes-btn {
+.btn-ai {
+  flex: 1;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #fff;
+  font-size: 28rpx;
+  font-weight: bold;
+  padding: 22rpx 0;
+  border-radius: 50rpx;
+  text-align: center;
+  box-shadow: 0 6rpx 20rpx rgba(102, 126, 234, 0.3);
+}
+
+.btn-shopping {
+  background: #fff;
+  border: 2rpx solid #4ECDC4;
+  color: #4ECDC4;
+  font-size: 26rpx;
+  font-weight: bold;
+  padding: 20rpx 30rpx;
+  border-radius: 50rpx;
   text-align: center;
 }
 
 /* ===== 推荐结果 ===== */
 .results-section {
-  margin-top: 30rpx;
-}
-
-.searching-hint {
-  font-size: 24rpx;
-  color: #999;
+  margin-top: 20rpx;
 }
 
 .result-card {
@@ -172,7 +186,7 @@
   transition: all 0.3s;
 }
 
-/* 100% 匹配 = 绿色边框 */
+/* 能做 = 绿色边框 */
 .result-card.can-cook {
   border-left: 8rpx solid #4ECDC4;
   box-shadow: 0 4rpx 16rpx rgba(78, 205, 196, 0.2);
@@ -212,7 +226,7 @@
 }
 
 .result-name {
-  font-size: 30rpx;
+  font-size: 32rpx;
   font-weight: bold;
   color: #333;
   display: block;
@@ -226,58 +240,60 @@
   margin-top: 6rpx;
 }
 
-/* 匹配度徽章 */
 .match-badge {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   padding: 8rpx 16rpx;
   border-radius: 12rpx;
 }
 
-/* 部分匹配 = 绿色 */
 .match-badge.partial {
   background: #E8F8F5;
-}
-
-.match-badge.partial .match-rate,
-.match-badge.partial .match-label {
   color: #4ECDC4;
 }
 
-/* 完美匹配 = 金色 */
 .match-badge.perfect {
   background: #FFF8E1;
-}
-
-.match-badge.perfect .match-rate,
-.match-badge.perfect .match-label {
   color: #FF8F00;
 }
 
-.match-rate {
-  font-size: 32rpx;
+.match-label {
+  font-size: 24rpx;
   font-weight: bold;
 }
 
-.match-label {
-  font-size: 20rpx;
-}
-
-/* 结果详情 */
-.result-detail {
-  margin-top: 12rpx;
+/* 用料清单 */
+.ingredients-list {
+  margin-top: 16rpx;
   padding-top: 12rpx;
   border-top: 1rpx solid #f0f0f0;
 }
 
-.owned-text {
+.sub-title {
   font-size: 24rpx;
-  color: #4ECDC4;
+  color: #666;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 8rpx;
 }
 
-.missing-list {
-  margin-top: 8rpx;
+.ingredient-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8rpx;
+}
+
+.ing-tag {
+  font-size: 22rpx;
+  color: #666;
+  background: #f5f5f5;
+  padding: 6rpx 14rpx;
+  border-radius: 16rpx;
+}
+
+/* 缺少食材 */
+.missing-section {
+  margin-top: 12rpx;
+  padding-top: 12rpx;
+  border-top: 1rpx solid #f0f0f0;
 }
 
 .missing-label {
@@ -290,13 +306,55 @@
   color: #FF6B6B;
 }
 
-/* 只差一步提示 */
 .almost-hint {
-  display: block;
-  margin-top: 8rpx;
   font-size: 24rpx;
   color: #FF8F00;
   font-weight: bold;
+}
+
+/* 步骤预览 */
+.steps-section {
+  margin-top: 12rpx;
+  padding-top: 12rpx;
+  border-top: 1rpx solid #f0f0f0;
+}
+
+.steps-toggle {
+  font-size: 24rpx;
+  color: #667eea;
+  font-weight: bold;
+  padding: 8rpx 0;
+}
+
+.steps-content {
+  margin-top: 12rpx;
+}
+
+.step-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 12rpx;
+}
+
+.step-num {
+  width: 36rpx;
+  height: 36rpx;
+  border-radius: 50%;
+  background: #667eea;
+  color: #fff;
+  font-size: 22rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-right: 12rpx;
+  margin-top: 4rpx;
+}
+
+.step-text {
+  font-size: 26rpx;
+  color: #333;
+  line-height: 1.5;
 }
 
 /* 空状态 */
@@ -304,4 +362,70 @@
   font-size: 24rpx;
   color: #ccc;
   margin-top: 8rpx;
+}
+
+/* ===== 购物清单弹窗 ===== */
+.modal-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal {
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 40rpx;
+  width: 620rpx;
+  max-height: 80vh;
+}
+
+.modal-title {
+  font-size: 34rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 24rpx;
+  display: block;
+  text-align: center;
+}
+
+.shopping-content {
+  max-height: 500rpx;
+  margin-bottom: 24rpx;
+}
+
+.shopping-text {
+  font-size: 28rpx;
+  color: #333;
+  line-height: 1.8;
+  white-space: pre-wrap;
+}
+
+.modal-btns {
+  display: flex;
+  gap: 20rpx;
+}
+
+.modal-btn {
+  flex: 1;
+  text-align: center;
+  padding: 20rpx;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+}
+
+.modal-btn.cancel {
+  background: #f5f5f5;
+  color: #666;
+}
+
+.modal-btn.confirm {
+  background: #4ECDC4;
+  color: #fff;
 }

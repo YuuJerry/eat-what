@@ -79,6 +79,20 @@ const recipeApi = {
     }
   },
 
+  // AI 智能推荐：根据食材调用 AI 动态生成菜谱
+  async aiRecommend(ingredients) {
+    try {
+      const { result } = await wx.cloud.callFunction({
+        name: 'aiRecommend',
+        data: { ingredients }
+      })
+      return result
+    } catch (e) {
+      console.error('AI 推荐失败', e)
+      return null
+    }
+  },
+
   // 智能推荐：根据用户偏好、历史记录等综合因素推荐菜谱
   async smartRecommend() {
     try {

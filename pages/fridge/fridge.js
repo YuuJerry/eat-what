@@ -31,7 +31,12 @@ Page({
     results: [],
     isSearching: false,
     hasSearched: false,
-    keyword: ''
+    keyword: '',
+    // 购物清单弹窗
+    showShoppingList: false,
+    shoppingList: '',
+    // 展开的菜谱步骤索引
+    expandedSteps: -1
   },
 
   onLoad() {
@@ -39,7 +44,6 @@ Page({
   },
 
   onShow() {
-    // 页面显示时恢复上次选中的食材
     this.loadSavedSelection()
   },
 
@@ -49,8 +53,6 @@ Page({
       const saved = wx.getStorageSync(STORAGE_KEY)
       if (saved && saved.length > 0) {
         this.setData({ selectedIngredients: saved })
-        // 恢复后自动搜索
-        this.autoSearch()
       }
     } catch (e) {
       // ignore
@@ -60,18 +62,6 @@ Page({
   // 保存选中食材到本地存储
   saveSelection() {
     wx.setStorageSync(STORAGE_KEY, this.data.selectedIngredients)
-  },
-
-  // 防抖自动搜索
-  autoSearch() {
-    if (this.data.selectedIngredients.length === 0) {
-      this.setData({ results: [], hasSearched: false })
-      return
-    }
-    clearTimeout(searchTimer)
-    searchTimer = setTimeout(() => {
-      this.onSearchRecipes()
-    }, 500)
   },
 
   // 切换食材分类
@@ -95,7 +85,6 @@ Page({
       this.setData({ selectedIngredients: [...selected, name] })
     }
     this.saveSelection()
-    this.autoSearch()
   },
 
   // 移除已选中的某个食材
@@ -104,12 +93,11 @@ Page({
     const selected = this.data.selectedIngredients.filter(n => n !== name)
     this.setData({ selectedIngredients: selected })
     this.saveSelection()
-    this.autoSearch()
   },
 
   // 清空所有已选食材和搜索结果
   onClearAll() {
-    this.setData({ selectedIngredients: [], results: [], hasSearched: false })
+    this.setData({ selectedIngredients: [], results: [], hasSearched: false, expandedSteps: -1 })
     wx.removeStorageSync(STORAGE_KEY)
   },
 
@@ -132,31 +120,75 @@ Page({
     }
   },
 
-  // 根据已选食材搜索推荐菜谱
+  // AI 推荐菜谱
   async onSearchRecipes() {
-    if (this.data.selectedIngredients.length === 0) return
+    if (this.data.selectedIngredients.length === 0) {
+      wx.showToast({ title: '请先选择食材', icon: 'none' })
+      return
+    }
     if (this.data.isSearching) return
 
-    this.setData({ isSearching: true })
+    this.setData({ isSearching: true, expandedSteps: -1 })
     try {
-      const res = await recipeApi.searchByIngredients(this.data.selectedIngredients)
+      const res = await recipeApi.aiRecommend(this.data.selectedIngredients)
       if (res && res.success) {
-        // 为每个结果添加菜品图标
-        const results = res.data.map(r => ({
+        const results = res.recipes.map(r => ({
           ...r,
-          coverIcon: getDishIcon(r.name, r.category)
+          coverIcon: getDishIcon(r.name, r.category),
+          stepsExpanded: false
         }))
         this.setData({ results, hasSearched: true })
+      } else {
+        wx.showToast({ title: res?.error || '推荐失败，请重试', icon: 'none' })
       }
     } catch (e) {
-      console.error('搜索失败', e)
+      console.error('AI 推荐失败', e)
+      wx.showToast({ title: '推荐失败，请重试', icon: 'none' })
     }
     this.setData({ isSearching: false })
   },
 
-  // 点击推荐结果
-  onResultTap(e) {
-    const id = e.currentTarget.dataset.id
-    wx.navigateTo({ url: `/pages/recipe/detail?id=${id}` })
+  // 展开/收起菜谱步骤
+  onToggleSteps(e) {
+    const idx = e.currentTarget.dataset.index
+    if (this.data.expandedSteps === idx) {
+      this.setData({ expandedSteps: -1 })
+    } else {
+      this.setData({ expandedSteps: idx })
+    }
+  },
+
+  // 显示购物清单弹窗
+  onShowShoppingList() {
+    const { results } = this.data
+    const withMissing = results.filter(r => r.missing && r.missing.length > 0)
+    if (withMissing.length === 0) {
+      wx.showToast({ title: '所有食材都有，不用买啦', icon: 'success' })
+      return
+    }
+
+    let listText = '📝 购物清单\n\n'
+    withMissing.forEach(r => {
+      listText += `🍽 ${r.name}\n`
+      listText += `· 还差：${r.missing.join('、')}\n\n`
+    })
+
+    this.setData({ showShoppingList: true, shoppingList: listText })
+  },
+
+  // 复制购物清单
+  onCopyShoppingList() {
+    wx.setClipboardData({
+      data: this.data.shoppingList,
+      success: () => {
+        wx.showToast({ title: '已复制到剪贴板', icon: 'success' })
+        this.setData({ showShoppingList: false })
+      }
+    })
+  },
+
+  // 关闭购物清单弹窗
+  onHideShoppingList() {
+    this.setData({ showShoppingList: false })
   }
 })
