@@ -126,10 +126,9 @@ const recipeApi = {
   }
 }
 
-// ========== 投票相关 API（云文件存储 + 版本控制 + 重试）==========
+// ========== 投票相关 API（云数据库 + 本地缓存双写）==========
 const ROOM_CHARS = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789'
-const VOTE_DIR = 'eat-what-votes/'
-const MAX_RETRIES = 3
+const ROOMS_COLLECTION = 'voting_rooms'
 
 function generateRoomCode() {
   let code = ''
@@ -139,180 +138,162 @@ function generateRoomCode() {
   return code
 }
 
-function getTempPath(roomCode) {
-  return `${wx.env.USER_DATA_PATH}/vote_${roomCode}.json`
-}
-
-function writeTempFile(roomCode, data) {
-  const fs = wx.getFileSystemManager()
-  fs.writeFileSync(getTempPath(roomCode), JSON.stringify(data), 'utf-8')
-}
-
-function readTempFile(tempFilePath) {
-  const fs = wx.getFileSystemManager()
-  return JSON.parse(fs.readFileSync(tempFilePath, 'utf-8'))
-}
-
-// 上传投票文件，返回 fileID
-async function uploadVote(roomCode, data) {
-  writeTempFile(roomCode, data)
-  const res = await wx.cloud.uploadFile({
-    cloudPath: VOTE_DIR + roomCode + '.json',
-    filePath: getTempPath(roomCode)
-  })
-  return res.fileID
-}
-
-// 通过 fileID 下载投票数据
-async function downloadVote(fileID) {
-  const dlRes = await wx.cloud.downloadFile({ fileID })
-  return readTempFile(dlRes.tempFilePath)
-}
-
-// 保存 fileID 到本地历史
-function saveFileID(roomCode, fileID, title) {
-  const history = wx.getStorageSync('vote_fileids') || {}
-  history[roomCode] = { fileID, title, savedAt: Date.now() }
-  wx.setStorageSync('vote_fileids', history)
-  // 同时保存历史列表
+// 保存到本地缓存（备份）
+function saveToLocal(roomCode, data) {
+  const rooms = wx.getStorageSync('vote_rooms_local') || {}
+  rooms[roomCode] = data
+  wx.setStorageSync('vote_rooms_local', rooms)
+  // 更新历史列表
   const list = wx.getStorageSync('vote_history') || []
   const existing = list.findIndex(r => r.roomCode === roomCode)
   if (existing > -1) list.splice(existing, 1)
-  list.unshift({ roomCode, title, fileID, createdAt: Date.now() })
+  list.unshift({ roomCode, title: data.title, createdAt: Date.now() })
   wx.setStorageSync('vote_history', list.slice(0, 50))
 }
 
-// 获取 fileID（优先本地缓存）
-function getFileID(roomCode) {
-  const history = wx.getStorageSync('vote_fileids') || {}
-  return history[roomCode]?.fileID || null
+// 从本地缓存读取
+function loadFromLocal(roomCode) {
+  const rooms = wx.getStorageSync('vote_rooms_local') || {}
+  return rooms[roomCode] || null
 }
 
 const voteApi = {
-  // 创建投票房间
+  // 创建投票房间（云数据库优先，本地缓存备份）
   async createRoom({ title, options, maxVoters = 20 }) {
+    const code = generateRoomCode()
+    const roomData = {
+      roomCode: code,
+      title,
+      options,
+      voters: {},
+      status: 'active',
+      maxVoters,
+      createdAt: Date.now(),
+      expiresAt: Date.now() + 24 * 60 * 60 * 1000
+    }
+
+    // 尝试写入云数据库
     try {
-      const code = generateRoomCode()
-      const roomData = {
-        roomCode: code,
-        title,
-        options,
-        voters: {},
-        status: 'active',
-        maxVoters,
-        version: 1,
-        createdAt: Date.now(),
-        expiresAt: Date.now() + 24 * 60 * 60 * 1000
-      }
-      const fileID = await uploadVote(code, roomData)
-      saveFileID(code, fileID, title)
-      return { success: true, roomId: code, roomCode: code }
+      const db = getDb()
+      const res = await db.collection(ROOMS_COLLECTION).add({ data: roomData })
+      roomData._id = res._id
+      saveToLocal(code, roomData)
+      return { success: true, roomId: res._id, roomCode: code }
     } catch (e) {
-      console.error('创建投票失败:', e)
-      return { success: false, error: e.errMsg || e.message || '未知错误' }
+      console.warn('云数据库写入失败，使用本地存储:', e)
+      // 云数据库失败，保存到本地
+      saveToLocal(code, roomData)
+      return { success: true, roomId: code, roomCode: code, local: true }
     }
   },
 
-  // 通过房间码加入投票（本地缓存 fileID）
+  // 通过房间码加入投票（云数据库查询 → 本地缓存回退）
   async joinRoom(roomCode) {
+    const code = roomCode.toUpperCase()
+
+    // 先查云数据库
     try {
-      const code = roomCode.toUpperCase()
-      const fileID = getFileID(code)
-      if (!fileID) return null
-      const roomData = await downloadVote(fileID)
-      if (roomData.status !== 'active') return null
-      if (roomData.expiresAt < Date.now()) return null
-      return { success: true, data: roomData }
+      const db = getDb()
+      const res = await db.collection(ROOMS_COLLECTION)
+        .where({ roomCode: code, status: 'active' })
+        .get()
+      if (res.data.length > 0) {
+        const room = res.data[0]
+        saveToLocal(code, room)
+        return { success: true, data: room }
+      }
     } catch (e) {
-      console.error('加入投票失败', e)
-      return null
+      console.warn('云数据库查询失败:', e)
     }
+
+    // 回退到本地缓存
+    const local = loadFromLocal(code)
+    if (local && local.status === 'active') {
+      return { success: true, data: local }
+    }
+
+    return { success: false, error: '房间不存在或已过期' }
   },
 
-  // 通过 fileID 直接加入（分享链接用）
+  // 通过 fileID 直接加入（兼容旧版分享链接）
   async joinRoomByFileID(roomCode, fileID) {
-    try {
-      const code = roomCode.toUpperCase()
-      if (!fileID) return { success: false, error: '缺少 fileID' }
-      const roomData = await downloadVote(fileID)
-      if (!roomData || !roomData.roomCode) return { success: false, error: '数据无效' }
-      // 缓存 fileID
-      saveFileID(code, fileID, roomData.title)
-      if (roomData.status !== 'active') return { success: false, error: '投票已结束' }
-      if (roomData.expiresAt < Date.now()) return { success: false, error: '投票已过期' }
-      return { success: true, data: roomData }
-    } catch (e) {
-      console.error('加入投票失败:', e)
-      return { success: false, error: e.errMsg || e.message || '下载失败' }
-    }
+    return this.joinRoom(roomCode)
   },
 
-  // 获取 fileID（外部用）
-  getFileID(roomCode) {
-    return getFileID(roomCode)
-  },
-
-  // 提交投票（带版本控制和重试）
+  // 提交投票（云数据库更新 → 本地缓存回退）
   async submitVote(roomCode, option) {
     const code = roomCode.toUpperCase()
-    const fileID = getFileID(code)
-    if (!fileID) return null
+    const openid = getApp().globalData.openid || 'user_' + Date.now()
 
-    for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
-      try {
-        const roomData = await downloadVote(fileID)
-        const openid = getApp().globalData.openid || 'user_' + Date.now()
-        roomData.voters[openid] = option
-        roomData.version = (roomData.version || 0) + 1
-        const newFileID = await uploadVote(code, roomData)
-        saveFileID(code, newFileID, roomData.title)
-        return { success: true }
-      } catch (e) {
-        console.error(`投票尝试 ${attempt + 1} 失败:`, e)
-        if (attempt < MAX_RETRIES - 1) {
-          await new Promise(r => setTimeout(r, 500 * (attempt + 1)))
-        }
-      }
+    // 尝试云数据库更新
+    try {
+      const db = getDb()
+      const updateData = {}
+      updateData['voters.' + openid] = option
+      await db.collection(ROOMS_COLLECTION).doc(roomCode).update({ data: updateData })
+      return { success: true }
+    } catch (e) {
+      console.warn('云数据库更新失败，使用本地存储:', e)
     }
-    return null
+
+    // 回退到本地缓存
+    const local = loadFromLocal(code)
+    if (local) {
+      local.voters[openid] = option
+      saveToLocal(code, local)
+      return { success: true, local: true }
+    }
+
+    return { success: false, error: '投票失败' }
   },
 
-  // 获取投票结果
+  // 获取投票结果（云数据库 → 本地缓存回退）
   async getResult(roomCode) {
+    const code = roomCode.toUpperCase()
+    let roomData = null
+
+    // 尝试云数据库
     try {
-      const code = roomCode.toUpperCase()
-      const fileID = getFileID(code)
-      if (!fileID) return null
-      const roomData = await downloadVote(fileID)
-      const voters = roomData.voters || {}
-      const tally = {}
-      Object.values(voters).forEach(v => { tally[v] = (tally[v] || 0) + 1 })
-      const sorted = Object.entries(tally).sort((a, b) => b[1] - a[1])
-      return {
-        success: true,
-        data: {
-          room: roomData,
-          tally,
-          winner: sorted[0]?.[0] || '',
-          winnerVotes: sorted[0]?.[1] || 0,
-          isTie: sorted.length > 1 && sorted[0][1] === sorted[1][1],
-          totalVotes: Object.keys(voters).length
-        }
+      const db = getDb()
+      const res = await db.collection(ROOMS_COLLECTION)
+        .where({ roomCode: code })
+        .get()
+      if (res.data.length > 0) {
+        roomData = res.data[0]
+        saveToLocal(code, roomData)
       }
     } catch (e) {
-      console.error('获取结果失败', e)
-      return null
+      console.warn('云数据库查询失败:', e)
+    }
+
+    // 回退到本地缓存
+    if (!roomData) {
+      roomData = loadFromLocal(code)
+    }
+
+    if (!roomData) return { success: false, error: '找不到投票数据' }
+
+    const voters = roomData.voters || {}
+    const tally = {}
+    Object.values(voters).forEach(v => { tally[v] = (tally[v] || 0) + 1 })
+    const sorted = Object.entries(tally).sort((a, b) => b[1] - a[1])
+    return {
+      success: true,
+      data: {
+        room: roomData,
+        tally,
+        winner: sorted[0]?.[0] || '',
+        winnerVotes: sorted[0]?.[1] || 0,
+        isTie: sorted.length > 1 && sorted[0][1] === sorted[1][1],
+        totalVotes: Object.keys(voters).length
+      }
     }
   },
 
   // 获取用户投票历史
   async getMyRooms() {
-    try {
-      const list = wx.getStorageSync('vote_history') || []
-      return { success: true, data: list }
-    } catch (e) {
-      return { success: true, data: [] }
-    }
+    const list = wx.getStorageSync('vote_history') || []
+    return { success: true, data: list }
   },
 
   // 通过房间码获取投票

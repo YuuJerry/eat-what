@@ -19,11 +19,7 @@ Page({
 
   // 页面加载时，根据参数决定进入模式
   onLoad(options) {
-    if (options.code && options.fileID) {
-      // 通过分享链接加入（带 fileID）
-      this.joinByFileID(options.code, decodeURIComponent(options.fileID))
-    } else if (options.code) {
-      // 通过房间码加入（本地缓存 fileID）
+    if (options.code) {
       this.joinByCode(options.code)
     }
     // 无参数时默认进入创建模式
@@ -88,24 +84,7 @@ Page({
     this.setData({ isCreating: false })
   },
 
-  // 通过分享链接加入（带 fileID）
-  async joinByFileID(code, fileID) {
-    try {
-      wx.showLoading({ title: '加入中...' })
-      const res = await voteApi.joinRoomByFileID(code, fileID)
-      wx.hideLoading()
-      if (res && res.success && res.data) {
-        this.enterRoom(res.data)
-      } else {
-        wx.showModal({ title: '加入失败', content: res?.error || '房间不存在或已过期', showCancel: false })
-      }
-    } catch (e) {
-      wx.hideLoading()
-      wx.showModal({ title: '加入失败', content: e.errMsg || '网络错误', showCancel: false })
-    }
-  },
-
-  // 通过房间码加入（本地缓存 fileID）
+  // 通过房间码加入（云数据库查询 → 本地缓存回退）
   async joinByCode(code) {
     try {
       wx.showLoading({ title: '加入中...' })
@@ -187,15 +166,13 @@ Page({
     }
   },
 
-  // 微信分享配置：带 fileID 确保接收者能加入
+  // 微信分享配置
   onShareAppMessage() {
     const room = this.data.room
     if (room) {
-      const fileID = voteApi.getFileID(room.roomCode)
-      const fidParam = fileID ? `&fileID=${encodeURIComponent(fileID)}` : ''
       return {
         title: `来投票：${room.title}`,
-        path: `/pages/vote/room?code=${room.roomCode}${fidParam}`
+        path: `/pages/vote/room?code=${room.roomCode}`
       }
     }
     return {
