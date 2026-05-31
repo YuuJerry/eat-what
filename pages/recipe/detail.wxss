@@ -433,6 +433,19 @@
   margin-bottom: 8rpx;
 }
 
+/* 可折叠区块头部 */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.collapse-arrow {
+  font-size: 24rpx;
+  color: #999;
+  padding: 8rpx;
+}
+
 /* AI 免责声明 */
 .ai-disclaimer {
   text-align: center;

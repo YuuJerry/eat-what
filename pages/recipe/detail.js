@@ -11,6 +11,7 @@ Page({
     isLoading: true,
     isFavorited: false,
     checkedIngredients: [],
+    showIngredients: false,
     // 视频播放器
     showPlayer: false,
     playerUrl: '',
@@ -128,6 +129,11 @@ Page({
     const idx = checked.indexOf(name)
     if (idx > -1) { checked.splice(idx, 1) } else { checked.push(name) }
     this.setData({ checkedIngredients: [...checked] })
+  },
+
+  // 展开/收起食材清单
+  onToggleIngredients() {
+    this.setData({ showIngredients: !this.data.showIngredients })
   },
 
   // 点击视频教程 - 直接在小程序内播放

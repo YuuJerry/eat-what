@@ -1,79 +1,62 @@
-<!-- 菜谱详情页面主容器：仅在菜谱数据加载完成后显示 -->
+<!-- 菜谱详情页面 -->
 <view class="container" wx:if="{{recipe}}">
-  <!-- 封面区域：手绘图标 -->
-  <view class="cover hand-drawn-placeholder">
-    <image src="{{recipe.coverIcon}}" mode="aspectFit" class="cover-icon-img" />
+
+  <!-- 1. 视频教程区域（最优先，一进来就能看到） -->
+  <view class="section card" wx:if="{{recipe.videos && recipe.videos.length > 0}}">
+    <text class="section-title">🎬 视频教程</text>
+    <view
+      class="video-item"
+      wx:for="{{recipe.videos}}"
+      wx:key="url"
+      bindtap="onVideoTap"
+      data-video="{{item}}"
+    >
+      <view class="video-cover">
+        <image wx:if="{{item.cover}}" src="{{item.cover}}" mode="aspectFill" class="video-cover-img" />
+        <view class="video-play-icon"><text>▶</text></view>
+        <text class="video-duration" wx:if="{{item.duration}}">{{item.duration}}</text>
+      </view>
+      <view class="video-info">
+        <text class="video-title">{{item.title}}</text>
+        <view class="video-meta">
+          <text class="video-author">{{item.author}}</text>
+          <text class="video-play" wx:if="{{item.playText}}">{{item.playText}}</text>
+        </view>
+        <text class="video-platform">📺 点击直接观看</text>
+      </view>
+    </view>
   </view>
 
-  <!-- 基本信息卡片：菜名、烹饪时间、难度、份量、热量 -->
+  <!-- 无视频时的搜索按钮 -->
+  <view class="section card" wx:if="{{!recipe.videos || recipe.videos.length === 0}}">
+    <text class="section-title">🎬 视频教程</text>
+    <view class="video-search-btn" bindtap="onSearchVideo">
+      <text class="video-search-icon">🔍</text>
+      <text class="video-search-text">去 Bilibili 搜索「{{recipe.name}}」教程</text>
+    </view>
+  </view>
+
+  <!-- 2. 基本信息 -->
   <view class="info-card card">
     <text class="recipe-title">{{recipe.name}}</text>
     <view class="recipe-meta-row">
-      <!-- 烹饪时间 -->
-      <view class="meta-badge">
-        <text>⏱ {{recipe.cookTime}}分钟</text>
-      </view>
-      <!-- 难度等级（1-3星） -->
-      <view class="meta-badge">
-        <text>📊 难度{{recipe.difficulty <= 1 ? '★' : recipe.difficulty === 2 ? '★★' : '★★★'}}</text>
-      </view>
-      <!-- 份量 -->
-      <view class="meta-badge" wx:if="{{recipe.servings}}">
-        <text>👥 {{recipe.servings}}人份</text>
-      </view>
-      <!-- 卡路里 -->
-      <view class="meta-badge calorie" wx:if="{{recipe.calories}}">
-        <text>🔥 {{recipe.calories}}kcal</text>
-      </view>
+      <view class="meta-badge"><text>⏱ {{recipe.cookTime}}分钟</text></view>
+      <view class="meta-badge"><text>📊 难度{{recipe.difficulty <= 1 ? '★' : recipe.difficulty === 2 ? '★★' : '★★★'}}</text></view>
+      <view class="meta-badge" wx:if="{{recipe.servings}}"><text>👥 {{recipe.servings}}人份</text></view>
+      <view class="meta-badge calorie" wx:if="{{recipe.calories}}"><text>🔥 {{recipe.calories}}kcal</text></view>
     </view>
-    <!-- 标签区域 -->
     <view class="recipe-tags">
       <text class="tag {{recipe.isDietFriendly ? 'tag-active' : ''}}" wx:if="{{recipe.isDietFriendly}}">减脂</text>
       <text class="tag" wx:for="{{recipe.tags}}" wx:key="*this">{{item}}</text>
     </view>
   </view>
 
-  <!-- 食材清单区域：可勾选标记已有食材 -->
-  <view class="section card">
-    <text class="section-title">📦 食材清单</text>
-    <view class="ingredient-list">
-      <!-- 单个食材项：点击可勾选/取消 -->
-      <view
-        class="ingredient-item"
-        wx:for="{{recipe.ingredients}}"
-        wx:key="name"
-        bindtap="onCheckIngredient"
-        data-name="{{item.name}}"
-      >
-        <!-- 勾选状态圆圈 -->
-        <view class="ingredient-check {{checkedIngredients.includes(item.name) ? 'checked' : ''}}">
-          <text wx:if="{{checkedIngredients.includes(item.name)}}">✓</text>
-        </view>
-        <!-- 食材图标 -->
-        <view class="ingredient-icon">
-          <image src="{{item.iconPath}}" mode="aspectFit" class="ingredient-img" />
-        </view>
-        <!-- 食材名称和用量 -->
-        <view class="ingredient-info">
-          <text class="ingredient-name">{{item.name}}</text>
-          <text class="ingredient-amount">{{item.amount}}</text>
-        </view>
-      </view>
-    </view>
-    <!-- 食材拥有情况汇总 -->
-    <view class="ingredient-summary" wx:if="{{checkedIngredients.length > 0}}">
-      <text class="summary-text">已拥有 {{checkedIngredients.length}}/{{recipe.ingredients.length}} 种食材</text>
-    </view>
-  </view>
-
-  <!-- 烹饪步骤区域：按顺序展示每个步骤 -->
+  <!-- 3. 烹饪步骤（核心内容） -->
   <view class="section card">
     <text class="section-title">👨‍🍳 烹饪步骤</text>
     <view class="step-list">
       <view class="step-item" wx:for="{{recipe.steps}}" wx:key="index">
-        <view class="step-number">
-          <text>{{index + 1}}</text>
-        </view>
+        <view class="step-number"><text>{{index + 1}}</text></view>
         <view class="step-content">
           <text class="step-text">{{item}}</text>
         </view>
@@ -81,7 +64,40 @@
     </view>
   </view>
 
-  <!-- 营养信息区域：展示蛋白质、脂肪、碳水、纤维 -->
+  <!-- 4. 食材清单（可折叠） -->
+  <view class="section card">
+    <view class="section-header" bindtap="onToggleIngredients">
+      <text class="section-title">📦 食材清单 ({{recipe.ingredients.length}}种)</text>
+      <text class="collapse-arrow">{{showIngredients ? '▲' : '▼'}}</text>
+    </view>
+    <view wx:if="{{showIngredients}}">
+      <view class="ingredient-list">
+        <view
+          class="ingredient-item"
+          wx:for="{{recipe.ingredients}}"
+          wx:key="name"
+          bindtap="onCheckIngredient"
+          data-name="{{item.name}}"
+        >
+          <view class="ingredient-check {{checkedIngredients.includes(item.name) ? 'checked' : ''}}">
+            <text wx:if="{{checkedIngredients.includes(item.name)}}">✓</text>
+          </view>
+          <view class="ingredient-icon">
+            <image src="{{item.iconPath}}" mode="aspectFit" class="ingredient-img" />
+          </view>
+          <view class="ingredient-info">
+            <text class="ingredient-name">{{item.name}}</text>
+            <text class="ingredient-amount">{{item.amount}}</text>
+          </view>
+        </view>
+      </view>
+      <view class="ingredient-summary" wx:if="{{checkedIngredients.length > 0}}">
+        <text class="summary-text">已拥有 {{checkedIngredients.length}}/{{recipe.ingredients.length}} 种食材</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 5. 营养信息 -->
   <view class="section card" wx:if="{{recipe.nutritionInfo}}">
     <text class="section-title">📊 营养信息（每份）</text>
     <view class="nutrition-grid">
@@ -101,45 +117,6 @@
         <text class="nutrition-value">{{recipe.nutritionInfo.fiber}}g</text>
         <text class="nutrition-label">纤维</text>
       </view>
-    </view>
-  </view>
-
-  <!-- 视频教程区域：有视频时显示视频卡片（含封面图） -->
-  <view class="section card" wx:if="{{recipe.videos && recipe.videos.length > 0}}">
-    <text class="section-title">🎬 视频教程</text>
-    <view class="video-list">
-      <view
-        class="video-item"
-        wx:for="{{recipe.videos}}"
-        wx:key="url"
-        bindtap="onVideoTap"
-        data-video="{{item}}"
-      >
-        <!-- 视频封面图 -->
-        <view class="video-cover">
-          <image wx:if="{{item.cover}}" src="{{item.cover}}" mode="aspectFill" class="video-cover-img" />
-          <view class="video-play-icon"><text>▶</text></view>
-          <text class="video-duration" wx:if="{{item.duration}}">{{item.duration}}</text>
-        </view>
-        <!-- 视频信息 -->
-        <view class="video-info">
-          <text class="video-title">{{item.title}}</text>
-          <view class="video-meta">
-            <text class="video-author">{{item.author}}</text>
-            <text class="video-play" wx:if="{{item.playText}}">{{item.playText}}</text>
-          </view>
-          <text class="video-platform">📺 Bilibili · 点击观看</text>
-        </view>
-      </view>
-    </view>
-  </view>
-
-  <!-- 无视频时：搜索教程按钮 -->
-  <view class="section card" wx:if="{{!recipe.videos || recipe.videos.length === 0}}">
-    <text class="section-title">🎬 视频教程</text>
-    <view class="video-search-btn" bindtap="onSearchVideo">
-      <text class="video-search-icon">🔍</text>
-      <text class="video-search-text">去 Bilibili 搜索「{{recipe.name}}」教程</text>
     </view>
   </view>
 
@@ -177,14 +154,12 @@
     </view>
   </view>
 
-  <!-- 底部操作栏：收藏和分享按钮 -->
+  <!-- 底部操作栏 -->
   <view class="bottom-bar">
-    <!-- 收藏按钮：根据收藏状态切换图标 -->
     <view class="bottom-btn" bindtap="onToggleFavorite">
       <text>{{isFavorited ? '❤️' : '🤍'}}</text>
       <text class="btn-label">{{isFavorited ? '已收藏' : '收藏'}}</text>
     </view>
-    <!-- 分享按钮：使用微信原生分享功能 -->
     <button class="bottom-btn share-btn" open-type="share">
       <text>📤</text>
       <text class="btn-label">分享</text>
