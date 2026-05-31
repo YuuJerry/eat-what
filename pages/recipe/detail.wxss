@@ -28,6 +28,12 @@
   font-size: 100rpx;
 }
 
+/* 封面手绘图标 */
+.cover-icon-img {
+  width: 200rpx;
+  height: 200rpx;
+}
+
 /* ===== 信息卡片样式 ===== */
 /* 信息卡片：上移覆盖封面，营造层叠效果 */
 .info-card {
@@ -114,11 +120,21 @@
   border-radius: 12rpx;
   margin-right: 16rpx;
   flex-shrink: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* 食材图标文字大小 */
 .ingredient-icon text {
   font-size: 30rpx;
+}
+
+/* 食材手绘图标 */
+.ingredient-img {
+  width: 48rpx;
+  height: 48rpx;
 }
 
 /* 食材信息行：名称和用量左右分布 */

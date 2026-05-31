@@ -1,5 +1,7 @@
 // 引入云函数 API 模块
 const { recipeApi } = require('../../utils/cloud.js')
+// 引入图标映射
+const { getDishIcon } = require('../../utils/icons.js')
 
 // 菜谱分类列表
 const CATEGORIES = ['全部', '中餐', '西餐', '日料', '韩餐', '减脂']
@@ -55,9 +57,9 @@ Page({
         page
       })
       if (res.success) {
+        const newRecipes = res.data.map(r => ({ ...r, coverIcon: getDishIcon(r.name, r.category) }))
         this.setData({
-          // 第一页直接替换，后续页追加到已有列表
-          recipes: page === 1 ? res.data : [...this.data.recipes, ...res.data],
+          recipes: page === 1 ? newRecipes : [...this.data.recipes, ...newRecipes],
           hasMore: res.hasMore
         })
       }

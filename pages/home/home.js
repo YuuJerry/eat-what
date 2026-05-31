@@ -1,5 +1,7 @@
 // 引入云函数 API 封装模块，用于获取智能推荐菜谱
 const { recipeApi } = require('../../utils/cloud.js')
+// 引入图标映射
+const { getDishIcon } = require('../../utils/icons.js')
 
 // 首页逻辑
 Page({
@@ -36,8 +38,9 @@ Page({
       // 调用云函数获取智能推荐结果
       const res = await recipeApi.smartRecommend()
       if (res && res.success) {
+        const list = res.data.map(r => ({ ...r, coverIcon: getDishIcon(r.name, r.category) }))
         this.setData({
-          recommendList: res.data,
+          recommendList: list,
           isPersonalized: !!res.isPersonalized
         })
       }

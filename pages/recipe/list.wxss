@@ -107,6 +107,12 @@
   font-size: 60rpx;
 }
 
+/* 封面手绘图标 */
+.cover-icon-img {
+  width: 140rpx;
+  height: 140rpx;
+}
+
 /* 菜谱信息区域：内边距 */
 .recipe-info {
   padding: 16rpx;

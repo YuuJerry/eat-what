@@ -1,5 +1,7 @@
 // 引入菜谱相关的云函数 API
 const { recipeApi } = require('../../utils/cloud.js')
+// 引入图标映射
+const { getDishIcon } = require('../../utils/icons.js')
 
 // 热量筛选条件列表
 const CALORIE_FILTERS = [
@@ -43,7 +45,8 @@ Page({
         maxCalories: this.data.activeCalorie || undefined
       })
       if (res.success) {
-        this.setData({ recipes: res.data })
+        const recipes = res.data.map(r => ({ ...r, coverIcon: getDishIcon(r.name, r.category) }))
+        this.setData({ recipes })
       }
     } catch (e) {
       console.error('加载减脂餐失败', e)

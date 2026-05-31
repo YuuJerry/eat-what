@@ -45,7 +45,9 @@
       { "name": "猪肉末", "amount": "100g", "icon": "" },
       { "name": "豆瓣酱", "amount": "2勺", "icon": "" },
       { "name": "花椒粉", "amount": "适量", "icon": "" },
-      { "name": "葱姜蒜", "amount": "适量", "icon": "" },
+      { "name": "葱", "amount": "适量", "icon": "" },
+      { "name": "姜", "amount": "适量", "icon": "" },
+      { "name": "蒜", "amount": "适量", "icon": "" },
       { "name": "淀粉", "amount": "1勺", "icon": "" }
     ],
     "steps": [

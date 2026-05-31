@@ -23,9 +23,9 @@
       bindtap="onRecipeTap"
       data-id="{{item._id}}"
     >
-      <!-- 封面占位图 -->
+      <!-- 封面手绘图标 -->
       <view class="recipe-cover hand-drawn-placeholder">
-        <text class="cover-emoji">🥗</text>
+        <image src="{{item.coverIcon}}" mode="aspectFit" class="cover-icon-img" />
       </view>
       <!-- 菜谱信息区域 -->
       <view class="recipe-info">

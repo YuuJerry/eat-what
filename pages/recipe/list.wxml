@@ -51,9 +51,9 @@
       bindtap="onRecipeTap"
       data-id="{{item._id}}"
     >
-      <!-- 封面区域：根据是否减脂显示不同 emoji -->
+      <!-- 封面区域：手绘图标 -->
       <view class="recipe-cover hand-drawn-placeholder">
-        <text class="recipe-cover-emoji">{{item.isDietFriendly ? '🥗' : '🍲'}}</text>
+        <image src="{{item.coverIcon}}" mode="aspectFit" class="cover-icon-img" />
       </view>
       <!-- 菜谱信息区域 -->
       <view class="recipe-info">

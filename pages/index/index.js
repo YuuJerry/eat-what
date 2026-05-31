@@ -1,5 +1,7 @@
 // 引入预设食物数据和分类配置
 const { DEFAULT_FOODS, CATEGORIES } = require('../../utils/foods.js')
+// 引入图标映射
+const { getIngredientIcon } = require('../../utils/icons.js')
 
 // 自定义食物本地存储 key
 const STORAGE_KEY = 'eat_what_custom_foods'
@@ -178,7 +180,10 @@ Page({
   // 合并预设食物与自定义食物，生成完整食物列表
   mergeFoods() {
     const custom = this.data.customFoods.map(f => ({ ...f, isCustom: true }))
-    const all = [...DEFAULT_FOODS, ...custom]
+    const all = [...DEFAULT_FOODS, ...custom].map(f => ({
+      ...f,
+      icon: getIngredientIcon(f.name)
+    }))
     this.setData({ allFoods: all })
   },
 

@@ -58,7 +58,9 @@
         wx:for="{{filteredFoods}}"
         wx:key="name"
       >
-        <text class="food-emoji">{{item.emoji}}</text>
+        <view class="food-icon-wrap">
+          <image src="{{item.icon}}" mode="aspectFit" class="food-icon-img" />
+        </view>
         <text class="food-name">{{item.name}}</text>
         <text class="food-tag">{{item.category}}</text>
         <!-- 仅自定义食物显示编辑和删除按钮 -->

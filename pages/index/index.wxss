@@ -216,6 +216,23 @@
   margin-right: 16rpx;
 }
 
+/* 食物手绘图标 */
+.food-icon-wrap {
+  width: 48rpx;
+  height: 48rpx;
+  margin-right: 16rpx;
+  flex-shrink: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.food-icon-img {
+  width: 44rpx;
+  height: 44rpx;
+}
+
 /* 食物名称：占据剩余空间 */
 .food-name {
   flex: 1;

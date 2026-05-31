@@ -1,8 +1,8 @@
 <!-- 菜谱详情页面主容器：仅在菜谱数据加载完成后显示 -->
 <view class="container" wx:if="{{recipe}}">
-  <!-- 封面区域：根据是否减脂餐显示不同 emoji -->
+  <!-- 封面区域：手绘图标 -->
   <view class="cover hand-drawn-placeholder">
-    <text class="cover-emoji">{{recipe.isDietFriendly ? '🥗' : '🍲'}}</text>
+    <image src="{{recipe.coverIcon}}" mode="aspectFit" class="cover-icon-img" />
   </view>
 
   <!-- 基本信息卡片：菜名、烹饪时间、难度、份量、热量 -->
@@ -50,8 +50,8 @@
           <text wx:if="{{checkedIngredients.includes(item.name)}}">✓</text>
         </view>
         <!-- 食材图标 -->
-        <view class="ingredient-icon hand-drawn-placeholder">
-          <text>🥄</text>
+        <view class="ingredient-icon">
+          <image src="{{item.iconPath}}" mode="aspectFit" class="ingredient-img" />
         </view>
         <!-- 食材名称和用量 -->
         <view class="ingredient-info">

@@ -163,6 +163,12 @@
   font-size: 60rpx;
 }
 
+/* 菜谱封面手绘图标 */
+.cover-icon-img {
+  width: 120rpx;
+  height: 120rpx;
+}
+
 /* 菜谱信息区域：占据剩余空间，纵向居中 */
 .recipe-info {
   flex: 1;

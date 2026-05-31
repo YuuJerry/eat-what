@@ -1,5 +1,7 @@
 // 引入菜谱和用户相关的云函数 API
 const { recipeApi, userApi } = require('../../utils/cloud.js')
+// 引入图标映射
+const { getDishIcon, getIngredientIcon } = require('../../utils/icons.js')
 
 Page({
   data: {
@@ -23,7 +25,16 @@ Page({
     try {
       const res = await recipeApi.getDetail(id)
       if (res.success) {
-        this.setData({ recipe: res.data })
+        const recipe = res.data
+        recipe.coverIcon = getDishIcon(recipe.name, recipe.category)
+        // 为食材列表添加图标
+        if (recipe.ingredients) {
+          recipe.ingredients = recipe.ingredients.map(i => ({
+            ...i,
+            iconPath: getIngredientIcon(i.name)
+          }))
+        }
+        this.setData({ recipe })
       }
     } catch (e) {
       console.error('加载菜谱失败', e)
