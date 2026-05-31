@@ -20,9 +20,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 部署前必须替换
 
-- `app.js` 中的 `envId: 'eat-what-xxx'` → 你的云开发环境 ID
+- `app.js` 中的 `env: 'eat-what-xxx'` → 你的云开发环境 ID
 - `cloud/cloudbaserc.json` 中的 `envId` → 同上
-- `project.config.json` 中的 `appid: 'touristappid'` → 你的小程序 AppID
+- `project.config.json` 中的 `appid` → 你的小程序 AppID
+
+## ⚠️ 远程开发注意事项
+
+用户通过 cc-connect 远程操作，**无法直接操作电脑 GUI**（微信开发者工具安装、UAC 弹窗等均不可用）。
+
+- **上传小程序**：用 `miniprogram-ci` CLI，需 IPv4 DNS + 私钥文件（在 `.cc-connect/attachments/` 下）
+- **部署云函数**：无法通过微信开发者工具 GUI 部署。需用 `@cloudbase/cli` (`tcb`) 或 REST API
+- **私钥文件**：`private.wx59d58721596c93b1.key` 每次上传时从 `.cc-connect/attachments/` 复制，用完即删
+- **上传脚本**：`C:/Users/JerryYuu/Desktop/wx-test/upload.js`，用 `node --dns-result-order=ipv4first upload.js` 执行
 
 ## 架构
 
