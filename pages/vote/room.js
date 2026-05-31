@@ -94,7 +94,16 @@ Page({
     try {
       const res = await voteApi.joinRoom(code)
       if (res && res.success) {
-        this.setData({ room: res.data, mode: 'vote' })
+        const room = res.data
+        // 检查用户是否已投票
+        const openid = getApp().globalData.openid || 'user_' + Date.now()
+        const myVote = (room.voters && room.voters[openid]) || ''
+        if (myVote) {
+          this.setData({ room, myVote })
+          this.loadResult()
+        } else {
+          this.setData({ room, mode: 'vote' })
+        }
       } else {
         wx.showToast({ title: '房间不存在或已过期', icon: 'none' })
       }
@@ -103,28 +112,9 @@ Page({
     }
   },
 
-  // 通过房间ID加载已有房间
-  async loadRoom(id) {
-    try {
-      const res = await voteApi.getRoom(id)
-      if (res && res.success && res.data) {
-        const room = res.data
-        // 检查用户是否已投票
-        const openid = getApp().globalData.openid
-        const myVote = (room.voters && room.voters[openid]) || ''
-        if (myVote) {
-          // 已投票，直接加载结果
-          this.setData({ room, myVote })
-          this.loadResult()
-        } else {
-          this.setData({ room, mode: 'vote' })
-        }
-      } else {
-        wx.showToast({ title: '房间不存在', icon: 'none' })
-      }
-    } catch (e) {
-      wx.showToast({ title: '加载失败', icon: 'none' })
-    }
+  // 通过房间码加载已有房间
+  async loadRoom(roomCode) {
+    this.joinByCode(roomCode)
   },
 
   // 用户点击选择某个投票选项
@@ -145,7 +135,7 @@ Page({
     }
 
     try {
-      const res = await voteApi.submitVote(this.data.room._id, this.data.myVote)
+      const res = await voteApi.submitVote(this.data.room.roomCode, this.data.myVote)
       if (res && res.success) {
         wx.showToast({ title: '投票成功', icon: 'success' })
         // 投票成功后自动加载并展示结果
@@ -162,7 +152,7 @@ Page({
   async loadResult() {
     if (!this.data.room) return
     try {
-      const res = await voteApi.getResult(this.data.room._id)
+      const res = await voteApi.getResult(this.data.room.roomCode)
       if (res && res.success) {
         this.setData({ result: res.data, mode: 'result' })
       }

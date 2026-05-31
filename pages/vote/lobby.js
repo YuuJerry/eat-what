@@ -48,9 +48,11 @@ Page({
     })
   },
 
-  // 点击历史房间卡片，通过房间ID跳转到对应的投票房间
+  // 点击历史房间卡片，通过房间码跳转到对应的投票房间
   onRoomTap(e) {
-    const id = e.currentTarget.dataset.id
-    wx.navigateTo({ url: `/pages/vote/room?id=${id}` })
+    const code = e.currentTarget.dataset.code
+    if (code) {
+      wx.navigateTo({ url: `/pages/vote/room?code=${code}` })
+    }
   }
 })

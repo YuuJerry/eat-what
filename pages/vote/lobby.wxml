@@ -23,9 +23,9 @@
     <view
       class="room-card card"
       wx:for="{{myRooms}}"
-      wx:key="_id"
+      wx:key="roomCode"
       bindtap="onRoomTap"
-      data-id="{{item._id}}"
+      data-code="{{item.roomCode}}"
     >
       <text class="room-title">{{item.title}}</text>
       <view class="room-meta">
