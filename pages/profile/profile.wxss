@@ -188,3 +188,151 @@
 .save-action {
   margin-top: 30rpx;
 }
+
+/* ===== 收藏区域 ===== */
+.section-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.section-arrow {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.fav-list {
+  margin-top: 16rpx;
+}
+
+.fav-card {
+  background: #FAFAFA;
+  border-radius: 16rpx;
+  padding: 20rpx;
+  margin-bottom: 16rpx;
+}
+
+.fav-header {
+  display: flex;
+  align-items: center;
+}
+
+.fav-cover {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 12rpx;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: #FFF5F5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fav-cover-img {
+  width: 64rpx;
+  height: 64rpx;
+}
+
+.fav-info {
+  flex: 1;
+  margin-left: 16rpx;
+}
+
+.fav-name {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+  display: block;
+}
+
+.fav-meta {
+  display: flex;
+  gap: 16rpx;
+  font-size: 22rpx;
+  color: #999;
+  margin-top: 4rpx;
+}
+
+.fav-delete {
+  font-size: 32rpx;
+  padding: 8rpx 12rpx;
+}
+
+.fav-ingredients {
+  margin-top: 12rpx;
+  padding-top: 12rpx;
+  border-top: 1rpx solid #f0f0f0;
+}
+
+.fav-sub {
+  font-size: 24rpx;
+  color: #666;
+  font-weight: bold;
+}
+
+.fav-ing-text {
+  font-size: 24rpx;
+  color: #666;
+}
+
+.fav-steps {
+  margin-top: 12rpx;
+  padding-top: 12rpx;
+  border-top: 1rpx solid #f0f0f0;
+}
+
+.fav-steps-toggle {
+  font-size: 24rpx;
+  color: #667eea;
+  font-weight: bold;
+  padding: 8rpx 0;
+}
+
+.fav-steps-list {
+  margin-top: 8rpx;
+}
+
+.fav-step {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 8rpx;
+}
+
+.step-num {
+  font-size: 24rpx;
+  color: #667eea;
+  font-weight: bold;
+  margin-right: 8rpx;
+  flex-shrink: 0;
+}
+
+.step-text {
+  font-size: 24rpx;
+  color: #333;
+  line-height: 1.5;
+}
+
+.fav-empty {
+  text-align: center;
+  padding: 40rpx 0;
+}
+
+.empty-emoji {
+  font-size: 60rpx;
+  display: block;
+  margin-bottom: 12rpx;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #999;
+  display: block;
+}
+
+.empty-hint {
+  font-size: 24rpx;
+  color: #ccc;
+  display: block;
+  margin-top: 8rpx;
+}
