@@ -354,3 +354,27 @@
   display: block;
   margin-bottom: 8rpx;
 }
+
+/* AI 免责声明 */
+.ai-disclaimer {
+  text-align: center;
+  padding: 24rpx 0 120rpx;
+}
+
+.ai-disclaimer-text {
+  font-size: 22rpx;
+  color: #ccc;
+}
+
+/* 加载状态 */
+.loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+}
+
+.loading-text {
+  font-size: 28rpx;
+  color: #999;
+}

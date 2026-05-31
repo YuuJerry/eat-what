@@ -87,6 +87,24 @@
   gap: 16rpx;
 }
 
+/* AI 提示 */
+.ai-hint {
+  text-align: center;
+  margin-bottom: 16rpx;
+}
+
+.ai-hint-text {
+  font-size: 22rpx;
+  color: #999;
+}
+
+/* 空状态副文字 */
+.empty-hint {
+  font-size: 24rpx;
+  color: #ccc;
+  margin-top: 8rpx;
+}
+
 /* 菜谱卡片：两列布局，白色圆角卡片带阴影 */
 .recipe-card {
   width: calc(50% - 8rpx);

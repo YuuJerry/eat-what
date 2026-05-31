@@ -1,16 +1,8 @@
 <!-- 减脂餐页面主容器 -->
 <view class="container">
-  <!-- 热量筛选栏：全部 / <300kcal / 300-500kcal -->
-  <view class="filter-bar">
-    <view
-      class="filter-item {{activeCalorie === item.key ? 'active' : ''}}"
-      wx:for="{{calorieFilters}}"
-      wx:key="key"
-      bindtap="onCalorieFilter"
-      data-cal="{{item.key}}"
-    >
-      <text>{{item.label}}</text>
-    </view>
+  <!-- AI 提示 -->
+  <view class="ai-hint">
+    <text class="ai-hint-text">🤖 AI 生成的减脂菜谱 · 下拉刷新换一批</text>
   </view>
 
   <!-- 减脂餐列表：横向卡片布局 -->
@@ -21,7 +13,7 @@
       wx:for="{{recipes}}"
       wx:key="_id"
       bindtap="onRecipeTap"
-      data-id="{{item._id}}"
+      data-recipe="{{item}}"
     >
       <!-- 封面手绘图标 -->
       <view class="recipe-cover hand-drawn-placeholder">

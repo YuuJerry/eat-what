@@ -1,108 +1,83 @@
-// 引入云函数 API 模块
-const { recipeApi } = require('../../utils/cloud.js')
-// 引入图标映射
+// AI 菜谱引擎
+const aiRecipes = require('../../utils/ai-recipes.js')
+// 图标映射
 const { getDishIcon } = require('../../utils/icons.js')
 
-// 菜谱分类列表
 const CATEGORIES = ['全部', '中餐', '西餐', '日料', '韩餐', '减脂']
-// 排序方式列表
-const SORTS = [
-  { key: 'popular', label: '最热门' },
-  { key: 'quickest', label: '最快手' },
-  { key: 'lowest-cal', label: '最低卡' },
-  { key: 'newest', label: '最新' }
-]
 
 Page({
   data: {
-    categories: CATEGORIES,        // 分类列表
-    activeCategory: '全部',        // 当前选中的分类
-    sorts: SORTS,                  // 排序方式列表
-    activeSort: 'popular',         // 当前选中的排序方式
-    keyword: '',                   // 搜索关键词
-    recipes: [],                   // 菜谱列表数据
-    isLoading: false,              // 是否正在加载
-    hasMore: true,                 // 是否还有更多数据可加载
-    page: 1                        // 当前页码（分页用）
+    categories: CATEGORIES,
+    activeCategory: '全部',
+    keyword: '',
+    recipes: [],
+    isLoading: false
   },
 
-  // 页面加载时请求菜谱列表
   onLoad() {
     this.loadRecipes()
   },
 
-  // 下拉刷新：重置页码并重新加载
   onPullDownRefresh() {
-    this.setData({ page: 1 })
-    this.loadRecipes().then(() => wx.stopPullDownRefresh())
+    this.loadRecipes(true).then(() => wx.stopPullDownRefresh())
   },
 
-  // 触底加载更多：有更多数据且不在加载中时触发
-  onReachBottom() {
-    if (this.data.hasMore && !this.data.isLoading) {
-      this.loadMore()
-    }
-  },
-
-  // 加载菜谱列表（核心请求方法）
-  async loadRecipes() {
+  // 加载菜谱（AI 生成或读缓存）
+  async loadRecipes(forceRefresh) {
     this.setData({ isLoading: true })
     try {
-      const { activeCategory, activeSort, keyword, page } = this.data
-      const res = await recipeApi.getList({
-        category: activeCategory === '全部' ? '' : activeCategory,  // "全部"时不传分类参数
-        isDiet: activeCategory === '减脂',                            // 选中"减脂"时标记为减脂餐
-        sort: activeSort,
-        keyword,
-        page
-      })
-      if (res.success) {
-        const newRecipes = res.data.map(r => ({ ...r, coverIcon: getDishIcon(r.name, r.category) }))
-        this.setData({
-          recipes: page === 1 ? newRecipes : [...this.data.recipes, ...newRecipes],
-          hasMore: res.hasMore
-        })
+      const { activeCategory, keyword } = this.data
+
+      let recipes
+      if (keyword) {
+        recipes = await aiRecipes.searchRecipes(keyword)
+      } else if (activeCategory === '减脂') {
+        recipes = await aiRecipes.getDietRecipes(forceRefresh)
+      } else {
+        recipes = await aiRecipes.getRecipesByCategory(activeCategory, forceRefresh)
       }
+
+      const list = recipes.map(r => ({
+        ...r,
+        coverIcon: getDishIcon(r.name, r.category)
+      }))
+
+      this.setData({ recipes: list })
     } catch (e) {
       console.error('加载菜谱失败', e)
+      wx.showToast({ title: '加载失败，请下拉刷新', icon: 'none' })
     }
     this.setData({ isLoading: false })
   },
 
-  // 加载更多：页码加一后重新请求
-  async loadMore() {
-    await this.setData({ page: this.data.page + 1 })
-    this.loadRecipes()
-  },
-
-  // 切换分类：重置列表和页码，重新加载
+  // 切换分类
   onCategoryChange(e) {
     const cat = e.currentTarget.dataset.cat
-    this.setData({ activeCategory: cat, page: 1, recipes: [] })
+    this.setData({ activeCategory: cat, keyword: '', recipes: [] })
     this.loadRecipes()
   },
 
-  // 切换排序方式：重置列表和页码，重新加载
-  onSortChange(e) {
-    const sort = e.currentTarget.dataset.sort
-    this.setData({ activeSort: sort, page: 1, recipes: [] })
-    this.loadRecipes()
-  },
-
-  // 搜索框输入事件：实时更新关键词
+  // 搜索框输入
   onSearchInput(e) {
     this.setData({ keyword: e.detail.value })
   },
 
-  // 执行搜索：重置列表并加载
+  // 执行搜索
   onSearch() {
-    this.setData({ page: 1, recipes: [] })
+    this.setData({ recipes: [] })
     this.loadRecipes()
   },
 
-  // 点击菜谱卡片：跳转到菜谱详情页
+  // 点击菜谱卡片
   onRecipeTap(e) {
-    const id = e.currentTarget.dataset.id
-    wx.navigateTo({ url: `/pages/recipe/detail?id=${id}` })
+    const recipe = e.currentTarget.dataset.recipe
+    if (recipe) {
+      wx.navigateTo({
+        url: `/pages/recipe/detail?id=${recipe._id}`,
+        success: (res) => {
+          res.eventChannel.emit('recipeData', recipe)
+        }
+      })
+    }
   }
 })

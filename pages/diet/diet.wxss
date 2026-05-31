@@ -4,6 +4,17 @@
   padding-bottom: 40rpx;
 }
 
+/* AI 提示 */
+.ai-hint {
+  text-align: center;
+  margin-bottom: 20rpx;
+}
+
+.ai-hint-text {
+  font-size: 22rpx;
+  color: #999;
+}
+
 /* ===== 筛选栏样式 ===== */
 .filter-bar {
   display: flex;

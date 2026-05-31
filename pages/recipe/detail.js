@@ -1,102 +1,140 @@
-// 引入菜谱和用户相关的云函数 API
-const { recipeApi, userApi } = require('../../utils/cloud.js')
-// 引入图标映射
+// AI 菜谱引擎
+const aiRecipes = require('../../utils/ai-recipes.js')
+// 图标映射
 const { getDishIcon, getIngredientIcon } = require('../../utils/icons.js')
+// 收藏 key
+const FAVORITES_KEY = 'eat_what_favorites'
 
 Page({
   data: {
-    recipe: null,                  // 菜谱详情数据
-    isLoading: true,               // 加载状态
-    isFavorited: false,            // 当前用户是否已收藏
-    checkedIngredients: []         // 用户已勾选的食材列表
+    recipe: null,
+    isLoading: true,
+    isFavorited: false,
+    checkedIngredients: []
   },
 
-  // 页面加载：从路由参数获取菜谱 ID 并请求详情
   onLoad(options) {
-    if (options.id) {
-      this.recipeId = options.id
-      this.loadRecipe(options.id)
+    this.recipeId = options.id || ''
+
+    // 优先从 eventChannel 接收完整数据（列表页/首页传入）
+    const eventChannel = this.getOpenerEventChannel()
+    if (eventChannel && eventChannel.on) {
+      eventChannel.on('recipeData', (data) => {
+        if (data && data.name) {
+          this.showRecipe(data)
+          this.setData({ isLoading: false })
+          return
+        }
+      })
     }
+
+    // eventChannel 无数据时，延迟检查（异步回调）
+    setTimeout(() => {
+      if (!this.data.recipe) {
+        this.loadRecipe(this.recipeId)
+      }
+    }, 300)
   },
 
-  // 请求菜谱详情数据
+  // 展示菜谱数据（统一处理）
+  showRecipe(recipe) {
+    const r = { ...recipe }
+    r.coverIcon = getDishIcon(r.name, r.category)
+    if (r.ingredients) {
+      r.ingredients = r.ingredients.map(i => ({
+        ...i,
+        iconPath: getIngredientIcon(i.name)
+      }))
+    }
+    this.recipeId = r._id || r.name
+    this.setData({ recipe: r })
+    this.checkFavorited()
+  },
+
+  // 从本地/AI 加载菜谱
   async loadRecipe(id) {
     this.setData({ isLoading: true })
     try {
-      const res = await recipeApi.getDetail(id)
-      if (res.success) {
-        const recipe = res.data
-        recipe.coverIcon = getDishIcon(recipe.name, recipe.category)
-        // 为食材列表添加图标
-        if (recipe.ingredients) {
-          recipe.ingredients = recipe.ingredients.map(i => ({
-            ...i,
-            iconPath: getIngredientIcon(i.name)
-          }))
-        }
-        this.setData({ recipe })
-      }
+      const recipe = await aiRecipes.getRecipeDetail(id)
+      this.showRecipe(recipe)
     } catch (e) {
       console.error('加载菜谱失败', e)
+      wx.showToast({ title: '加载失败', icon: 'none' })
     }
     this.setData({ isLoading: false })
   },
 
-  // 勾选/取消勾选食材（标记"我有这个"）
+  // 检查是否已收藏
+  checkFavorited() {
+    try {
+      const favs = wx.getStorageSync(FAVORITES_KEY) || []
+      const name = this.data.recipe?.name
+      this.setData({ isFavorited: favs.some(f => f.name === name) })
+    } catch (e) {
+      // ignore
+    }
+  },
+
+  // 收藏/取消收藏
+  onToggleFavorite() {
+    const recipe = this.data.recipe
+    if (!recipe) return
+
+    try {
+      let favs = wx.getStorageSync(FAVORITES_KEY) || []
+      const existIdx = favs.findIndex(f => f.name === recipe.name)
+
+      if (existIdx > -1) {
+        favs.splice(existIdx, 1)
+        wx.showToast({ title: '已取消收藏', icon: 'none' })
+      } else {
+        favs.push({
+          name: recipe.name,
+          ingredients: recipe.ingredients,
+          steps: recipe.steps,
+          cookTime: recipe.cookTime,
+          calories: recipe.calories,
+          category: recipe.category,
+          coverIcon: recipe.coverIcon,
+          savedAt: Date.now()
+        })
+        wx.showToast({ title: '已收藏 ❤️', icon: 'success' })
+      }
+
+      wx.setStorageSync(FAVORITES_KEY, favs)
+      this.setData({ isFavorited: existIdx === -1 })
+    } catch (e) {
+      console.error('收藏操作失败', e)
+    }
+  },
+
+  // 勾选/取消食材
   onCheckIngredient(e) {
     const name = e.currentTarget.dataset.name
     const checked = this.data.checkedIngredients
     const idx = checked.indexOf(name)
-    if (idx > -1) {
-      checked.splice(idx, 1)
-    } else {
-      checked.push(name)
-    }
+    if (idx > -1) { checked.splice(idx, 1) } else { checked.push(name) }
     this.setData({ checkedIngredients: [...checked] })
   },
 
-  // 收藏/取消收藏菜谱
-  async onToggleFavorite() {
-    if (!this.recipeId) {
-      wx.showToast({ title: '菜谱ID无效', icon: 'none' })
-      return
-    }
-    try {
-      const res = await userApi.toggleFavorite(this.recipeId)
-      if (res.success) {
-        this.setData({ isFavorited: res.action === 'favorited' })
-        wx.showToast({
-          title: res.action === 'favorited' ? '已收藏' : '已取消收藏',
-          icon: 'success'
-        })
-      }
-    } catch (e) {
-      wx.showToast({ title: '操作失败', icon: 'none' })
-    }
-  },
-
-  // 点击视频教程：尝试打开B站小程序，失败则复制链接到剪贴板
+  // 视频教程
   onVideoTap(e) {
     const video = e.currentTarget.dataset.video
     if (video.platform === 'bilibili') {
-      // 尝试打开B站小程序
       wx.navigateToMiniProgram({
         appId: 'wx7564fd5313fa0a90',
         path: `pages/video/video?bvid=${video.videoId}`,
         fail() {
-          // 回退到复制链接
           wx.setClipboardData({
             data: `https://www.bilibili.com/video/${video.videoId}`,
-            success() {
-              wx.showToast({ title: '链接已复制', icon: 'success' })
-            }
+            success() { wx.showToast({ title: '链接已复制', icon: 'success' }) }
           })
         }
       })
     }
   },
 
-  // 分享给好友：自定义分享标题和路径
+  // 分享
   onShareAppMessage() {
     const recipe = this.data.recipe
     return {

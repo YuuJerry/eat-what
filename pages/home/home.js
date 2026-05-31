@@ -1,58 +1,45 @@
-// 引入云函数 API 封装模块，用于获取智能推荐菜谱
-const { recipeApi } = require('../../utils/cloud.js')
-// 引入图标映射
+// AI 菜谱引擎
+const aiRecipes = require('../../utils/ai-recipes.js')
+// 图标映射
 const { getDishIcon } = require('../../utils/icons.js')
 
-// 首页逻辑
 Page({
   data: {
-    // 智能推荐菜谱列表
     recommendList: [],
-    // 是否为个性化推荐（根据用户偏好）
-    isPersonalized: false,
-    // 快捷操作入口配置（冰箱推荐、减脂餐、投票、转盘）
+    isLoading: true,
     quickActions: [
       { icon: '🧊', title: '冰箱推荐', desc: '看看冰箱里有什么', url: '/pages/fridge/fridge' },
       { icon: '🏋️', title: '减脂餐', desc: '健康低卡食谱', url: '/pages/diet/diet' },
       { icon: '🗳️', title: '发起投票', desc: '和朋友一起选', url: '/pages/vote/room' },
       { icon: '🎰', title: '随机转盘', desc: '帮你决定吃什么', url: '/pages/index/index' }
-    ],
-    // 页面加载状态标记
-    isLoading: true
+    ]
   },
 
-  // 页面加载时触发，拉取推荐数据
   onLoad() {
     this.loadRecommendations()
   },
 
-  // 下拉刷新回调，重新加载推荐数据后停止刷新动画
   onPullDownRefresh() {
-    this.loadRecommendations().then(() => wx.stopPullDownRefresh())
+    this.loadRecommendations(true).then(() => wx.stopPullDownRefresh())
   },
 
-  // 异步加载智能推荐菜谱数据
-  async loadRecommendations() {
+  // 加载热门推荐（AI 生成 + 本地缓存）
+  async loadRecommendations(forceRefresh) {
     this.setData({ isLoading: true })
     try {
-      // 调用云函数获取智能推荐结果
-      const res = await recipeApi.smartRecommend()
-      if (res && res.success) {
-        const list = res.data.map(r => ({ ...r, coverIcon: getDishIcon(r.name, r.category) }))
-        this.setData({
-          recommendList: list,
-          isPersonalized: !!res.isPersonalized
-        })
-      }
+      const recipes = await aiRecipes.getHotRecipes(forceRefresh)
+      const list = recipes.map(r => ({
+        ...r,
+        coverIcon: getDishIcon(r.name, r.category)
+      }))
+      this.setData({ recommendList: list })
     } catch (e) {
       console.error('加载推荐失败', e)
-      wx.showToast({ title: '加载失败，请下拉刷新', icon: 'none' })
+      wx.showToast({ title: 'AI 推荐失败，请下拉刷新', icon: 'none' })
     }
     this.setData({ isLoading: false })
   },
 
-  // 快捷操作点击事件，根据 URL 跳转到对应页面
-  // switchTab 用于 tabBar 页面，navigateTo 用于普通页面
   onQuickAction(e) {
     const url = e.currentTarget.dataset.url
     if (url === '/pages/recipe/list') {
@@ -62,9 +49,17 @@ Page({
     }
   },
 
-  // 推荐菜谱卡片点击事件，跳转到菜谱详情页
   onRecipeTap(e) {
-    const id = e.currentTarget.dataset.id
-    wx.navigateTo({ url: `/pages/recipe/detail?id=${id}` })
+    const recipe = e.currentTarget.dataset.recipe
+    if (recipe) {
+      // 通过 eventChannel 传递完整菜谱数据到详情页
+      wx.navigateTo({
+        url: `/pages/recipe/detail?id=${recipe._id}`,
+        events: {},
+        success: (res) => {
+          res.eventChannel.emit('recipeData', recipe)
+        }
+      })
+    }
   }
 })
