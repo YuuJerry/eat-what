@@ -208,8 +208,8 @@ const voteApi = {
       saveFileID(code, fileID, title)
       return { success: true, roomId: code, roomCode: code }
     } catch (e) {
-      console.error('创建投票失败', e)
-      return null
+      console.error('创建投票失败:', e)
+      return { success: false, error: e.errMsg || e.message || '未知错误' }
     }
   },
 
@@ -233,15 +233,17 @@ const voteApi = {
   async joinRoomByFileID(roomCode, fileID) {
     try {
       const code = roomCode.toUpperCase()
+      if (!fileID) return { success: false, error: '缺少 fileID' }
       const roomData = await downloadVote(fileID)
+      if (!roomData || !roomData.roomCode) return { success: false, error: '数据无效' }
       // 缓存 fileID
       saveFileID(code, fileID, roomData.title)
-      if (roomData.status !== 'active') return null
-      if (roomData.expiresAt < Date.now()) return null
+      if (roomData.status !== 'active') return { success: false, error: '投票已结束' }
+      if (roomData.expiresAt < Date.now()) return { success: false, error: '投票已过期' }
       return { success: true, data: roomData }
     } catch (e) {
-      console.error('加入投票失败', e)
-      return null
+      console.error('加入投票失败:', e)
+      return { success: false, error: e.errMsg || e.message || '下载失败' }
     }
   },
 

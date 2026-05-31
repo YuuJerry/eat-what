@@ -78,10 +78,9 @@ Page({
     try {
       const res = await voteApi.createRoom({ title, options: validOptions, maxVoters })
       if (res && res.success) {
-        // 创建成功后，通过返回的房间码自动加入投票
         this.joinByCode(res.roomCode)
       } else {
-        wx.showToast({ title: res.error || '创建失败', icon: 'none' })
+        wx.showToast({ title: '创建失败: ' + (res?.error || '未知'), icon: 'none', duration: 3000 })
       }
     } catch (e) {
       wx.showToast({ title: '创建失败', icon: 'none' })
@@ -92,33 +91,43 @@ Page({
   // 通过分享链接加入（带 fileID）
   async joinByFileID(code, fileID) {
     try {
+      wx.showLoading({ title: '加入中...' })
       const res = await voteApi.joinRoomByFileID(code, fileID)
-      if (res && res.success) {
+      wx.hideLoading()
+      if (res && res.success && res.data) {
         this.enterRoom(res.data)
       } else {
-        wx.showToast({ title: '房间不存在或已过期', icon: 'none' })
+        wx.showModal({ title: '加入失败', content: res?.error || '房间不存在或已过期', showCancel: false })
       }
     } catch (e) {
-      wx.showToast({ title: '加入失败', icon: 'none' })
+      wx.hideLoading()
+      wx.showModal({ title: '加入失败', content: e.errMsg || '网络错误', showCancel: false })
     }
   },
 
   // 通过房间码加入（本地缓存 fileID）
   async joinByCode(code) {
     try {
+      wx.showLoading({ title: '加入中...' })
       const res = await voteApi.joinRoom(code)
-      if (res && res.success) {
+      wx.hideLoading()
+      if (res && res.success && res.data) {
         this.enterRoom(res.data)
       } else {
-        wx.showToast({ title: '房间不存在或已过期', icon: 'none' })
+        wx.showModal({ title: '加入失败', content: '房间不存在或已过期，请确认房间码正确', showCancel: false })
       }
     } catch (e) {
-      wx.showToast({ title: '加入失败', icon: 'none' })
+      wx.hideLoading()
+      wx.showModal({ title: '加入失败', content: e.errMsg || '网络错误', showCancel: false })
     }
   },
 
-  // 进入投票房间（统一处理）
+  // 进入投票房间（统一处理 + 数据校验）
   enterRoom(room) {
+    if (!room || !room.roomCode || !room.options || room.options.length === 0) {
+      wx.showModal({ title: '数据异常', content: '投票数据不完整', showCancel: false })
+      return
+    }
     const openid = getApp().globalData.openid || 'user_' + Date.now()
     const myVote = (room.voters && room.voters[openid]) || ''
     if (myVote) {

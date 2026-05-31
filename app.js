@@ -5,7 +5,7 @@ App({
     // 初始化云开发环境
     if (wx.cloud) {
       wx.cloud.init({
-        env: 'yuujerry-d1gb9d22v44f569ad',
+        env: 'cloudbase-d0ggsef0eee4e6534',
         traceUser: true
       })
     }
