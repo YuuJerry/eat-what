@@ -6,7 +6,7 @@ const cloud = require('wx-server-sdk')
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV })
 
 // API 配置
-const API_URL = 'https://maas-coding-api.cn-huabei-1.xf-yun.com/anthropic'
+const API_URL = 'https://maas-coding-api.cn-huabei-1.xf-yun.com/anthropic/v1/messages'
 const API_KEY = 'feacb83e1105a0b4978566511bc9a39b:MDAzNDI5N2RlNTBlNzY1NGIwNmY5ZTMz'
 const MODEL_ID = 'astron-code-latest'
 
