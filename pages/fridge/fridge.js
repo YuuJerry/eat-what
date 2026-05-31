@@ -186,30 +186,22 @@ Page({
     }
   },
 
-  // 点击视频 - 显示操作菜单
+  // 点击视频 - 复制链接
   onVideoTap(e) {
     const video = e.currentTarget.dataset.video
     if (!video) return
     const url = video.url || ''
     if (!url) return
-    wx.showActionSheet({
-      itemList: ['📺 打开 Bilibili 观看', '📋 复制链接'],
-      success: (res) => {
-        if (res.tapIndex === 0) {
-          wx.navigateToMiniProgram({
-            appId: 'wx7564fd5313fa0a90',
-            path: `pages/index/index?bvid=${video.bvid || ''}`,
-            fail: () => {
-              wx.setClipboardData({
-                data: url,
-                success() { wx.showToast({ title: '链接已复制，打开浏览器粘贴观看', icon: 'none', duration: 2000 }) }
-              })
-            }
-          })
-        } else {
+    wx.showModal({
+      title: '📺 视频教程',
+      content: video.title + '\n\n' + video.author + ' · ' + (video.playText || ''),
+      confirmText: '复制链接',
+      cancelText: '取消',
+      success(res) {
+        if (res.confirm) {
           wx.setClipboardData({
             data: url,
-            success() { wx.showToast({ title: '链接已复制', icon: 'success' }) }
+            success() { wx.showToast({ title: '已复制，打开Bilibili粘贴观看', icon: 'none', duration: 2500 }) }
           })
         }
       }

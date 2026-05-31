@@ -11,13 +11,7 @@ Page({
     isLoading: true,
     isFavorited: false,
     checkedIngredients: [],
-    showIngredients: false,
-    // 视频播放器
-    showPlayer: false,
-    playerUrl: '',
-    playerLoading: false,
-    playerError: '',
-    playerTitle: ''
+    showIngredients: false
   },
 
   onLoad(options) {
@@ -136,57 +130,27 @@ Page({
     this.setData({ showIngredients: !this.data.showIngredients })
   },
 
-  // 点击视频教程 - 直接在小程序内播放
+  // 点击视频教程 - 复制链接
   onVideoTap(e) {
     const video = e.currentTarget.dataset.video
-    if (!video || !video.bvid) return
+    if (!video) return
+    const url = video.url || ''
+    if (!url) return
 
-    this.setData({
-      showPlayer: true,
-      playerLoading: true,
-      playerUrl: '',
-      playerError: '',
-      playerTitle: video.title || ''
-    })
-    this._playerVideo = video
-    this.fetchAndPlayVideo(video.bvid)
-  },
-
-  // 通过云函数代理获取 Bilibili 播放地址
-  fetchAndPlayVideo(bvid) {
-    const self = this
-    wx.cloud.callFunction({
-      name: 'bilibiliPlayUrl',
-      data: { bvid },
+    wx.showModal({
+      title: '📺 视频教程',
+      content: video.title + '\n\n' + video.author + ' · ' + (video.playText || ''),
+      confirmText: '复制链接',
+      cancelText: '取消',
       success(res) {
-        const r = res.result
-        if (r && r.success && r.url) {
-          self.setData({ playerUrl: r.url, playerLoading: false })
-        } else {
-          self.setData({ playerLoading: false, playerError: r?.error || '获取播放地址失败' })
+        if (res.confirm) {
+          wx.setClipboardData({
+            data: url,
+            success() { wx.showToast({ title: '已复制，打开Bilibili粘贴观看', icon: 'none', duration: 2500 }) }
+          })
         }
-      },
-      fail(err) {
-        console.error('云函数调用失败:', err)
-        self.setData({ playerLoading: false, playerError: '云函数调用失败: ' + (err.errMsg || '') })
       }
     })
-  },
-
-  // 复制视频链接到浏览器
-  onRetryVideo() {
-    const url = this._playerVideo?.url || ''
-    if (url) {
-      wx.setClipboardData({
-        data: url,
-        success() { wx.showToast({ title: '链接已复制，打开浏览器观看', icon: 'none' }) }
-      })
-    }
-  },
-
-  // 关闭视频播放器
-  onClosePlayer() {
-    this.setData({ showPlayer: false, playerUrl: '', playerError: '', playerLoading: false })
   },
 
   // 搜索 Bilibili 教程
