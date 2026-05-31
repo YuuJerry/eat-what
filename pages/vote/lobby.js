@@ -72,18 +72,26 @@ Page({
     wx.showModal({
       title: '输入投票码',
       editable: true,
-      placeholderText: '输入6位房间码，如 ABCD12',
+      placeholderText: '粘贴好友发来的投票码',
       success: (res) => {
         if (res.confirm && res.content) {
-          const code = res.content.trim().toUpperCase()
-          // 解析投票码格式: XXXXXX 或 XXXXXX|binId
-          const parts = code.split('|')
-          const roomCode = parts[0] || code
-          const binId = parts[1] || ''
-          if (binId) {
-            wx.navigateTo({ url: `/pages/vote/room?code=${roomCode}&binId=${binId}` })
+          const parsed = voteApi.decodeInvite(res.content)
+          if (parsed && parsed.code) {
+            if (parsed.options) {
+              // 有完整数据，直接加入
+              wx.navigateTo({ url: `/pages/vote/room?code=${parsed.code}&data=${encodeURIComponent(JSON.stringify({ t: parsed.title, o: parsed.options }))}` })
+            } else {
+              // 只有房间码
+              wx.navigateTo({ url: `/pages/vote/room?code=${parsed.code}` })
+            }
           } else {
-            wx.navigateTo({ url: `/pages/vote/room?code=${roomCode}` })
+            // 尝试当作纯房间码
+            const code = res.content.trim().toUpperCase()
+            if (/^[A-Z0-9]{6}$/.test(code)) {
+              wx.navigateTo({ url: `/pages/vote/room?code=${code}` })
+            } else {
+              wx.showToast({ title: '投票码格式错误', icon: 'none' })
+            }
           }
         }
       }

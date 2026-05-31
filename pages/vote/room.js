@@ -13,12 +13,29 @@ Page({
   },
 
   onLoad(options) {
-    if (options.binId) {
-      // 从投票码加入（带 binId）
-      const code = options.code || ''
-      this.joinByBinId(code, options.binId)
+    if (options.data) {
+      // 从投票码加入（带完整数据）
+      this.joinFromData(options.code || '', options.data)
     } else if (options.code) {
       this.joinByCode(options.code)
+    }
+  },
+
+  // 从投票码数据加入
+  async joinFromData(code, encoded) {
+    try {
+      wx.showLoading({ title: '加入中...' })
+      const decoded = JSON.parse(decodeURIComponent(encoded))
+      const res = await voteApi.joinFromInvite(code, decoded.t, decoded.o)
+      wx.hideLoading()
+      if (res && res.success && res.data) {
+        this.enterRoom(res.data)
+      } else {
+        wx.showModal({ title: '加入失败', content: '投票数据无效', showCancel: false })
+      }
+    } catch (e) {
+      wx.hideLoading()
+      wx.showModal({ title: '加入失败', content: '投票码格式错误', showCancel: false })
     }
   },
 
@@ -68,22 +85,6 @@ Page({
       wx.showToast({ title: '创建失败', icon: 'none' })
     }
     this.setData({ isCreating: false })
-  },
-
-  async joinByBinId(code, binId) {
-    try {
-      wx.showLoading({ title: '加入中...' })
-      const res = await voteApi.joinByBinId(code, binId)
-      wx.hideLoading()
-      if (res && res.success && res.data) {
-        this.enterRoom(res.data)
-      } else {
-        wx.showModal({ title: '加入失败', content: res?.error || '投票不存在', showCancel: false })
-      }
-    } catch (e) {
-      wx.hideLoading()
-      wx.showModal({ title: '加入失败', content: '网络错误', showCancel: false })
-    }
   },
 
   async joinByCode(code) {
@@ -154,8 +155,8 @@ Page({
   onCopyInvite() {
     const room = this.data.room
     if (!room) return
-    const binId = room.binId || ''
-    const inviteCode = `投票码:${room.code}|${binId}`
+    const encoded = voteApi.encodeInvite(room)
+    const inviteCode = `投票码:${room.code}|${encoded}`
     wx.setClipboardData({
       data: inviteCode,
       success() {
