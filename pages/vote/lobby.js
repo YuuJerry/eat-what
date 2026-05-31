@@ -67,20 +67,24 @@ Page({
     wx.navigateTo({ url: '/pages/vote/room' })
   },
 
-  // 粘贴投票码加入
-  onPasteInvite() {
-    wx.getClipboardData({
+  // 输入投票码加入
+  onJoinRoom() {
+    wx.showModal({
+      title: '输入投票码',
+      editable: true,
+      placeholderText: '输入6位房间码，如 ABCD12',
       success: (res) => {
-        const text = (res.data || '').trim()
-        const parsed = this.parseInviteCode(text)
-        if (parsed) {
-          wx.navigateTo({ url: `/pages/vote/room?code=${parsed.code}&binId=${parsed.binId}` })
-        } else {
-          wx.showModal({
-            title: '未检测到投票码',
-            content: '请先让好友复制投票码发给你，然后点击此按钮。',
-            showCancel: false
-          })
+        if (res.confirm && res.content) {
+          const code = res.content.trim().toUpperCase()
+          // 解析投票码格式: XXXXXX 或 XXXXXX|binId
+          const parts = code.split('|')
+          const roomCode = parts[0] || code
+          const binId = parts[1] || ''
+          if (binId) {
+            wx.navigateTo({ url: `/pages/vote/room?code=${roomCode}&binId=${binId}` })
+          } else {
+            wx.navigateTo({ url: `/pages/vote/room?code=${roomCode}` })
+          }
         }
       }
     })
