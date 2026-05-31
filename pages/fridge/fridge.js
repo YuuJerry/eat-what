@@ -151,12 +151,20 @@ Page({
 
       if (results.length > 0) {
         const favNames = this.getFavoriteNames()
-        results = results.map(r => ({
-          ...r,
-          coverIcon: getDishIcon(r.name, r.category),
-          stepsExpanded: false,
-          isFavorited: favNames.has(r.name)
-        }))
+        results = results.map(r => {
+          // 预计算播放量文字
+          const videos = (r.videos || []).map(v => ({
+            ...v,
+            playText: v.play ? (v.play >= 10000 ? Math.round(v.play / 10000) + '万 播放' : v.play + ' 播放') : ''
+          }))
+          return {
+            ...r,
+            videos,
+            coverIcon: getDishIcon(r.name, r.category),
+            stepsExpanded: false,
+            isFavorited: favNames.has(r.name)
+          }
+        })
         this.setData({ results, hasSearched: true })
       } else {
         wx.showToast({ title: '未找到匹配菜谱，请换个食材试试', icon: 'none' })
@@ -176,6 +184,36 @@ Page({
     } else {
       this.setData({ expandedSteps: idx })
     }
+  },
+
+  // 点击视频 - 显示操作菜单
+  onVideoTap(e) {
+    const video = e.currentTarget.dataset.video
+    if (!video) return
+    const url = video.url || ''
+    if (!url) return
+    wx.showActionSheet({
+      itemList: ['📺 打开 Bilibili 观看', '📋 复制链接'],
+      success: (res) => {
+        if (res.tapIndex === 0) {
+          wx.navigateToMiniProgram({
+            appId: 'wx7564fd5313fa0a90',
+            path: `pages/index/index?bvid=${video.bvid || ''}`,
+            fail: () => {
+              wx.setClipboardData({
+                data: url,
+                success() { wx.showToast({ title: '链接已复制，打开浏览器粘贴观看', icon: 'none', duration: 2000 }) }
+              })
+            }
+          })
+        } else {
+          wx.setClipboardData({
+            data: url,
+            success() { wx.showToast({ title: '链接已复制', icon: 'success' }) }
+          })
+        }
+      }
+    })
   },
 
   // 显示购物清单弹窗

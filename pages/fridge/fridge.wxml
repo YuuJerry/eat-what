@@ -67,7 +67,7 @@
   <!-- 操作按钮区 -->
   <view class="action-buttons" wx:if="{{selectedIngredients.length > 0}}">
     <view class="btn-ai" bindtap="onSearchRecipes">
-      <text>{{isSearching ? '🤖 AI 思考中...' : '🤖 AI 推荐菜谱 (' + selectedIngredients.length + ')'}}</text>
+      <text>{{isSearching ? '🤖 搜索中...' : '🤖 推荐菜谱 (' + selectedIngredients.length + ')'}}</text>
     </view>
     <view class="btn-shopping" bindtap="onShowShoppingList" wx:if="{{hasSearched}}">
       <text>📝 购物清单</text>
@@ -130,6 +130,22 @@
             <view class="step-item" wx:for="{{item.steps}}" wx:for-item="step" wx:for-index="sidx" wx:key="*this">
               <text class="step-num">{{sidx + 1}}</text>
               <text class="step-text">{{step}}</text>
+            </view>
+          </view>
+        </view>
+
+        <!-- 视频教程 -->
+        <view class="video-section" wx:if="{{item.videos && item.videos.length > 0}}">
+          <view class="video-card" bindtap="onVideoTap" data-video="{{item.videos[0]}}">
+            <view class="video-thumb">
+              <image wx:if="{{item.videos[0].cover}}" src="{{item.videos[0].cover}}" mode="aspectFill" class="video-thumb-img" />
+              <view class="video-play-btn"><text>▶</text></view>
+              <text class="video-time" wx:if="{{item.videos[0].duration}}">{{item.videos[0].duration}}</text>
+            </view>
+            <view class="video-detail">
+              <text class="video-title">{{item.videos[0].title}}</text>
+              <text class="video-info-text">{{item.videos[0].author}} · {{item.videos[0].playText || ''}}</text>
+              <text class="video-hint">📺 点击观看教程</text>
             </view>
           </view>
         </view>
