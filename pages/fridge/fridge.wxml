@@ -98,8 +98,11 @@
               <text wx:if="{{item.calories}}">🔥 {{item.calories}}kcal</text>
             </view>
           </view>
-          <view class="match-badge {{item.missing.length === 0 ? 'perfect' : 'partial'}}">
-            <text class="match-label">{{item.missing.length === 0 ? '✅ 能做' : '差' + item.missing.length + '种'}}</text>
+          <view class="header-actions">
+            <text class="fav-btn" bindtap="onToggleFavorite" data-index="{{index}}">{{item.isFavorited ? '❤️' : '🤍'}}</text>
+            <view class="match-badge {{item.missing.length === 0 ? 'perfect' : 'partial'}}">
+              <text class="match-label">{{item.missing.length === 0 ? '✅ 能做' : '差' + item.missing.length + '种'}}</text>
+            </view>
           </view>
         </view>
 

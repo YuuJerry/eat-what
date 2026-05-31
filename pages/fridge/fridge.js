@@ -116,6 +116,7 @@ const DEFAULT_INGREDIENTS = {
 
 // 本地存储 key
 const STORAGE_KEY = 'eat_what_fridge_selected'
+const FAVORITES_KEY = 'eat_what_favorites'
 
 // 防抖定时器
 let searchTimer = null
@@ -231,10 +232,12 @@ Page({
       const content = await callAI(this.data.selectedIngredients)
       const recipes = parseRecipes(content)
       if (recipes.length > 0) {
+        const favNames = this.getFavoriteNames()
         const results = recipes.map(r => ({
           ...r,
           coverIcon: getDishIcon(r.name, r.category),
-          stepsExpanded: false
+          stepsExpanded: false,
+          isFavorited: favNames.has(r.name)
         }))
         this.setData({ results, hasSearched: true })
       } else {
@@ -289,5 +292,55 @@ Page({
   // 关闭购物清单弹窗
   onHideShoppingList() {
     this.setData({ showShoppingList: false })
+  },
+
+  // 获取收藏的菜名集合
+  getFavoriteNames() {
+    try {
+      const favs = wx.getStorageSync(FAVORITES_KEY) || []
+      return new Set(favs.map(f => f.name))
+    } catch (e) {
+      return new Set()
+    }
+  },
+
+  // 收藏/取消收藏菜谱
+  onToggleFavorite(e) {
+    const idx = e.currentTarget.dataset.index
+    const recipe = this.data.results[idx]
+    if (!recipe) return
+
+    try {
+      let favs = wx.getStorageSync(FAVORITES_KEY) || []
+      const existIdx = favs.findIndex(f => f.name === recipe.name)
+
+      if (existIdx > -1) {
+        // 取消收藏
+        favs.splice(existIdx, 1)
+        wx.showToast({ title: '已取消收藏', icon: 'none' })
+      } else {
+        // 收藏
+        favs.push({
+          name: recipe.name,
+          ingredients: recipe.ingredients,
+          steps: recipe.steps,
+          cookTime: recipe.cookTime,
+          calories: recipe.calories,
+          category: recipe.category,
+          coverIcon: recipe.coverIcon,
+          savedAt: Date.now()
+        })
+        wx.showToast({ title: '已收藏 ❤️', icon: 'success' })
+      }
+
+      wx.setStorageSync(FAVORITES_KEY, favs)
+
+      // 更新当前结果的收藏状态
+      const results = [...this.data.results]
+      results[idx] = { ...recipe, isFavorited: existIdx === -1 }
+      this.setData({ results })
+    } catch (e2) {
+      console.error('收藏操作失败', e2)
+    }
   }
 })
