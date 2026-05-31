@@ -164,7 +164,7 @@ Page({
           const cid = res.data.data.cid
           // 第二步：获取播放地址
           wx.request({
-            url: `https://api.bilibili.com/x/player/playurl?bvid=${bvid}&cid=${cid}&qn=32&fnval=1`,
+            url: `https://api.bilibili.com/x/player/playurl?bvid=${bvid}&cid=${cid}&qn=32&fnval=0`,
             header: { 'User-Agent': 'Mozilla/5.0', 'Referer': 'https://www.bilibili.com/' },
             success(res2) {
               if (res2.data && res2.data.code === 0) {
