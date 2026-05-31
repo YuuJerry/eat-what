@@ -19,10 +19,32 @@ Page({
 
   // 页面加载时，根据参数决定进入模式
   onLoad(options) {
-    if (options.code) {
+    if (options.data) {
+      // 从分享链接解码投票数据
+      const decoded = voteApi.decodeFromShare(options.data)
+      if (decoded && decoded.t && decoded.o) {
+        // 自动创建本地投票
+        this.createFromShare(decoded)
+      }
+    } else if (options.code) {
       this.joinByCode(options.code)
     }
-    // 无参数时默认进入创建模式
+  },
+
+  // 从分享链接数据创建本地投票
+  async createFromShare(decoded) {
+    const code = this.data.roomCode || ''
+    // 先检查本地是否已有
+    const existing = await voteApi.joinRoom(code)
+    if (existing && existing.success) {
+      this.enterRoom(existing.data)
+      return
+    }
+    // 用分享数据创建
+    const res = await voteApi.createRoom({ title: decoded.t, options: decoded.o })
+    if (res && res.success) {
+      this.joinByCode(res.roomCode)
+    }
   },
 
   // 监听投票标题输入，实时更新到 data
@@ -166,13 +188,14 @@ Page({
     }
   },
 
-  // 微信分享配置
+  // 微信分享配置：编码投票数据进链接
   onShareAppMessage() {
     const room = this.data.room
     if (room) {
+      const encoded = voteApi.encodeForShare(room)
       return {
         title: `来投票：${room.title}`,
-        path: `/pages/vote/room?code=${room.roomCode}`
+        path: `/pages/vote/room?code=${room.roomCode}&data=${encoded}`
       }
     }
     return {
