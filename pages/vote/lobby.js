@@ -9,10 +9,36 @@ Page({
 
   onLoad() {
     this.loadHistory()
+    this.checkClipboard()
   },
 
   onShow() {
     this.loadHistory()
+  },
+
+  // 检测剪贴板中是否有投票码
+  checkClipboard() {
+    wx.getClipboardData({
+      success: (res) => {
+        const text = res.data || ''
+        if (text.startsWith('VOTE#')) {
+          const parts = text.split('#')
+          if (parts.length === 3) {
+            wx.showModal({
+              title: '发现投票',
+              content: '检测到好友发来的投票码，是否加入？',
+              confirmText: '加入',
+              success: (modalRes) => {
+                if (modalRes.confirm) {
+                  const encoded = parts[2]
+                  wx.navigateTo({ url: `/pages/vote/room?data=${encoded}` })
+                }
+              }
+            })
+          }
+        }
+      }
+    })
   },
 
   async loadHistory() {
@@ -33,13 +59,26 @@ Page({
     wx.navigateTo({ url: '/pages/vote/room' })
   },
 
-  // 点击"加入投票"按钮，提示从分享链接进入
-  onJoinRoom() {
-    wx.showModal({
-      title: '如何加入投票',
-      content: '请让好友把投票链接分享给你，点击链接即可直接加入投票。',
-      confirmText: '我知道了',
-      showCancel: false
+  // 粘贴投票码加入
+  onPasteInvite() {
+    wx.getClipboardData({
+      success: (res) => {
+        const text = res.data || ''
+        if (text.startsWith('VOTE#')) {
+          const parts = text.split('#')
+          if (parts.length === 3) {
+            wx.navigateTo({ url: `/pages/vote/room?data=${parts[2]}` })
+          } else {
+            wx.showToast({ title: '投票码格式错误', icon: 'none' })
+          }
+        } else {
+          wx.showModal({
+            title: '未检测到投票码',
+            content: '请先让好友复制投票码发给你，然后点击此按钮加入。',
+            showCancel: false
+          })
+        }
+      }
     })
   },
 

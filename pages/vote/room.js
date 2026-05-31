@@ -188,20 +188,18 @@ Page({
     }
   },
 
-  // 微信分享配置：编码投票数据进链接
-  onShareAppMessage() {
+  // 复制投票码到剪贴板
+  onCopyInvite() {
     const room = this.data.room
-    if (room) {
-      const encoded = voteApi.encodeForShare(room)
-      return {
-        title: `来投票：${room.title}`,
-        path: `/pages/vote/room?code=${room.roomCode}&data=${encoded}`
+    if (!room) return
+    const encoded = voteApi.encodeForShare(room)
+    const inviteCode = `VOTE#${room.roomCode}#${encoded}`
+    wx.setClipboardData({
+      data: inviteCode,
+      success() {
+        wx.showToast({ title: '已复制，粘贴发给好友', icon: 'success', duration: 2000 })
       }
-    }
-    return {
-      title: '来一起投票决定吃什么',
-      path: '/pages/vote/lobby'
-    }
+    })
   },
 
   // 复制房间码到剪贴板，方便用户分享给好友

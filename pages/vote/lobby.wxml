@@ -8,11 +8,11 @@
       <text class="action-title">发起投票</text>
       <text class="action-desc">创建投票房间，邀请好友一起选</text>
     </view>
-    <!-- 加入投票卡片，提示从分享链接进入 -->
-    <view class="action-card join" bindtap="onJoinRoom">
+    <!-- 加入投票卡片，粘贴投票码 -->
+    <view class="action-card join" bindtap="onPasteInvite">
       <text class="action-icon">🔗</text>
       <text class="action-title">加入投票</text>
-      <text class="action-desc">请让好友分享投票链接给你</text>
+      <text class="action-desc">粘贴好友发来的投票码</text>
     </view>
   </view>
 
