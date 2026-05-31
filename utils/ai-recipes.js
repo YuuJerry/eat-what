@@ -37,7 +37,7 @@ function callAI(prompt) {
       },
       data: {
         model: AI_CONFIG.model,
-        max_tokens: 3000,
+        max_tokens: 1500,
         messages: [{ role: 'user', content: prompt }]
       },
       timeout: 30000,
@@ -121,38 +121,18 @@ function saveAll(data) {
   wx.setStorageSync(STORAGE_KEY, data)
 }
 
-// 生成 Prompt
+// 生成 Prompt（精简版，加快响应）
 function buildPrompt(type, extra) {
-  const base = `你是一位专业厨师。请推荐 6 道${CATEGORY_PROMPTS[type] || '家常菜'}。`
-  const rule = `
-
-规则：
-1. 每道菜要不同，覆盖不同烹饪方式
-2. 给出具体食材用量（不要写"适量"太多）
-3. 步骤详细但简洁（4-6步）
-4. 标注热量是否适合减脂
-
-请严格按以下 JSON 数组格式返回，不要输出任何其他内容：
-[
-  {
-    "name": "菜名",
-    "category": "分类",
-    "cookTime": 15,
-    "calories": 300,
-    "isDietFriendly": false,
-    "tags": ["标签1","标签2"],
-    "difficulty": 1,
-    "servings": 2,
-    "ingredients": [{"name":"食材","amount":"用量"}],
-    "steps": ["步骤1","步骤2","步骤3"],
-    "nutritionInfo": {"protein":15,"fat":10,"carbs":20,"fiber":2}
-  }
-]`
+  const cat = CATEGORY_PROMPTS[type] || '家常菜'
+  const jsonFormat = `[{"name":"菜名","category":"分类","cookTime":15,"calories":300,"isDietFriendly":false,"tags":["标签"],"difficulty":1,"servings":2,"ingredients":[{"name":"食材","amount":"用量"}],"steps":["步骤1","步骤2","步骤3"],"nutritionInfo":{"protein":15,"fat":10,"carbs":20,"fiber":2}}]`
 
   if (type === 'search' && extra) {
-    return `你是一位专业厨师。用户搜索"${extra}"，请推荐 6 道相关的菜。${rule}`
+    return `推荐4道与"${extra}"相关的菜。只返回JSON数组，格式：${jsonFormat}`
   }
-  return base + rule
+  if (type === '热门') {
+    return `推荐4道热门家常菜，要不同菜系。只返回JSON数组：${jsonFormat}`
+  }
+  return `推荐4道${cat}，不同烹饪方式。只返回JSON数组：${jsonFormat}`
 }
 
 // ========== 公开 API ==========
@@ -287,10 +267,21 @@ async function getDietRecipes(forceRefresh) {
   return getRecipesByCategory('减脂', forceRefresh)
 }
 
+/**
+ * 预加载热门菜谱（后台静默执行，不阻塞 UI）
+ * 在 app.js onLaunch 中调用
+ */
+function preloadHotRecipes() {
+  const all = loadAll()
+  if (all._hot && all._hot.length > 0) return // 已有缓存，跳过
+  getHotRecipes().catch(() => {}) // 静默失败
+}
+
 module.exports = {
   getHotRecipes,
   getRecipesByCategory,
   searchRecipes,
   getRecipeDetail,
-  getDietRecipes
+  getDietRecipes,
+  preloadHotRecipes
 }
