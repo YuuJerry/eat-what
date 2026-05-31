@@ -18,7 +18,7 @@
   <!-- 分类标签栏 -->
   <scroll-view scroll-x class="category-scroll" enable-flex>
     <view
-      class="category-tab {{activeCategory === cat ? 'active' : ''}}"
+      class="category-tab {{activeCategory === item ? 'active' : ''}}"
       wx:for="{{categories}}"
       wx:key="*this"
       bindtap="onCategoryChange"

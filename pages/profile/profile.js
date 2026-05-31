@@ -1,6 +1,5 @@
 // 个人偏好设置页面逻辑 - 管理用户偏好和收藏
 
-const { userApi } = require('../../utils/cloud.js')
 const { getDishIcon } = require('../../utils/icons.js')
 
 const DIET_GOALS = ['无', '减脂', '增肌', '均衡']
@@ -122,12 +121,8 @@ Page({
     this.setData({ isSaving: true })
     try {
       const { preferences, dietGoal, allergies, dislikes } = this.data
-      const res = await userApi.saveProfile({ preferences, dietGoal, allergies, dislikes })
-      if (res && res.success) {
-        wx.showToast({ title: '保存成功', icon: 'success' })
-      } else {
-        wx.showToast({ title: '保存失败', icon: 'none' })
-      }
+      wx.setStorageSync('user_profile', { preferences, dietGoal, allergies, dislikes })
+      wx.showToast({ title: '保存成功', icon: 'success' })
     } catch (e) {
       wx.showToast({ title: '保存失败', icon: 'none' })
     }

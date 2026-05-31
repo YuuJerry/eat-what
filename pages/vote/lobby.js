@@ -39,7 +39,11 @@ Page({
             confirmText: '加入',
             success: (modalRes) => {
               if (modalRes.confirm) {
-                wx.navigateTo({ url: `/pages/vote/room?code=${parsed.code}&binId=${parsed.binId}` })
+                if (parsed.data) {
+                  wx.navigateTo({ url: `/pages/vote/room?code=${parsed.code}&data=${encodeURIComponent(parsed.data)}` })
+                } else {
+                  wx.navigateTo({ url: `/pages/vote/room?code=${parsed.code}` })
+                }
               }
             }
           })
@@ -48,17 +52,16 @@ Page({
     })
   },
 
-  // 解析投票码格式: 投票码:XXXXXX|binId
+  // 解析投票码格式: 投票码:XXXXXX|encoded_data
   parseInviteCode(text) {
     if (!text || !text.includes('投票码:')) return null
     const match = text.match(/投票码:([A-Z0-9]+)\|(.+)/)
     if (match) {
-      return { code: match[1], binId: match[2] }
+      return { code: match[1], data: match[2] }
     }
-    // 兼容旧格式
     const match2 = text.match(/投票码:([A-Z0-9]+)/)
     if (match2) {
-      return { code: match2[1], binId: '' }
+      return { code: match2[1] }
     }
     return null
   },
@@ -78,10 +81,8 @@ Page({
           const parsed = voteApi.decodeInvite(res.content)
           if (parsed && parsed.code) {
             if (parsed.options) {
-              // 有完整数据，直接加入
               wx.navigateTo({ url: `/pages/vote/room?code=${parsed.code}&data=${encodeURIComponent(JSON.stringify({ t: parsed.title, o: parsed.options }))}` })
             } else {
-              // 只有房间码
               wx.navigateTo({ url: `/pages/vote/room?code=${parsed.code}` })
             }
           } else {
@@ -100,9 +101,7 @@ Page({
 
   onRoomTap(e) {
     const item = e.currentTarget.dataset.item
-    if (item && item.binId) {
-      wx.navigateTo({ url: `/pages/vote/room?code=${item.code}&binId=${item.binId}` })
-    } else if (item && item.code) {
+    if (item && item.code) {
       wx.navigateTo({ url: `/pages/vote/room?code=${item.code}` })
     }
   }

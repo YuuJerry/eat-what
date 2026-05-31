@@ -28,7 +28,7 @@
           <text class="meta-time">⏱ {{item.cookTime}}分钟</text>
         </view>
         <!-- 营养成分：蛋白质、脂肪、碳水 -->
-        <view class="recipe-nutrition">
+        <view class="recipe-nutrition" wx:if="{{item.nutritionInfo}}">
           <text class="nutrition-item">蛋白 {{item.nutritionInfo.protein}}g</text>
           <text class="nutrition-item">脂肪 {{item.nutritionInfo.fat}}g</text>
           <text class="nutrition-item">碳水 {{item.nutritionInfo.carbs}}g</text>

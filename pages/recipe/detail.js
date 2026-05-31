@@ -64,8 +64,12 @@ Page({
   async loadRecipe(id) {
     this.setData({ isLoading: true })
     try {
-      const recipe = await recipeEngine.getRecipeDetail(id)
-      this.showRecipe(recipe)
+      const recipe = recipeEngine.getRecipeDetail(id)
+      if (recipe) {
+        this.showRecipe(recipe)
+      } else {
+        wx.showToast({ title: '未找到该菜谱', icon: 'none' })
+      }
     } catch (e) {
       console.error('加载菜谱失败', e)
       wx.showToast({ title: '加载失败', icon: 'none' })

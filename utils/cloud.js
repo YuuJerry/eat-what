@@ -21,7 +21,7 @@ function saveHistory(code, title) {
   const list = wx.getStorageSync('vote_history') || []
   const idx = list.findIndex(r => r.code === code)
   if (idx > -1) list.splice(idx, 1)
-  list.unshift({ code, title, time: Date.now() })
+  list.unshift({ code, title, status: 'active', time: Date.now() })
   wx.setStorageSync('vote_history', list.slice(0, 50))
 }
 
@@ -94,9 +94,11 @@ const voteApi = {
     const room = loadLocal(code)
     if (!room) return { success: false, error: '投票不存在' }
     const voters = room.voters || {}
-    const tally = {}
-    Object.values(voters).forEach(v => { tally[v] = (tally[v] || 0) + 1 })
-    const sorted = Object.entries(tally).sort((a, b) => b[1] - a[1])
+    const tallyObj = {}
+    Object.values(voters).forEach(v => { tallyObj[v] = (tallyObj[v] || 0) + 1 })
+    const sorted = Object.entries(tallyObj).sort((a, b) => b[1] - a[1])
+    // 转为数组格式 [option, count] 供 WXML 使用
+    const tally = sorted
     return {
       success: true,
       data: {

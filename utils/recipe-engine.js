@@ -154,14 +154,14 @@ function searchRecipes(keyword) {
  * 获取菜谱详情（按名称或 ID 查找）
  */
 function getRecipeDetail(idOrName) {
-  // 按名称匹配
-  const found = ALL_RECIPES.find(r =>
-    r.name === idOrName || r.name.includes(idOrName)
-  )
+  if (!idOrName) return null
+  // 精确匹配
+  const found = ALL_RECIPES.find(r => r.name === idOrName)
   if (found) return found
-
-  // 找不到就随机返回一个
-  return ALL_RECIPES[Math.floor(Math.random() * ALL_RECIPES.length)]
+  // 模糊匹配（包含关键词）
+  const fuzzy = ALL_RECIPES.find(r => r.name.includes(idOrName))
+  if (fuzzy) return fuzzy
+  return null
 }
 
 /**
