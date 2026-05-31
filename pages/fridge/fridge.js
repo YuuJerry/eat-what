@@ -186,22 +186,24 @@ Page({
     }
   },
 
-  // 点击视频 - 复制链接
+  // 点击视频 - 跳转Bilibili小程序
   onVideoTap(e) {
     const video = e.currentTarget.dataset.video
     if (!video) return
+    const bvid = video.bvid || ''
     const url = video.url || ''
-    if (!url) return
-    wx.showModal({
-      title: '📺 视频教程',
-      content: video.title + '\n\n' + video.author + ' · ' + (video.playText || ''),
-      confirmText: '复制链接',
-      cancelText: '取消',
-      success(res) {
-        if (res.confirm) {
+    wx.navigateToMiniProgram({
+      appId: 'wx7564fd5313fa0a90',
+      path: 'pages/index/index',
+      extraData: { bvid, url },
+      success() {
+        wx.showToast({ title: '正在打开 Bilibili...', icon: 'loading', duration: 1500 })
+      },
+      fail() {
+        if (url) {
           wx.setClipboardData({
             data: url,
-            success() { wx.showToast({ title: '已复制，打开Bilibili粘贴观看', icon: 'none', duration: 2500 }) }
+            success() { wx.showToast({ title: '链接已复制，打开Bilibili粘贴', icon: 'none', duration: 2500 }) }
           })
         }
       }

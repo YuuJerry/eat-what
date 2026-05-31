@@ -22,7 +22,7 @@
           <text class="video-author">{{item.author}}</text>
           <text class="video-play" wx:if="{{item.playText}}">{{item.playText}}</text>
         </view>
-        <text class="video-platform">📺 点击复制链接到 Bilibili 观看</text>
+        <text class="video-platform">📺 点击在 Bilibili 观看</text>
       </view>
     </view>
   </view>
