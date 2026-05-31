@@ -152,49 +152,23 @@ Page({
     this.fetchAndPlayVideo(video.bvid)
   },
 
-  // 通过 Bilibili API 获取播放地址并播放
+  // 通过云函数代理获取 Bilibili 播放地址
   fetchAndPlayVideo(bvid) {
     const self = this
-    // 第一步：获取视频信息（含 cid）
-    wx.request({
-      url: 'https://api.bilibili.com/x/web-interface/view?bvid=' + bvid,
-      header: { 'User-Agent': 'Mozilla/5.0', 'Referer': 'https://www.bilibili.com/' },
+    wx.cloud.callFunction({
+      name: 'bilibiliPlayUrl',
+      data: { bvid },
       success(res) {
-        if (res.data && res.data.code === 0 && res.data.data) {
-          const cid = res.data.data.cid
-          // 第二步：获取播放地址
-          wx.request({
-            url: `https://api.bilibili.com/x/player/playurl?bvid=${bvid}&cid=${cid}&qn=32&fnval=0`,
-            header: { 'User-Agent': 'Mozilla/5.0', 'Referer': 'https://www.bilibili.com/' },
-            success(res2) {
-              if (res2.data && res2.data.code === 0) {
-                const d = res2.data.data
-                let playUrl = ''
-                // 优先 DASH，其次 durl
-                if (d.durl && d.durl.length > 0) {
-                  playUrl = d.durl[0].url
-                } else if (d.dash && d.dash.audio && d.dash.video) {
-                  playUrl = d.dash.audio[0].baseUrl
-                }
-                if (playUrl) {
-                  self.setData({ playerUrl: playUrl, playerLoading: false })
-                } else {
-                  self.setData({ playerLoading: false, playerError: '无法获取播放地址' })
-                }
-              } else {
-                self.setData({ playerLoading: false, playerError: '获取播放地址失败' })
-              }
-            },
-            fail() {
-              self.setData({ playerLoading: false, playerError: '网络请求失败' })
-            }
-          })
+        const r = res.result
+        if (r && r.success && r.url) {
+          self.setData({ playerUrl: r.url, playerLoading: false })
         } else {
-          self.setData({ playerLoading: false, playerError: '获取视频信息失败' })
+          self.setData({ playerLoading: false, playerError: r?.error || '获取播放地址失败' })
         }
       },
-      fail() {
-        self.setData({ playerLoading: false, playerError: '网络请求失败' })
+      fail(err) {
+        console.error('云函数调用失败:', err)
+        self.setData({ playerLoading: false, playerError: '云函数调用失败: ' + (err.errMsg || '') })
       }
     })
   },
