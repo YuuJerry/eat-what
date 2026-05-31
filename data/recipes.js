@@ -456,11 +456,11 @@ const RECIPES = [
     nutritionInfo:{protein:8,fat:5,carbs:35,fiber:4},videos:[]
   },
   {
-    name:"清蒸鲈鱼",category:"减脂",tags:["减脂","清淡","高蛋白"],difficulty:2,
-    cookTime:15,servings:2,calories:220,isDietFriendly:true,
-    ingredients:[{name:"鲈鱼",amount:"1条"},{name:"姜",amount:"4片"},{name:"葱",amount:"2根"},{name:"蒸鱼豉油",amount:"2勺"},{name:"料酒",amount:"1勺"}],
-    steps:["鲈鱼处理干净两面划刀抹盐和料酒腌10分钟","盘底放两根筷子架空鱼身（蒸汽流通）","水大开后放入鱼大火蒸8分钟","取出倒掉盘中蒸出的腥水（关键步骤）","铺上姜丝和葱丝","淋蒸鱼豉油","浇上烧至冒烟的热油激香","趁热食用"],
-    nutritionInfo:{protein:35,fat:8,carbs:2,fiber:0},videos:[]
+    name:"鸡胸肉炒芦笋",category:"减脂",tags:["减脂","快手","高蛋白"],difficulty:1,
+    cookTime:10,servings:1,calories:190,isDietFriendly:true,
+    ingredients:[{name:"鸡胸肉",amount:"150g"},{name:"芦笋",amount:"200g"},{name:"蒜",amount:"2瓣"},{name:"盐",amount:"适量"},{name:"料酒",amount:"1勺"}],
+    steps:["鸡胸肉切薄片加料酒和少许盐腌5分钟","芦笋去老根切斜段焯水30秒捞出","锅中热油大火炒鸡片至变色盛出","锅留底油爆香蒜末","放入芦笋翻炒30秒","倒入鸡片加盐翻炒均匀出锅"],
+    nutritionInfo:{protein:32,fat:4,carbs:8,fiber:3},videos:[]
   },
   {
     name:"蔬菜沙拉",category:"减脂",tags:["减脂","轻食","快手"],difficulty:1,

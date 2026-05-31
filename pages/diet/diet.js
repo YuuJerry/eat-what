@@ -42,10 +42,11 @@ Page({
   },
 
   onRecipeTap(e) {
-    const recipe = e.currentTarget.dataset.recipe
+    const idx = e.currentTarget.dataset.index
+    const recipe = this.data.recipes[idx]
     if (recipe) {
       wx.navigateTo({
-        url: `/pages/recipe/detail?id=${recipe._id}`,
+        url: `/pages/recipe/detail?id=${encodeURIComponent(recipe.name)}`,
         success: (res) => {
           res.eventChannel.emit('recipeData', recipe)
         }

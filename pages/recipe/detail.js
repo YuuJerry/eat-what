@@ -11,11 +11,12 @@ Page({
     isLoading: true,
     isFavorited: false,
     checkedIngredients: [],
+    checkedMap: {},
     showIngredients: false
   },
 
   onLoad(options) {
-    this.recipeId = options.id || ''
+    this.recipeId = options.id ? decodeURIComponent(options.id) : ''
 
     // 优先从 eventChannel 接收完整数据（列表页/首页传入）
     const eventChannel = this.getOpenerEventChannel()
@@ -119,10 +120,18 @@ Page({
   // 勾选/取消食材
   onCheckIngredient(e) {
     const name = e.currentTarget.dataset.name
-    const checked = this.data.checkedIngredients
-    const idx = checked.indexOf(name)
-    if (idx > -1) { checked.splice(idx, 1) } else { checked.push(name) }
-    this.setData({ checkedIngredients: [...checked] })
+    const idx = this.data.checkedIngredients.indexOf(name)
+    if (idx > -1) {
+      const checked = this.data.checkedIngredients.filter(n => n !== name)
+      const map = { ...this.data.checkedMap }
+      delete map[name]
+      this.setData({ checkedIngredients: checked, checkedMap: map })
+    } else {
+      this.setData({
+        checkedIngredients: [...this.data.checkedIngredients, name],
+        checkedMap: { ...this.data.checkedMap, [name]: true }
+      })
+    }
   },
 
   // 展开/收起食材清单
@@ -174,7 +183,7 @@ Page({
     const recipe = this.data.recipe
     return {
       title: recipe ? `来看看${recipe.name}怎么做` : '今天吃什么',
-      path: `/pages/recipe/detail?id=${this.recipeId}`
+      path: `/pages/recipe/detail?id=${encodeURIComponent(this.recipeId)}`
     }
   }
 })

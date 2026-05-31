@@ -13,7 +13,9 @@ Page({
     preferences: { spicy: 2, sweet: 2, sour: 1 },
     dietGoal: '无',
     allergies: [],
+    allergyMap: {},
     dislikes: [],
+    dislikeMap: {},
     dietGoals: DIET_GOALS,
     commonAllergies: COMMON_ALLERGIES,
     commonDislikes: COMMON_DISLIKES,
@@ -88,18 +90,32 @@ Page({
 
   onToggleAllergy(e) {
     const name = e.currentTarget.dataset.name
-    const allergies = this.data.allergies
-    const idx = allergies.indexOf(name)
-    if (idx > -1) { allergies.splice(idx, 1) } else { allergies.push(name) }
-    this.setData({ allergies: [...allergies] })
+    const idx = this.data.allergies.indexOf(name)
+    if (idx > -1) {
+      const map = { ...this.data.allergyMap }
+      delete map[name]
+      this.setData({ allergies: this.data.allergies.filter(a => a !== name), allergyMap: map })
+    } else {
+      this.setData({
+        allergies: [...this.data.allergies, name],
+        allergyMap: { ...this.data.allergyMap, [name]: true }
+      })
+    }
   },
 
   onToggleDislike(e) {
     const name = e.currentTarget.dataset.name
-    const dislikes = this.data.dislikes
-    const idx = dislikes.indexOf(name)
-    if (idx > -1) { dislikes.splice(idx, 1) } else { dislikes.push(name) }
-    this.setData({ dislikes: [...dislikes] })
+    const idx = this.data.dislikes.indexOf(name)
+    if (idx > -1) {
+      const map = { ...this.data.dislikeMap }
+      delete map[name]
+      this.setData({ dislikes: this.data.dislikes.filter(d => d !== name), dislikeMap: map })
+    } else {
+      this.setData({
+        dislikes: [...this.data.dislikes, name],
+        dislikeMap: { ...this.data.dislikeMap, [name]: true }
+      })
+    }
   },
 
   async onSave() {

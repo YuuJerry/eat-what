@@ -38,9 +38,9 @@
     <view
       class="recipe-card"
       wx:for="{{recipes}}"
-      wx:key="_id"
+      wx:key="name"
       bindtap="onRecipeTap"
-      data-recipe="{{item}}"
+      data-index="{{index}}"
     >
       <view class="recipe-cover hand-drawn-placeholder">
         <image src="{{item.coverIcon}}" mode="aspectFit" class="cover-icon-img" />

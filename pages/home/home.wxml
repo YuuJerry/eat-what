@@ -49,9 +49,9 @@
       <view
         class="recipe-card"
         wx:for="{{recommendList}}"
-        wx:key="_id"
+        wx:key="name"
         bindtap="onRecipeTap"
-        data-recipe="{{item}}"
+        data-index="{{index}}"
       >
         <!-- 菜谱封面：手绘图标 -->
         <view class="recipe-cover hand-drawn-placeholder">

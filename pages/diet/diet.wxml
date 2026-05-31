@@ -11,9 +11,9 @@
     <view
       class="recipe-card card"
       wx:for="{{recipes}}"
-      wx:key="_id"
+      wx:key="name"
       bindtap="onRecipeTap"
-      data-recipe="{{item}}"
+      data-index="{{index}}"
     >
       <!-- 封面手绘图标 -->
       <view class="recipe-cover hand-drawn-placeholder">

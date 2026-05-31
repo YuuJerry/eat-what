@@ -36,13 +36,13 @@
         </view>
 
         <!-- 用料 -->
-        <view class="fav-ingredients" wx:if="{{item.ingredients.length > 0}}">
+        <view class="fav-ingredients" wx:if="{{item.ingredients && item.ingredients.length > 0}}">
           <text class="fav-sub">📋 用料：</text>
           <text class="fav-ing-text">{{item.ingredientsText}}</text>
         </view>
 
         <!-- 步骤 -->
-        <view class="fav-steps" wx:if="{{item.steps.length > 0}}">
+        <view class="fav-steps" wx:if="{{item.steps && item.steps.length > 0}}">
           <view class="fav-steps-toggle" bindtap="onToggleFavSteps" data-index="{{index}}">
             <text>{{item.showSteps ? '🔽 收起步骤' : '▶️ 查看步骤'}}</text>
           </view>
@@ -100,7 +100,7 @@
   <view class="card">
     <text class="section-title">⚠️ 过敏源</text>
     <view class="tag-list">
-      <view class="tag-item {{allergies.includes(item) ? 'selected allergy' : ''}}" wx:for="{{commonAllergies}}" wx:key="*this" bindtap="onToggleAllergy" data-name="{{item}}">
+      <view class="tag-item {{allergyMap[item] ? 'selected allergy' : ''}}" wx:for="{{commonAllergies}}" wx:key="*this" bindtap="onToggleAllergy" data-name="{{item}}">
         <text>{{item}}</text>
       </view>
     </view>
@@ -110,7 +110,7 @@
   <view class="card">
     <text class="section-title">🙅 不喜欢</text>
     <view class="tag-list">
-      <view class="tag-item {{dislikes.includes(item) ? 'selected dislike' : ''}}" wx:for="{{commonDislikes}}" wx:key="*this" bindtap="onToggleDislike" data-name="{{item}}">
+      <view class="tag-item {{dislikeMap[item] ? 'selected dislike' : ''}}" wx:for="{{commonDislikes}}" wx:key="*this" bindtap="onToggleDislike" data-name="{{item}}">
         <text>{{item}}</text>
       </view>
     </view>

@@ -29,6 +29,7 @@ Page({
     activeCategory: '蔬菜',
     ingredients: DEFAULT_INGREDIENTS['蔬菜'].map(name => ({ name, icon: getIngredientIcon(name) })),
     selectedIngredients: [],
+    selectedMap: {},
     results: [],
     isSearching: false,
     hasSearched: false,
@@ -53,7 +54,9 @@ Page({
     try {
       const saved = wx.getStorageSync(STORAGE_KEY)
       if (saved && saved.length > 0) {
-        this.setData({ selectedIngredients: saved })
+        const map = {}
+        saved.forEach(n => { map[n] = true })
+        this.setData({ selectedIngredients: saved, selectedMap: map })
       }
     } catch (e) {
       // ignore
@@ -81,9 +84,15 @@ Page({
     const selected = this.data.selectedIngredients
     const idx = selected.indexOf(name)
     if (idx > -1) {
-      this.setData({ selectedIngredients: selected.filter(n => n !== name) })
+      const filtered = selected.filter(n => n !== name)
+      const map = { ...this.data.selectedMap }
+      delete map[name]
+      this.setData({ selectedIngredients: filtered, selectedMap: map })
     } else {
-      this.setData({ selectedIngredients: [...selected, name] })
+      this.setData({
+        selectedIngredients: [...selected, name],
+        selectedMap: { ...this.data.selectedMap, [name]: true }
+      })
     }
     this.saveSelection()
   },
@@ -92,13 +101,15 @@ Page({
   onRemoveIngredient(e) {
     const name = e.currentTarget.dataset.name
     const selected = this.data.selectedIngredients.filter(n => n !== name)
-    this.setData({ selectedIngredients: selected })
+    const map = { ...this.data.selectedMap }
+    delete map[name]
+    this.setData({ selectedIngredients: selected, selectedMap: map })
     this.saveSelection()
   },
 
   // 清空所有已选食材和搜索结果
   onClearAll() {
-    this.setData({ selectedIngredients: [], results: [], hasSearched: false, expandedSteps: -1 })
+    this.setData({ selectedIngredients: [], selectedMap: {}, results: [], hasSearched: false, expandedSteps: -1 })
     wx.removeStorageSync(STORAGE_KEY)
   },
 
@@ -152,14 +163,18 @@ Page({
       if (results.length > 0) {
         const favNames = this.getFavoriteNames()
         results = results.map(r => {
-          // 预计算播放量文字
           const videos = (r.videos || []).map(v => ({
             ...v,
             playText: v.play ? (v.play >= 10000 ? Math.round(v.play / 10000) + '万 播放' : v.play + ' 播放') : ''
           }))
+          const missing = r.missing || []
           return {
             ...r,
             videos,
+            missing,
+            missingText: missing.join('、'),
+            steps: r.steps || [],
+            ingredients: r.ingredients || [],
             coverIcon: getDishIcon(r.name, r.category),
             stepsExpanded: false,
             isFavorited: favNames.has(r.name)

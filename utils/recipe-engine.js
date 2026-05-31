@@ -123,7 +123,7 @@ function getHotRecipes(forceRefresh) {
   }
   const hotRecipes = ALL_RECIPES.filter(r => r.isHot)
   // 从热门菜中随机取 4 道，每次刷新不同
-  const shuffled = hotRecipes.sort(() => Math.random() - 0.5)
+  const shuffled = [...hotRecipes].sort(() => Math.random() - 0.5)
   const result = shuffled.slice(0, 4)
   saveCache('hot', result)
   return result

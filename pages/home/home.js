@@ -50,11 +50,11 @@ Page({
   },
 
   onRecipeTap(e) {
-    const recipe = e.currentTarget.dataset.recipe
+    const idx = e.currentTarget.dataset.index
+    const recipe = this.data.recommendList[idx]
     if (recipe) {
-      // 通过 eventChannel 传递完整菜谱数据到详情页
       wx.navigateTo({
-        url: `/pages/recipe/detail?id=${recipe._id}`,
+        url: `/pages/recipe/detail?id=${encodeURIComponent(recipe.name)}`,
         events: {},
         success: (res) => {
           res.eventChannel.emit('recipeData', recipe)

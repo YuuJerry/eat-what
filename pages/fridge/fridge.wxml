@@ -48,7 +48,7 @@
   <!-- 食材网格：手绘图标 -->
   <view class="ingredient-grid">
     <view
-      class="ingredient-item {{selectedIngredients.includes(item.name) ? 'selected' : ''}}"
+      class="ingredient-item {{selectedMap[item.name] ? 'selected' : ''}}"
       wx:for="{{ingredients}}"
       wx:key="name"
       bindtap="onToggleIngredient"
@@ -58,7 +58,7 @@
         <image src="{{item.icon}}" mode="aspectFit" class="ingredient-img" />
       </view>
       <text class="ingredient-name">{{item.name}}</text>
-      <view class="check-mark" wx:if="{{selectedIngredients.includes(item.name)}}">
+      <view class="check-mark" wx:if="{{selectedMap[item.name]}}">
         <text>✓</text>
       </view>
     </view>
@@ -117,7 +117,7 @@
         <!-- 缺少食材 -->
         <view class="missing-section" wx:if="{{item.missing.length > 0}}">
           <text class="missing-label">还差：</text>
-          <text class="missing-items">{{item.missing.join('、')}}</text>
+          <text class="missing-items">{{item.missingText}}</text>
           <text class="almost-hint" wx:if="{{item.missing.length === 1}}"> ⭐ 只差一步！</text>
         </view>
 

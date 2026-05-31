@@ -55,7 +55,7 @@
   <view class="section card">
     <text class="section-title">👨‍🍳 烹饪步骤</text>
     <view class="step-list">
-      <view class="step-item" wx:for="{{recipe.steps}}" wx:key="index">
+      <view class="step-item" wx:for="{{recipe.steps}}" wx:key="*this">
         <view class="step-number"><text>{{index + 1}}</text></view>
         <view class="step-content">
           <text class="step-text">{{item}}</text>
@@ -79,8 +79,8 @@
           bindtap="onCheckIngredient"
           data-name="{{item.name}}"
         >
-          <view class="ingredient-check {{checkedIngredients.includes(item.name) ? 'checked' : ''}}">
-            <text wx:if="{{checkedIngredients.includes(item.name)}}">✓</text>
+          <view class="ingredient-check {{checkedMap[item.name] ? 'checked' : ''}}">
+            <text wx:if="{{checkedMap[item.name]}}">✓</text>
           </view>
           <view class="ingredient-icon">
             <image src="{{item.iconPath}}" mode="aspectFit" class="ingredient-img" />
