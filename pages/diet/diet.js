@@ -1,5 +1,5 @@
-// AI 菜谱引擎
-const aiRecipes = require('../../utils/ai-recipes.js')
+// 菜谱推荐引擎（静态数据 + 规则推荐）
+const recipeEngine = require('../../utils/recipe-engine.js')
 // 图标映射
 const { getDishIcon } = require('../../utils/icons.js')
 
@@ -28,7 +28,7 @@ Page({
   async loadDietRecipes(forceRefresh) {
     this.setData({ isLoading: true })
     try {
-      const recipes = await aiRecipes.getDietRecipes(forceRefresh)
+      const recipes = await recipeEngine.getDietRecipes(forceRefresh)
       const list = recipes.map(r => ({
         ...r,
         coverIcon: getDishIcon(r.name, r.category)

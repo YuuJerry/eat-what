@@ -10,10 +10,9 @@ App({
       })
     }
 
-    // 后台预加载热门菜谱（不阻塞启动）
+    // 预加载菜谱数据模块（静态数据，瞬间完成）
     try {
-      const aiRecipes = require('./utils/ai-recipes.js')
-      aiRecipes.preloadHotRecipes()
+      require('./utils/recipe-engine.js')
     } catch (e) { /* ignore */ }
   },
 

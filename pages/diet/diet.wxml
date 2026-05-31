@@ -1,8 +1,8 @@
 <!-- 减脂餐页面主容器 -->
 <view class="container">
-  <!-- AI 提示 -->
+  <!-- 提示 -->
   <view class="ai-hint">
-    <text class="ai-hint-text">🤖 AI 生成的减脂菜谱 · 下拉刷新换一批</text>
+    <text class="ai-hint-text">🥗 减脂菜谱 · 下拉刷新换一批</text>
   </view>
 
   <!-- 减脂餐列表：横向卡片布局 -->

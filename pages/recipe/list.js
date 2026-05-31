@@ -1,5 +1,5 @@
-// AI 菜谱引擎
-const aiRecipes = require('../../utils/ai-recipes.js')
+// 菜谱推荐引擎（静态数据 + 规则推荐）
+const recipeEngine = require('../../utils/recipe-engine.js')
 // 图标映射
 const { getDishIcon } = require('../../utils/icons.js')
 
@@ -22,7 +22,7 @@ Page({
     this.loadRecipes(true).then(() => wx.stopPullDownRefresh())
   },
 
-  // 加载菜谱（AI 生成或读缓存）
+  // 加载菜谱
   async loadRecipes(forceRefresh) {
     this.setData({ isLoading: true })
     try {
@@ -30,11 +30,11 @@ Page({
 
       let recipes
       if (keyword) {
-        recipes = await aiRecipes.searchRecipes(keyword)
+        recipes = await recipeEngine.searchRecipes(keyword)
       } else if (activeCategory === '减脂') {
-        recipes = await aiRecipes.getDietRecipes(forceRefresh)
+        recipes = await recipeEngine.getDietRecipes(forceRefresh)
       } else {
-        recipes = await aiRecipes.getRecipesByCategory(activeCategory, forceRefresh)
+        recipes = await recipeEngine.getRecipesByCategory(activeCategory, forceRefresh)
       }
 
       const list = recipes.map(r => ({

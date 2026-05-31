@@ -28,9 +28,9 @@
     </view>
   </scroll-view>
 
-  <!-- AI 提示 -->
+  <!-- 提示 -->
   <view class="ai-hint" wx:if="{{recipes.length > 0}}">
-    <text class="ai-hint-text">🤖 AI 生成 · 下拉刷新换一批</text>
+    <text class="ai-hint-text">📖 下拉刷新换一批</text>
   </view>
 
   <!-- 菜谱列表网格 -->
@@ -63,7 +63,7 @@
 
   <!-- 加载状态 -->
   <view class="load-more" wx:if="{{isLoading}}">
-    <text>🤖 AI 正在思考...</text>
+    <text>📖 加载中...</text>
   </view>
 
   <!-- 空状态 -->

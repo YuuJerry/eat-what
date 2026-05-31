@@ -1,5 +1,5 @@
-// AI 菜谱引擎
-const aiRecipes = require('../../utils/ai-recipes.js')
+// 菜谱推荐引擎（静态数据 + 规则推荐）
+const recipeEngine = require('../../utils/recipe-engine.js')
 // 图标映射
 const { getDishIcon } = require('../../utils/icons.js')
 
@@ -23,11 +23,11 @@ Page({
     this.loadRecommendations(true).then(() => wx.stopPullDownRefresh())
   },
 
-  // 加载热门推荐（AI 生成 + 本地缓存）
+  // 加载热门推荐
   async loadRecommendations(forceRefresh) {
     this.setData({ isLoading: true })
     try {
-      const recipes = await aiRecipes.getHotRecipes(forceRefresh)
+      const recipes = await recipeEngine.getHotRecipes(forceRefresh)
       const list = recipes.map(r => ({
         ...r,
         coverIcon: getDishIcon(r.name, r.category)
@@ -35,7 +35,7 @@ Page({
       this.setData({ recommendList: list })
     } catch (e) {
       console.error('加载推荐失败', e)
-      wx.showToast({ title: 'AI 推荐失败，请下拉刷新', icon: 'none' })
+      wx.showToast({ title: '加载失败，请下拉刷新', icon: 'none' })
     }
     this.setData({ isLoading: false })
   },

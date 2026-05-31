@@ -1,5 +1,5 @@
-// AI 菜谱引擎
-const aiRecipes = require('../../utils/ai-recipes.js')
+// 菜谱推荐引擎（静态数据 + 规则推荐）
+const recipeEngine = require('../../utils/recipe-engine.js')
 // 图标映射
 const { getDishIcon, getIngredientIcon } = require('../../utils/icons.js')
 // 收藏 key
@@ -51,11 +51,11 @@ Page({
     this.checkFavorited()
   },
 
-  // 从本地/AI 加载菜谱
+  // 从本地数据加载菜谱
   async loadRecipe(id) {
     this.setData({ isLoading: true })
     try {
-      const recipe = await aiRecipes.getRecipeDetail(id)
+      const recipe = await recipeEngine.getRecipeDetail(id)
       this.showRecipe(recipe)
     } catch (e) {
       console.error('加载菜谱失败', e)
