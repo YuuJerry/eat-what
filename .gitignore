@@ -1,3 +1,4 @@
 private.*.key
 preview-qr.png
 qr.html
+config/api.js

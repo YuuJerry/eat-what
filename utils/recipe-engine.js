@@ -14,11 +14,12 @@ const ALL_RECIPES = RAW_RECIPES.map(r => {
   return r
 })
 
-// ===== AI 配置（仅冰箱推荐 fallback 用）=====
-const AI_CONFIG = {
-  url: 'https://maas-coding-api.cn-huabei-1.xf-yun.com/anthropic/v1/messages',
-  key: 'feacb83e1105a0b4978566511bc9a39b:MDAzNDI5N2RlNTBlNzY1NGIwNmY5ZTMz',
-  model: 'astron-code-latest'
+// ===== AI 配置（从配置文件读取，仅冰箱推荐 fallback 用）=====
+let AI_CONFIG
+try {
+  AI_CONFIG = require('../config/api.js').AI
+} catch (e) {
+  AI_CONFIG = { url: '', key: '', model: '' }
 }
 
 // ===== 规则引擎：打分推荐 =====
