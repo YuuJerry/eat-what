@@ -34,7 +34,12 @@ Page({
   // 加载收藏列表
   loadFavorites() {
     try {
-      const favs = wx.getStorageSync(FAVORITES_KEY) || []
+      let favs = wx.getStorageSync(FAVORITES_KEY) || []
+      // 为每个收藏添加用料文本
+      favs = favs.map(f => ({
+        ...f,
+        ingredientsText: (f.ingredients || []).map(i => i.name + ' ' + i.amount).join('、')
+      }))
       this.setData({ favorites: favs })
     } catch (e) {
       this.setData({ favorites: [] })

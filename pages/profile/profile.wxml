@@ -38,7 +38,7 @@
         <!-- 用料 -->
         <view class="fav-ingredients" wx:if="{{item.ingredients.length > 0}}">
           <text class="fav-sub">📋 用料：</text>
-          <text class="fav-ing-text">{{item.ingredients.map(i => i.name + ' ' + i.amount).join('、')}}</text>
+          <text class="fav-ing-text">{{item.ingredientsText}}</text>
         </view>
 
         <!-- 步骤 -->
