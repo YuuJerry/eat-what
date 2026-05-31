@@ -70,18 +70,12 @@
   <view class="section card">
     <text class="section-title">👨‍🍳 烹饪步骤</text>
     <view class="step-list">
-      <!-- 单个步骤项 -->
-      <view class="step-item" wx:for="{{recipe.steps}}" wx:key="order">
-        <!-- 步骤序号圆圈 -->
+      <view class="step-item" wx:for="{{recipe.steps}}" wx:key="index">
         <view class="step-number">
-          <text>{{item.order}}</text>
+          <text>{{index + 1}}</text>
         </view>
-        <!-- 步骤内容和配图 -->
         <view class="step-content">
-          <text class="step-text">{{item.text}}</text>
-          <view class="step-img hand-drawn-placeholder" wx:if="{{item.img}}">
-            <image src="{{item.img}}" mode="aspectFill" />
-          </view>
+          <text class="step-text">{{item}}</text>
         </view>
       </view>
     </view>

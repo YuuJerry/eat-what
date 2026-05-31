@@ -2,7 +2,17 @@
 // 静态数据 + 规则推荐 + AI fallback（冰箱推荐）
 // 替代 ai-recipes.js，对外接口不变
 
-const ALL_RECIPES = require('../data/recipes.js')
+const RAW_RECIPES = require('../data/recipes.js')
+const VIDEO_MAP = require('../data/videos.js')
+
+// 合并视频数据到菜谱
+const ALL_RECIPES = RAW_RECIPES.map(r => {
+  const videos = VIDEO_MAP[r.name]
+  if (videos && videos.length > 0) {
+    return { ...r, videos }
+  }
+  return r
+})
 
 // ===== AI 配置（仅冰箱推荐 fallback 用）=====
 const AI_CONFIG = {
