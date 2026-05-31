@@ -23,13 +23,13 @@
     <view
       class="room-card card"
       wx:for="{{myRooms}}"
-      wx:key="roomCode"
+      wx:key="code"
       bindtap="onRoomTap"
-      data-code="{{item.roomCode}}"
+      data-item="{{item}}"
     >
       <text class="room-title">{{item.title}}</text>
       <view class="room-meta">
-        <text class="room-code">房间码: {{item.roomCode}}</text>
+        <text class="room-code">房间码: {{item.code}}</text>
         <!-- 根据房间状态显示"进行中"或"已结束"标签 -->
         <text class="room-status {{item.status === 'active' ? 'active' : ''}}">
           {{item.status === 'active' ? '进行中' : '已结束'}}
