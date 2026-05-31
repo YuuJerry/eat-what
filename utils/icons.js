@@ -3,51 +3,51 @@
 
 // 食材 → SVG 图标映射
 const INGREDIENT_ICONS = {
-  '番茄': '/images/icons/ingredient/tomato.svg',
-  '小番茄': '/images/icons/ingredient/tomato.svg',
-  '鸡蛋': '/images/icons/ingredient/egg.svg',
-  '黄瓜': '/images/icons/ingredient/cucumber.svg',
-  '土豆': '/images/icons/ingredient/potato.svg',
-  '胡萝卜': '/images/icons/ingredient/carrot.svg',
-  '洋葱': '/images/icons/ingredient/onion.svg',
-  '西兰花': '/images/icons/ingredient/broccoli.svg',
-  '菠菜': '/images/icons/ingredient/spinach.svg',
-  '生菜': '/images/icons/ingredient/spinach.svg',
-  '青椒': '/images/icons/ingredient/pepper.svg',
-  '猪肉': '/images/icons/ingredient/pork.svg',
-  '猪肉末': '/images/icons/ingredient/pork.svg',
-  '鸡胸肉': '/images/icons/ingredient/chicken.svg',
-  '鸡腿肉': '/images/icons/ingredient/chicken.svg',
-  '牛肉': '/images/icons/ingredient/beef.svg',
-  '羊肉': '/images/icons/ingredient/beef.svg',
-  '排骨': '/images/icons/ingredient/ribs.svg',
-  '虾仁': '/images/icons/ingredient/shrimp.svg',
-  '鱼': '/images/icons/ingredient/fish.svg',
-  '三文鱼': '/images/icons/ingredient/fish.svg',
-  '鱿鱼': '/images/icons/ingredient/shrimp.svg',
-  '豆腐': '/images/icons/ingredient/tofu.svg',
-  '嫩豆腐': '/images/icons/ingredient/tofu.svg',
-  '米饭': '/images/icons/ingredient/rice.svg',
-  '面条': '/images/icons/ingredient/noodles.svg',
-  '面粉': '/images/icons/ingredient/rice.svg',
-  '馒头': '/images/icons/ingredient/rice.svg',
-  '面包': '/images/icons/ingredient/rice.svg',
-  '蒜': '/images/icons/ingredient/garlic.svg',
-  '葱': '/images/icons/ingredient/greenonion.svg',
-  '姜': '/images/icons/ingredient/carrot.svg',
-  '大白菜': '/images/icons/ingredient/spinach.svg',
-  '芹菜': '/images/icons/ingredient/spinach.svg',
-  '黄豆芽': '/images/icons/ingredient/spinach.svg',
+  '番茄': '/images/icons/ingredient/tomato.png',
+  '小番茄': '/images/icons/ingredient/tomato.png',
+  '鸡蛋': '/images/icons/ingredient/egg.png',
+  '黄瓜': '/images/icons/ingredient/cucumber.png',
+  '土豆': '/images/icons/ingredient/potato.png',
+  '胡萝卜': '/images/icons/ingredient/carrot.png',
+  '洋葱': '/images/icons/ingredient/onion.png',
+  '西兰花': '/images/icons/ingredient/broccoli.png',
+  '菠菜': '/images/icons/ingredient/spinach.png',
+  '生菜': '/images/icons/ingredient/spinach.png',
+  '青椒': '/images/icons/ingredient/pepper.png',
+  '猪肉': '/images/icons/ingredient/pork.png',
+  '猪肉末': '/images/icons/ingredient/pork.png',
+  '鸡胸肉': '/images/icons/ingredient/chicken.png',
+  '鸡腿肉': '/images/icons/ingredient/chicken.png',
+  '牛肉': '/images/icons/ingredient/beef.png',
+  '羊肉': '/images/icons/ingredient/beef.png',
+  '排骨': '/images/icons/ingredient/ribs.png',
+  '虾仁': '/images/icons/ingredient/shrimp.png',
+  '鱼': '/images/icons/ingredient/fish.png',
+  '三文鱼': '/images/icons/ingredient/fish.png',
+  '鱿鱼': '/images/icons/ingredient/shrimp.png',
+  '豆腐': '/images/icons/ingredient/tofu.png',
+  '嫩豆腐': '/images/icons/ingredient/tofu.png',
+  '米饭': '/images/icons/ingredient/rice.png',
+  '面条': '/images/icons/ingredient/noodles.png',
+  '面粉': '/images/icons/ingredient/rice.png',
+  '馒头': '/images/icons/ingredient/rice.png',
+  '面包': '/images/icons/ingredient/rice.png',
+  '蒜': '/images/icons/ingredient/garlic.png',
+  '葱': '/images/icons/ingredient/greenonion.png',
+  '姜': '/images/icons/ingredient/carrot.png',
+  '大白菜': '/images/icons/ingredient/spinach.png',
+  '芹菜': '/images/icons/ingredient/spinach.png',
+  '黄豆芽': '/images/icons/ingredient/spinach.png',
 }
 
 // 分类 → 默认 SVG 图标
 const CATEGORY_ICONS = {
-  '蔬菜': '/images/icons/category/vegetable.svg',
-  '肉类': '/images/icons/category/meat.svg',
-  '海鲜': '/images/icons/category/seafood.svg',
-  '蛋奶': '/images/icons/category/egg-dairy.svg',
-  '主食': '/images/icons/category/staple.svg',
-  '调料': '/images/icons/category/seasoning.svg',
+  '蔬菜': '/images/icons/category/vegetable.png',
+  '肉类': '/images/icons/category/meat.png',
+  '海鲜': '/images/icons/category/seafood.png',
+  '蛋奶': '/images/icons/category/egg-dairy.png',
+  '主食': '/images/icons/category/staple.png',
+  '调料': '/images/icons/category/seasoning.png',
 }
 
 // 分类关键词匹配（fallback 用）
@@ -62,23 +62,23 @@ const CATEGORY_KEYWORDS = {
 
 // 菜品 → SVG 图标映射
 const DISH_ICONS = {
-  '番茄炒蛋': '/images/icons/dish/tomato-egg.svg',
-  '番茄炒鸡蛋': '/images/icons/dish/tomato-egg.svg',
-  '麻婆豆腐': '/images/icons/dish/mapo-tofu.svg',
-  '凉拌黄瓜': '/images/icons/dish/cucumber-salad.svg',
-  '宫保鸡丁': '/images/icons/dish/kung-pao-chicken.svg',
-  '鸡胸肉沙拉': '/images/icons/dish/chicken-salad.svg',
-  '日式咖喱饭': '/images/icons/dish/curry-rice.svg',
-  '韩式拌饭': '/images/icons/dish/bibimbap.svg',
-  '虾仁西兰花': '/images/icons/dish/shrimp-broccoli.svg',
+  '番茄炒蛋': '/images/icons/dish/tomato-egg.png',
+  '番茄炒鸡蛋': '/images/icons/dish/tomato-egg.png',
+  '麻婆豆腐': '/images/icons/dish/mapo-tofu.png',
+  '凉拌黄瓜': '/images/icons/dish/cucumber-salad.png',
+  '宫保鸡丁': '/images/icons/dish/kung-pao-chicken.png',
+  '鸡胸肉沙拉': '/images/icons/dish/chicken-salad.png',
+  '日式咖喱饭': '/images/icons/dish/curry-rice.png',
+  '韩式拌饭': '/images/icons/dish/bibimbap.png',
+  '虾仁西兰花': '/images/icons/dish/shrimp-broccoli.png',
 }
 
 // 菜品分类 → 默认图标
 const DISH_CATEGORY_ICONS = {
-  '中餐': '/images/icons/dish/tomato-egg.svg',
-  '西餐': '/images/icons/dish/chicken-salad.svg',
-  '日料': '/images/icons/dish/curry-rice.svg',
-  '韩餐': '/images/icons/dish/bibimbap.svg',
+  '中餐': '/images/icons/dish/tomato-egg.png',
+  '西餐': '/images/icons/dish/chicken-salad.png',
+  '日料': '/images/icons/dish/curry-rice.png',
+  '韩餐': '/images/icons/dish/bibimbap.png',
 }
 
 /**
@@ -92,7 +92,7 @@ function getIngredientIcon(name) {
       return CATEGORY_ICONS[category]
     }
   }
-  return '/images/icons/category/vegetable.svg'
+  return '/images/icons/category/vegetable.png'
 }
 
 /**
@@ -100,14 +100,14 @@ function getIngredientIcon(name) {
  */
 function getDishIcon(name, category) {
   if (DISH_ICONS[name]) return DISH_ICONS[name]
-  return DISH_CATEGORY_ICONS[category] || '/images/icons/dish/tomato-egg.svg'
+  return DISH_CATEGORY_ICONS[category] || '/images/icons/dish/tomato-egg.png'
 }
 
 /**
  * 获取分类图标路径
  */
 function getCategoryIcon(category) {
-  return CATEGORY_ICONS[category] || '/images/icons/category/vegetable.svg'
+  return CATEGORY_ICONS[category] || '/images/icons/category/vegetable.png'
 }
 
 module.exports = {
