@@ -1,13 +1,31 @@
-// 投票大厅页面逻辑 - 提供创建投票和加入投票的入口，展示用户的历史投票记录
+// 投票大厅页面逻辑
+const { voteApi } = require('../../utils/cloud.js')
 
 Page({
   data: {
-    myRooms: [],    // 用户参与过的投票房间列表
-    isLoading: false // 加载状态标记
+    myRooms: [],
+    isLoading: false
   },
 
   onLoad() {
-    // 页面加载时触发，后续可以从云数据库加载用户的历史投票房间
+    this.loadHistory()
+  },
+
+  onShow() {
+    this.loadHistory()
+  },
+
+  async loadHistory() {
+    this.setData({ isLoading: true })
+    try {
+      const res = await voteApi.getMyRooms()
+      if (res && res.success) {
+        this.setData({ myRooms: res.data || [] })
+      }
+    } catch (e) {
+      console.error('加载历史失败', e)
+    }
+    this.setData({ isLoading: false })
   },
 
   // 点击"发起投票"按钮，跳转到投票房间创建页面

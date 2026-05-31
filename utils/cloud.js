@@ -126,66 +126,134 @@ const recipeApi = {
   }
 }
 
-// ========== 投票相关 API ==========
+// ========== 投票相关 API（直接操作云数据库，不需要云函数）==========
+const ROOMS_COLLECTION = 'voting_rooms'
+const ROOM_CHARS = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789' // 排除易混淆字符 I/0/1/O/L
+
+function generateRoomCode() {
+  let code = ''
+  for (let i = 0; i < 6; i++) {
+    code += ROOM_CHARS[Math.floor(Math.random() * ROOM_CHARS.length)]
+  }
+  return code
+}
+
 const voteApi = {
-  // 创建投票房间（如"今天中午吃什么"投票）
-  // @param {Object} options - 房间配置
-  // @param {string} options.title - 投票标题
-  // @param {string[]} options.options - 候选选项列表
-  // @param {number} options.maxVoters - 最大参与人数（默认 20）
+  // 创建投票房间
   async createRoom({ title, options, maxVoters = 20 }) {
     try {
-      const { result } = await wx.cloud.callFunction({
-        name: 'createRoom',
-        data: { title, options, maxVoters }
+      const db = getDb()
+      const code = generateRoomCode()
+      const res = await db.collection(ROOMS_COLLECTION).add({
+        data: {
+          roomCode: code,
+          title,
+          options,
+          voters: {},
+          status: 'active',
+          maxVoters,
+          createdAt: new Date(),
+          expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000)
+        }
       })
-      return result
+      return { success: true, roomId: res._id, roomCode: code }
     } catch (e) {
       console.error('创建投票失败', e)
       return null
     }
   },
 
-  // 通过房间码加入已有的投票房间
+  // 通过房间码加入投票
   async joinRoom(roomCode) {
     try {
-      const { result } = await wx.cloud.callFunction({
-        name: 'joinRoom',
-        data: { roomCode }
-      })
-      return result
+      const db = getDb()
+      const res = await db.collection(ROOMS_COLLECTION)
+        .where({ roomCode: roomCode.toUpperCase(), status: 'active' })
+        .get()
+      if (res.data.length === 0) return null
+      const room = res.data[0]
+      // 检查是否过期
+      if (new Date(room.expiresAt) < new Date()) {
+        await db.collection(ROOMS_COLLECTION).doc(room._id).update({ data: { status: 'closed' } })
+        return null
+      }
+      return { success: true, data: room }
     } catch (e) {
       console.error('加入投票失败', e)
       return null
     }
   },
 
-  // 提交投票选择
-  // @param {string} roomId - 房间 ID
-  // @param {string} option - 用户选择的选项
+  // 提交投票
   async submitVote(roomId, option) {
     try {
-      const { result } = await wx.cloud.callFunction({
-        name: 'submitVote',
-        data: { roomId, option }
-      })
-      return result
+      const db = getDb()
+      const updateData = {}
+      updateData['voters.' + getApp().globalData.openid] = option
+      await db.collection(ROOMS_COLLECTION).doc(roomId).update({ data: updateData })
+      return { success: true }
     } catch (e) {
       console.error('提交投票失败', e)
       return null
     }
   },
 
-  // 获取投票房间的实时结果（各选项票数统计）
+  // 获取投票结果
   async getResult(roomId) {
     try {
-      const { result } = await wx.cloud.callFunction({
-        name: 'getResult',
-        data: { roomId }
-      })
-      return result
+      const db = getDb()
+      const res = await db.collection(ROOMS_COLLECTION).doc(roomId).get()
+      const room = res.data
+      const voters = room.voters || {}
+      const tally = {}
+      Object.values(voters).forEach(v => { tally[v] = (tally[v] || 0) + 1 })
+      const sorted = Object.entries(tally).sort((a, b) => b[1] - a[1])
+      return {
+        success: true,
+        data: {
+          room,
+          tally,
+          winner: sorted[0]?.[0] || '',
+          winnerVotes: sorted[0]?.[1] || 0,
+          isTie: sorted.length > 1 && sorted[0][1] === sorted[1][1],
+          totalVotes: Object.keys(voters).length
+        }
+      }
     } catch (e) {
       console.error('获取结果失败', e)
+      return null
+    }
+  },
+
+  // 获取用户的投票历史
+  async getMyRooms() {
+    try {
+      const db = getDb()
+      const openid = getApp().globalData.openid
+      // 查询用户创建的或参与投票的房间
+      const res = await db.collection(ROOMS_COLLECTION)
+        .orderBy('createdAt', 'desc')
+        .limit(20)
+        .get()
+      // 过滤出用户相关的房间（创建者或已投票）
+      const rooms = res.data.filter(r =>
+        r._openid === openid || (r.voters && r.voters[openid])
+      )
+      return { success: true, data: rooms }
+    } catch (e) {
+      console.error('获取历史失败', e)
+      return null
+    }
+  },
+
+  // 通过 ID 获取房间
+  async getRoom(roomId) {
+    try {
+      const db = getDb()
+      const res = await db.collection(ROOMS_COLLECTION).doc(roomId).get()
+      return { success: true, data: res.data }
+    } catch (e) {
+      console.error('获取房间失败', e)
       return null
     }
   }

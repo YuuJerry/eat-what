@@ -77,7 +77,7 @@ Page({
     this.setData({ isCreating: true })
     try {
       const res = await voteApi.createRoom({ title, options: validOptions, maxVoters })
-      if (res.success) {
+      if (res && res.success) {
         // 创建成功后，通过返回的房间码自动加入投票
         this.joinByCode(res.roomCode)
       } else {
@@ -89,24 +89,42 @@ Page({
     this.setData({ isCreating: false })
   },
 
-  // 通过房间码加入投票房间，成功后切换到投票模式
+  // 通过房间码加入投票房间
   async joinByCode(code) {
     try {
       const res = await voteApi.joinRoom(code)
-      if (res.success) {
+      if (res && res.success) {
         this.setData({ room: res.data, mode: 'vote' })
       } else {
-        wx.showToast({ title: res.error || '加入失败', icon: 'none' })
+        wx.showToast({ title: '房间不存在或已过期', icon: 'none' })
       }
     } catch (e) {
       wx.showToast({ title: '加入失败', icon: 'none' })
     }
   },
 
-  // 通过房间ID加载已有房间（功能开发中）
+  // 通过房间ID加载已有房间
   async loadRoom(id) {
-    // 简化处理，直接通过云函数获取
-    wx.showToast({ title: '功能开发中', icon: 'none' })
+    try {
+      const res = await voteApi.getRoom(id)
+      if (res && res.success && res.data) {
+        const room = res.data
+        // 检查用户是否已投票
+        const openid = getApp().globalData.openid
+        const myVote = (room.voters && room.voters[openid]) || ''
+        if (myVote) {
+          // 已投票，直接加载结果
+          this.setData({ room, myVote })
+          this.loadResult()
+        } else {
+          this.setData({ room, mode: 'vote' })
+        }
+      } else {
+        wx.showToast({ title: '房间不存在', icon: 'none' })
+      }
+    } catch (e) {
+      wx.showToast({ title: '加载失败', icon: 'none' })
+    }
   },
 
   // 用户点击选择某个投票选项
@@ -128,7 +146,7 @@ Page({
 
     try {
       const res = await voteApi.submitVote(this.data.room._id, this.data.myVote)
-      if (res.success) {
+      if (res && res.success) {
         wx.showToast({ title: '投票成功', icon: 'success' })
         // 投票成功后自动加载并展示结果
         this.loadResult()
@@ -145,7 +163,7 @@ Page({
     if (!this.data.room) return
     try {
       const res = await voteApi.getResult(this.data.room._id)
-      if (res.success) {
+      if (res && res.success) {
         this.setData({ result: res.data, mode: 'result' })
       }
     } catch (e) {
