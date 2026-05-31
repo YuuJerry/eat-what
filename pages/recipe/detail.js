@@ -46,6 +46,13 @@ Page({
         iconPath: getIngredientIcon(i.name)
       }))
     }
+    // 预计算视频播放量文字
+    if (r.videos) {
+      r.videos = r.videos.map(v => ({
+        ...v,
+        playText: v.play ? (v.play >= 10000 ? Math.round(v.play / 10000) + '万 播放' : v.play + ' 播放') : ''
+      }))
+    }
     this.recipeId = r._id || r.name
     this.setData({ recipe: r })
     this.checkFavorited()
@@ -117,16 +124,34 @@ Page({
     this.setData({ checkedIngredients: [...checked] })
   },
 
-  // 点击视频教程
+  // 点击视频教程 - 优先打开Bilibili小程序
   onVideoTap(e) {
     const video = e.currentTarget.dataset.video
     if (!video) return
+
+    const bvid = video.bvid || ''
     const url = video.url || ''
-    if (url) {
-      // 复制链接让用户在浏览器打开
+
+    if (bvid) {
+      // 尝试打开Bilibili小程序播放
+      wx.navigateToMiniProgram({
+        appId: 'wx7564fd5313fa0a90',
+        path: `pages/video/video?bvid=${bvid}`,
+        fail: () => {
+          // Bilibili小程序未安装，复制链接到浏览器
+          if (url) {
+            wx.setClipboardData({
+              data: url,
+              success() { wx.showToast({ title: '链接已复制，打开浏览器观看', icon: 'none' }) }
+            })
+          }
+        }
+      })
+    } else if (url) {
+      // 没有bvid，直接复制链接
       wx.setClipboardData({
         data: url,
-        success() { wx.showToast({ title: '链接已复制，打开浏览器观看', icon: 'none' }) }
+        success() { wx.showToast({ title: '链接已复制', icon: 'success' }) }
       })
     }
   },

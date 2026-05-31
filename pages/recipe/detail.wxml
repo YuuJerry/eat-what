@@ -104,7 +104,7 @@
     </view>
   </view>
 
-  <!-- 视频教程区域：有视频时显示视频列表 -->
+  <!-- 视频教程区域：有视频时显示视频卡片（含封面图） -->
   <view class="section card" wx:if="{{recipe.videos && recipe.videos.length > 0}}">
     <text class="section-title">🎬 视频教程</text>
     <view class="video-list">
@@ -115,12 +115,20 @@
         bindtap="onVideoTap"
         data-video="{{item}}"
       >
+        <!-- 视频封面图 -->
         <view class="video-cover">
-          <text>▶</text>
+          <image wx:if="{{item.cover}}" src="{{item.cover}}" mode="aspectFill" class="video-cover-img" />
+          <view class="video-play-icon"><text>▶</text></view>
+          <text class="video-duration" wx:if="{{item.duration}}">{{item.duration}}</text>
         </view>
+        <!-- 视频信息 -->
         <view class="video-info">
           <text class="video-title">{{item.title}}</text>
-          <text class="video-author">{{item.author}} · {{item.platform}}</text>
+          <view class="video-meta">
+            <text class="video-author">{{item.author}}</text>
+            <text class="video-play" wx:if="{{item.playText}}">{{item.playText}}</text>
+          </view>
+          <text class="video-platform">📺 Bilibili · 点击观看</text>
         </view>
       </view>
     </view>
