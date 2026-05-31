@@ -1,28 +1,17 @@
 /**
  * AI 推荐菜谱云函数
- * 根据用户选择的食材，调用 DeepSeek API 动态生成菜谱推荐
- *
- * 参数:
- *   ingredients - 用户拥有的食材名称数组（如 ["鸡蛋","番茄"]）
- * 返回: { success, recipes } 每道菜包含 name, ingredients, steps, cookTime, calories, missing
+ * 调用 Anthropic 兼容 API 动态生成菜谱推荐
  */
 const cloud = require('wx-server-sdk')
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV })
 
-// DeepSeek API 配置
-const DEEPSEEK_API_URL = 'https://api.deepseek.com/chat/completions'
+// API 配置
+const API_URL = 'https://maas-coding-api.cn-huabei-1.xf-yun.com/anthropic'
+const API_KEY = 'feacb83e1105a0b4978566511bc9a39b:MDAzNDI5N2RlNTBlNzY1NGIwNmY5ZTMz'
+const MODEL_ID = 'astron-code-latest'
 
-// 从环境变量获取 API Key（在云开发控制台设置）
-function getApiKey() {
-  const key = process.env.DEEPSEEK_API_KEY
-  if (!key) {
-    throw new Error('未配置 DEEEPSEEK_API_KEY，请在云开发控制台设置环境变量')
-  }
-  return key
-}
-
-// 调用 DeepSeek API
-async function callDeepSeek(ingredients) {
+// 调用 AI API
+async function callAI(ingredients) {
   const https = require('https')
 
   const prompt = `你是一位中餐厨师。用户冰箱里有以下食材：${ingredients.join('、')}
@@ -46,25 +35,23 @@ async function callDeepSeek(ingredients) {
 ]`
 
   const body = JSON.stringify({
-    model: 'deepseek-chat',
-    messages: [
-      { role: 'system', content: '你是一位专业厨师，擅长根据冰箱食材推荐菜谱。只返回 JSON，不要多余文字。' },
-      { role: 'user', content: prompt }
-    ],
-    temperature: 0.7,
+    model: MODEL_ID,
     max_tokens: 2000,
-    response_format: { type: 'json_object' }
+    messages: [
+      { role: 'user', content: prompt }
+    ]
   })
 
   return new Promise((resolve, reject) => {
-    const url = new URL(DEEPSEEK_API_URL)
+    const url = new URL(API_URL)
     const options = {
       hostname: url.hostname,
-      path: url.pathname,
+      path: url.pathname + url.search,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${getApiKey()}`,
+        'x-api-key': API_KEY,
+        'anthropic-version': '2023-06-01',
         'Content-Length': Buffer.byteLength(body)
       },
       timeout: 30000
@@ -77,13 +64,22 @@ async function callDeepSeek(ingredients) {
         try {
           const json = JSON.parse(data)
           if (json.error) {
-            reject(new Error(json.error.message || 'API 调用失败'))
+            reject(new Error(json.error.message || JSON.stringify(json.error)))
             return
           }
-          const content = json.choices[0].message.content
-          resolve(content)
+          // Anthropic 格式: { content: [{ type: "text", text: "..." }] }
+          if (json.content && json.content.length > 0) {
+            resolve(json.content[0].text)
+            return
+          }
+          // OpenAI 兼容格式 fallback
+          if (json.choices && json.choices[0]) {
+            resolve(json.choices[0].message.content)
+            return
+          }
+          reject(new Error('未知的 API 响应格式: ' + JSON.stringify(json).slice(0, 200)))
         } catch (e) {
-          reject(new Error('解析 API 响应失败: ' + e.message))
+          reject(new Error('解析 API 响应失败: ' + e.message + ' | raw: ' + data.slice(0, 200)))
         }
       })
     })
@@ -96,30 +92,39 @@ async function callDeepSeek(ingredients) {
 }
 
 // 解析 AI 返回的 JSON，提取菜谱数组
-function parseRecipes(content, userIngredients) {
+function parseRecipes(content) {
   try {
-    const parsed = JSON.parse(content)
-    // 兼容两种格式：直接数组 或 { recipes: [...] }
-    const recipes = Array.isArray(parsed) ? parsed : (parsed.recipes || parsed.data || [])
-    return recipes.map(r => ({
-      name: r.name || '未知菜名',
-      ingredients: r.ingredients || [],
-      steps: r.steps || [],
-      cookTime: r.cookTime || 0,
-      calories: r.calories || 0,
-      category: r.category || '中餐',
-      missing: r.missing || [],
-      matchRate: Math.round(
-        ((r.ingredients || []).length - (r.missing || []).length) /
-        Math.max((r.ingredients || []).length, 1) * 100
-      ),
-      ownedCount: (r.ingredients || []).length - (r.missing || []).length,
-      totalCount: (r.ingredients || []).length
-    }))
+    // 尝试从内容中提取 JSON 数组
+    const jsonMatch = content.match(/\[[\s\S]*\]/)
+    if (!jsonMatch) {
+      const parsed = JSON.parse(content)
+      const recipes = Array.isArray(parsed) ? parsed : (parsed.recipes || parsed.data || [])
+      return formatRecipes(recipes)
+    }
+    const recipes = JSON.parse(jsonMatch[0])
+    return formatRecipes(recipes)
   } catch (e) {
     console.error('解析 AI 返回失败:', content)
     return []
   }
+}
+
+function formatRecipes(recipes) {
+  return recipes.map(r => ({
+    name: r.name || '未知菜名',
+    ingredients: r.ingredients || [],
+    steps: r.steps || [],
+    cookTime: r.cookTime || 0,
+    calories: r.calories || 0,
+    category: r.category || '中餐',
+    missing: r.missing || [],
+    matchRate: Math.round(
+      ((r.ingredients || []).length - (r.missing || []).length) /
+      Math.max((r.ingredients || []).length, 1) * 100
+    ),
+    ownedCount: (r.ingredients || []).length - (r.missing || []).length,
+    totalCount: (r.ingredients || []).length
+  }))
 }
 
 exports.main = async (event) => {
@@ -130,8 +135,8 @@ exports.main = async (event) => {
   }
 
   try {
-    const content = await callDeepSeek(ingredients)
-    const recipes = parseRecipes(content, ingredients)
+    const content = await callAI(ingredients)
+    const recipes = parseRecipes(content)
 
     if (recipes.length === 0) {
       return { success: false, error: 'AI 未返回有效菜谱，请重试' }
