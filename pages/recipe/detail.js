@@ -10,7 +10,13 @@ Page({
     recipe: null,
     isLoading: true,
     isFavorited: false,
-    checkedIngredients: []
+    checkedIngredients: [],
+    // 视频播放器
+    showPlayer: false,
+    playerUrl: '',
+    playerLoading: false,
+    playerError: '',
+    playerTitle: ''
   },
 
   onLoad(options) {
@@ -124,40 +130,83 @@ Page({
     this.setData({ checkedIngredients: [...checked] })
   },
 
-  // 点击视频教程 - 多种方式打开
+  // 点击视频教程 - 直接在小程序内播放
   onVideoTap(e) {
     const video = e.currentTarget.dataset.video
-    if (!video) return
+    if (!video || !video.bvid) return
 
-    const url = video.url || ''
-    if (!url) return
+    this.setData({
+      showPlayer: true,
+      playerLoading: true,
+      playerUrl: '',
+      playerError: '',
+      playerTitle: video.title || ''
+    })
+    this._playerVideo = video
+    this.fetchAndPlayVideo(video.bvid)
+  },
 
-    // 显示操作菜单让用户选择
-    wx.showActionSheet({
-      itemList: ['📺 打开 Bilibili 观看', '📋 复制链接'],
-      success: (res) => {
-        if (res.tapIndex === 0) {
-          // 尝试打开Bilibili小程序
-          wx.navigateToMiniProgram({
-            appId: 'wx7564fd5313fa0a90',
-            path: `pages/index/index?bvid=${video.bvid || ''}`,
-            fail: () => {
-              // 小程序打开失败，复制链接让用户在浏览器打开
-              wx.setClipboardData({
-                data: url,
-                success() { wx.showToast({ title: '链接已复制，打开浏览器粘贴观看', icon: 'none', duration: 2000 }) }
-              })
+  // 通过 Bilibili API 获取播放地址并播放
+  fetchAndPlayVideo(bvid) {
+    const self = this
+    // 第一步：获取视频信息（含 cid）
+    wx.request({
+      url: 'https://api.bilibili.com/x/web-interface/view?bvid=' + bvid,
+      header: { 'User-Agent': 'Mozilla/5.0', 'Referer': 'https://www.bilibili.com/' },
+      success(res) {
+        if (res.data && res.data.code === 0 && res.data.data) {
+          const cid = res.data.data.cid
+          // 第二步：获取播放地址
+          wx.request({
+            url: `https://api.bilibili.com/x/player/playurl?bvid=${bvid}&cid=${cid}&qn=32&fnval=1`,
+            header: { 'User-Agent': 'Mozilla/5.0', 'Referer': 'https://www.bilibili.com/' },
+            success(res2) {
+              if (res2.data && res2.data.code === 0) {
+                const d = res2.data.data
+                let playUrl = ''
+                // 优先 DASH，其次 durl
+                if (d.durl && d.durl.length > 0) {
+                  playUrl = d.durl[0].url
+                } else if (d.dash && d.dash.audio && d.dash.video) {
+                  playUrl = d.dash.audio[0].baseUrl
+                }
+                if (playUrl) {
+                  self.setData({ playerUrl: playUrl, playerLoading: false })
+                } else {
+                  self.setData({ playerLoading: false, playerError: '无法获取播放地址' })
+                }
+              } else {
+                self.setData({ playerLoading: false, playerError: '获取播放地址失败' })
+              }
+            },
+            fail() {
+              self.setData({ playerLoading: false, playerError: '网络请求失败' })
             }
           })
         } else {
-          // 复制链接
-          wx.setClipboardData({
-            data: url,
-            success() { wx.showToast({ title: '链接已复制', icon: 'success' }) }
-          })
+          self.setData({ playerLoading: false, playerError: '获取视频信息失败' })
         }
+      },
+      fail() {
+        self.setData({ playerLoading: false, playerError: '网络请求失败' })
       }
     })
+  },
+
+  // 复制视频链接到浏览器
+  onRetryVideo() {
+    const url = this._playerVideo?.url || ''
+    if (url) {
+      wx.setClipboardData({
+        data: url,
+        success() { wx.showToast({ title: '链接已复制，打开浏览器观看', icon: 'none' }) }
+      })
+    }
+  },
+
+  // 关闭视频播放器
+  onClosePlayer() {
+    this.setData({ showPlayer: false, playerUrl: '', playerError: '', playerLoading: false })
   },
 
   // 搜索 Bilibili 教程
