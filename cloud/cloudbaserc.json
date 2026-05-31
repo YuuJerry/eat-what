@@ -1,5 +1,5 @@
 {
-  "envId": "eat-what-xxx",
+  "envId": "cloudbase-d0ggsef0eee4e6534",
   "functionRoot": "functions",
   "functions": [
     {
@@ -71,6 +71,12 @@
     {
       "name": "toggleFavorite",
       "timeout": 10,
+      "runtime": "Nodejs16",
+      "handler": "index.main"
+    },
+    {
+      "name": "aiRecommend",
+      "timeout": 30,
       "runtime": "Nodejs16",
       "handler": "index.main"
     }

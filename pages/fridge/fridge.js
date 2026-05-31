@@ -1,7 +1,105 @@
-// 引入菜谱相关的云函数 API
-const { recipeApi } = require('../../utils/cloud.js')
 // 引入图标映射
 const { getIngredientIcon, getCategoryIcon, getDishIcon } = require('../../utils/icons.js')
+
+// AI API 配置
+const AI_CONFIG = {
+  url: 'https://maas-coding-api.cn-huabei-1.xf-yun.com/anthropic/v1/messages',
+  key: 'feacb83e1105a0b4978566511bc9a39b:MDAzNDI5N2RlNTBlNzY1NGIwNmY5ZTMz',
+  model: 'astron-code-latest'
+}
+
+// 调用 AI API（直接 wx.request，不走云函数）
+function callAI(ingredients) {
+  return new Promise((resolve, reject) => {
+    const prompt = `你是一位中餐厨师。用户冰箱里有以下食材：${ingredients.join('、')}
+
+请根据这些食材推荐 3 道菜。规则：
+1. 优先推荐能用现有食材直接做的菜
+2. 也可以推荐只差 1-2 种常见调料/食材就能做的菜
+3. 每道菜给出详细用料和步骤
+
+请严格按以下 JSON 数组格式返回，不要输出任何其他内容：
+[
+  {
+    "name": "菜名",
+    "ingredients": [{"name":"食材名","amount":"用量"}],
+    "steps": ["步骤1", "步骤2", "步骤3"],
+    "cookTime": 10,
+    "calories": 280,
+    "category": "中餐",
+    "missing": ["缺少的食材名"]
+  }
+]`
+
+    wx.request({
+      url: AI_CONFIG.url,
+      method: 'POST',
+      header: {
+        'Content-Type': 'application/json',
+        'x-api-key': AI_CONFIG.key,
+        'anthropic-version': '2023-06-01'
+      },
+      data: {
+        model: AI_CONFIG.model,
+        max_tokens: 2000,
+        messages: [{ role: 'user', content: prompt }]
+      },
+      timeout: 30000,
+      success: (res) => {
+        if (res.statusCode !== 200) {
+          reject(new Error('API 请求失败: ' + res.statusCode))
+          return
+        }
+        const data = res.data
+        if (data.error) {
+          reject(new Error(data.error.message || 'API 错误'))
+          return
+        }
+        // Anthropic 格式
+        if (data.content && data.content.length > 0) {
+          resolve(data.content[0].text)
+          return
+        }
+        reject(new Error('未知响应格式'))
+      },
+      fail: (err) => reject(new Error('网络请求失败: ' + err.errMsg))
+    })
+  })
+}
+
+// 解析 AI 返回
+function parseRecipes(content) {
+  try {
+    const jsonMatch = content.match(/\[[\s\S]*\]/)
+    if (!jsonMatch) {
+      const parsed = JSON.parse(content)
+      const recipes = Array.isArray(parsed) ? parsed : (parsed.recipes || [])
+      return formatRecipes(recipes)
+    }
+    return formatRecipes(JSON.parse(jsonMatch[0]))
+  } catch (e) {
+    console.error('解析 AI 返回失败:', content)
+    return []
+  }
+}
+
+function formatRecipes(recipes) {
+  return recipes.map(r => ({
+    name: r.name || '未知菜名',
+    ingredients: r.ingredients || [],
+    steps: r.steps || [],
+    cookTime: r.cookTime || 0,
+    calories: r.calories || 0,
+    category: r.category || '中餐',
+    missing: r.missing || [],
+    matchRate: Math.round(
+      ((r.ingredients || []).length - (r.missing || []).length) /
+      Math.max((r.ingredients || []).length, 1) * 100
+    ),
+    ownedCount: (r.ingredients || []).length - (r.missing || []).length,
+    totalCount: (r.ingredients || []).length
+  }))
+}
 
 // 食材分类列表
 const INGREDIENT_CATEGORIES = ['蔬菜', '肉类', '海鲜', '蛋奶', '主食', '调料']
@@ -120,7 +218,7 @@ Page({
     }
   },
 
-  // AI 推荐菜谱
+  // AI 推荐菜谱（直接调用 AI API，不走云函数）
   async onSearchRecipes() {
     if (this.data.selectedIngredients.length === 0) {
       wx.showToast({ title: '请先选择食材', icon: 'none' })
@@ -130,20 +228,21 @@ Page({
 
     this.setData({ isSearching: true, expandedSteps: -1 })
     try {
-      const res = await recipeApi.aiRecommend(this.data.selectedIngredients)
-      if (res && res.success) {
-        const results = res.recipes.map(r => ({
+      const content = await callAI(this.data.selectedIngredients)
+      const recipes = parseRecipes(content)
+      if (recipes.length > 0) {
+        const results = recipes.map(r => ({
           ...r,
           coverIcon: getDishIcon(r.name, r.category),
           stepsExpanded: false
         }))
         this.setData({ results, hasSearched: true })
       } else {
-        wx.showToast({ title: res?.error || '推荐失败，请重试', icon: 'none' })
+        wx.showToast({ title: 'AI 未返回结果，请重试', icon: 'none' })
       }
     } catch (e) {
       console.error('AI 推荐失败', e)
-      wx.showToast({ title: '推荐失败，请重试', icon: 'none' })
+      wx.showToast({ title: '推荐失败: ' + e.message, icon: 'none' })
     }
     this.setData({ isSearching: false })
   },

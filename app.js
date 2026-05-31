@@ -6,7 +6,7 @@ App({
     // 初始化云开发环境
     if (wx.cloud) {
       wx.cloud.init({
-        env: 'eat-what-xxx', // 替换为你的云开发环境 ID
+        env: 'cloudbase-d0ggsef0eee4e6534', // 云开发环境 ID
         traceUser: true // 开启用户访问记录，用于统计分析
       })
     }
