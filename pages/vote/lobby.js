@@ -33,18 +33,13 @@ Page({
     wx.navigateTo({ url: '/pages/vote/room' })
   },
 
-  // 点击"加入投票"按钮，弹出输入框让用户输入6位房间码
+  // 点击"加入投票"按钮，提示从分享链接进入
   onJoinRoom() {
     wx.showModal({
-      title: '加入投票',
-      editable: true,
-      placeholderText: '输入6位房间码',
-      success: (res) => {
-        // 用户确认输入后，携带房间码跳转到投票房间页面（自动转为大写）
-        if (res.confirm && res.content) {
-          wx.navigateTo({ url: `/pages/vote/room?code=${res.content.toUpperCase()}` })
-        }
-      }
+      title: '如何加入投票',
+      content: '请让好友把投票链接分享给你，点击链接即可直接加入投票。',
+      confirmText: '我知道了',
+      showCancel: false
     })
   },
 

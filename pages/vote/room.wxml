@@ -50,17 +50,12 @@
 
   <!-- ===== 投票模式 ===== -->
   <view wx:if="{{mode === 'vote' && room}}">
-    <!-- 房间头部：显示标题、房间码和邀请按钮 -->
+    <!-- 房间头部：显示标题和分享按钮 -->
     <view class="room-header card">
       <text class="room-title">{{room.title}}</text>
-      <!-- 房间码行，点击可复制 -->
-      <view class="room-code-row" bindtap="onCopyCode">
-        <text class="room-code">房间码: {{room.roomCode}}</text>
-        <text class="copy-btn">复制</text>
-      </view>
-      <!-- 微信分享按钮，邀请好友参与投票 -->
+      <text class="room-hint">点击下方按钮分享给好友，好友通过链接加入投票</text>
       <button class="share-btn" open-type="share">
-        <text>📤 邀请好友投票</text>
+        <text>📤 分享给好友投票</text>
       </button>
     </view>
 

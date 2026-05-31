@@ -8,11 +8,11 @@
       <text class="action-title">发起投票</text>
       <text class="action-desc">创建投票房间，邀请好友一起选</text>
     </view>
-    <!-- 加入投票卡片，点击弹出房间码输入框 -->
+    <!-- 加入投票卡片，提示从分享链接进入 -->
     <view class="action-card join" bindtap="onJoinRoom">
       <text class="action-icon">🔗</text>
       <text class="action-title">加入投票</text>
-      <text class="action-desc">输入房间码加入好友的投票</text>
+      <text class="action-desc">请让好友分享投票链接给你</text>
     </view>
   </view>
 
