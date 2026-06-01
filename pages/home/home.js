@@ -61,5 +61,9 @@ Page({
         }
       })
     }
+  },
+
+  onGoProfile() {
+    wx.switchTab({ url: '/pages/profile/profile' })
   }
 })

@@ -1,51 +1,45 @@
-<!-- 首页容器 -->
+<!-- 首页 -->
 <view class="container">
-  <!-- Banner 区域：展示应用标题和副标题 -->
-  <view class="banner">
-    <view class="banner-content">
-      <text class="banner-emoji">🍽️</text>
-      <view class="banner-text">
-        <text class="banner-title">今天吃什么</text>
-        <text class="banner-desc">智能帮你决定每一餐</text>
-      </view>
+  <!-- 顶部问候 -->
+  <view class="hero">
+    <view class="hero-left">
+      <text class="hero-greeting">🍽️ 今天吃什么</text>
+      <text class="hero-sub">帮你决定每一餐</text>
+    </view>
+    <view class="hero-avatar" bindtap="onGoProfile">
+      <text>👤</text>
     </view>
   </view>
 
-  <!-- 快捷入口区域：展示四个功能快捷操作按钮 -->
-  <view class="section">
-    <text class="section-title">快捷操作</text>
-    <view class="quick-actions">
-      <!-- 遍历 quickActions 数组，渲染每个快捷入口 -->
-      <view
-        class="quick-action-item"
-        wx:for="{{quickActions}}"
-        wx:key="title"
-        bindtap="onQuickAction"
-        data-url="{{item.url}}"
-      >
-        <view class="quick-action-icon">
-          <text>{{item.icon}}</text>
-        </view>
-        <text class="quick-action-title">{{item.title}}</text>
-        <text class="quick-action-desc">{{item.desc}}</text>
-      </view>
+  <!-- 快捷入口 -->
+  <view class="actions-grid">
+    <view
+      class="action-card"
+      wx:for="{{quickActions}}"
+      wx:key="title"
+      bindtap="onQuickAction"
+      data-url="{{item.url}}"
+    >
+      <text class="action-icon">{{item.icon}}</text>
+      <text class="action-title">{{item.title}}</text>
     </view>
   </view>
 
-  <!-- 智能推荐区域：根据是否个性化显示不同标题 -->
+  <!-- 热门推荐 -->
   <view class="section">
     <view class="section-header">
-      <text class="section-title">🤖 AI 推荐</text>
+      <text class="section-title">🔥 今日推荐</text>
+      <text class="section-hint">每天换一批</text>
     </view>
 
-    <!-- 加载状态：数据加载中时显示提示文字 -->
     <view class="loading" wx:if="{{isLoading}}">
-      <text class="loading-text">正在为你挑选美食...</text>
+      <view class="loading-skeleton" wx:for="{{[1,2,3,4]}}" wx:key="*this">
+        <view class="skeleton-img"></view>
+        <view class="skeleton-text"></view>
+      </view>
     </view>
 
-    <!-- 推荐列表：加载完成后展示菜谱卡片列表 -->
-    <view class="recommend-list" wx:if="{{!isLoading && recommendList.length > 0}}">
-      <!-- 单个菜谱卡片，点击跳转到详情页 -->
+    <view class="recipe-grid" wx:if="{{!isLoading && recommendList.length > 0}}">
       <view
         class="recipe-card"
         wx:for="{{recommendList}}"
@@ -53,30 +47,23 @@
         bindtap="onRecipeTap"
         data-index="{{index}}"
       >
-        <!-- 菜谱封面：手绘图标 -->
-        <view class="recipe-cover hand-drawn-placeholder">
-          <image src="{{item.coverIcon}}" mode="aspectFit" class="cover-icon-img" />
+        <view class="recipe-cover">
+          <image src="{{item.coverIcon}}" mode="aspectFit" class="cover-img" />
+          <view class="recipe-badge" wx:if="{{item.isDietFriendly}}">减脂</view>
         </view>
-        <!-- 菜谱信息区域：名称、烹饪时间、卡路里、标签 -->
         <view class="recipe-info">
           <text class="recipe-name">{{item.name}}</text>
           <view class="recipe-meta">
-            <text class="recipe-time">⏱ {{item.cookTime}}分钟</text>
-            <text class="recipe-cal" wx:if="{{item.calories}}">🔥 {{item.calories}}kcal</text>
-          </view>
-          <!-- 菜谱标签：最多显示 2 个标签，减脂友好标红 -->
-          <view class="recipe-tags">
-            <text class="tag {{item.isDietFriendly ? 'tag-active' : ''}}" wx:if="{{item.isDietFriendly}}">减脂</text>
-            <text class="tag" wx:for="{{item.tags}}" wx:for-item="tag" wx:key="*this" wx:if="{{index < 2}}">{{tag}}</text>
+            <text>⏱ {{item.cookTime}}分</text>
+            <text wx:if="{{item.calories}}">🔥 {{item.calories}}kcal</text>
           </view>
         </view>
       </view>
     </view>
 
-    <!-- 空状态：无推荐数据时显示提示 -->
     <view class="empty-state" wx:if="{{!isLoading && recommendList.length === 0}}">
       <text class="empty-emoji">🤔</text>
-      <text class="empty-text">暂无推荐，去菜谱页面逛逛吧</text>
+      <text class="empty-text">暂无推荐，下拉刷新试试</text>
     </view>
   </view>
 </view>
