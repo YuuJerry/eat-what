@@ -69,5 +69,9 @@ Page({
 
   onRefresh() {
     this.loadRecommendations(true)
+  },
+
+  onGoSearch() {
+    wx.switchTab({ url: '/pages/recipe/list' })
   }
 })

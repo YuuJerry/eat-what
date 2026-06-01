@@ -1,63 +1,85 @@
-<!-- 首页 — 星巴克设计语言 -->
-<view class="container">
+<!-- 首页 — 星巴克全设计语言重设计 -->
+<view class="page">
 
-  <!-- Hero 区 — 深绿背景（星巴克特征） -->
-  <view class="hero">
-    <view class="hero-content">
-      <text class="hero-title">今天吃什么</text>
-      <text class="hero-sub">帮你决定每一餐</text>
+  <!-- ===== 深绿 Hero 色带（星巴克签名设计） ===== -->
+  <view class="hero-band">
+    <view class="hero-inner">
+      <view class="hero-text">
+        <text class="hero-eyebrow">今天</text>
+        <text class="hero-title">吃什么</text>
+        <text class="hero-body">帮你决定每一餐</text>
+      </view>
+      <view class="hero-actions">
+        <view class="hero-btn" bindtap="onGoProfile">
+          <text>👤</text>
+        </view>
+      </view>
     </view>
-    <view class="hero-avatar" bindtap="onGoProfile">
-      <text>👤</text>
-    </view>
-  </view>
-
-  <!-- 快捷入口 — 胶囊按钮风格 -->
-  <view class="actions-row">
-    <view
-      class="action-pill"
-      wx:for="{{quickActions}}"
-      wx:key="title"
-      bindtap="onQuickAction"
-      data-url="{{item.url}}"
-    >
-      <text class="action-icon">{{item.icon}}</text>
-      <text class="action-label">{{item.title}}</text>
+    <!-- 搜索条 -->
+    <view class="search-bar" bindtap="onGoSearch">
+      <text class="search-icon">🔍</text>
+      <text class="search-placeholder">搜索菜谱或食材</text>
     </view>
   </view>
 
-  <!-- 今日推荐 — 产品卡片风格 -->
+  <!-- ===== 功能入口 — 色块网格 ===== -->
+  <view class="feature-grid">
+    <view class="feature-card feature-green" bindtap="onQuickAction" data-url="/pages/fridge/fridge">
+      <text class="feature-emoji">🧊</text>
+      <text class="feature-name">冰箱推荐</text>
+      <text class="feature-desc">看看有什么能做</text>
+    </view>
+    <view class="feature-card feature-cream" bindtap="onQuickAction" data-url="/pages/diet/diet">
+      <text class="feature-emoji">🏋️</text>
+      <text class="feature-name">减脂餐</text>
+      <text class="feature-desc">健康低卡食谱</text>
+    </view>
+    <view class="feature-card feature-cream" bindtap="onQuickAction" data-url="/pages/vote/room">
+      <text class="feature-emoji">🗳️</text>
+      <text class="feature-name">发起投票</text>
+      <text class="feature-desc">和朋友一起选</text>
+    </view>
+    <view class="feature-card feature-green" bindtap="onQuickAction" data-url="/pages/index/index">
+      <text class="feature-emoji">🎰</text>
+      <text class="feature-name">随机转盘</text>
+      <text class="feature-desc">帮你决定</text>
+    </view>
+  </view>
+
+  <!-- ===== 今日推荐 — 产品网格 ===== -->
   <view class="section">
-    <view class="section-header">
-      <text class="section-title">今日推荐</text>
-      <text class="section-link" bindtap="onRefresh">换一批</text>
-    </view>
-
-    <!-- 骨架屏 -->
-    <view wx:if="{{isLoading}}" class="skeleton-grid">
-      <view class="skeleton-card" wx:for="{{[1,2,3,4]}}" wx:key="*this">
-        <view class="skeleton-img"></view>
-        <view class="skeleton-line"></view>
-        <view class="skeleton-line short"></view>
+    <view class="section-bar">
+      <text class="section-label">今日推荐</text>
+      <view class="section-action" bindtap="onRefresh">
+        <text class="action-text">换一批</text>
       </view>
     </view>
 
-    <!-- 菜谱卡片网格 -->
-    <view class="recipe-grid" wx:if="{{!isLoading && recommendList.length > 0}}">
+    <!-- 骨架屏 -->
+    <view wx:if="{{isLoading}}" class="product-grid">
+      <view class="product-skeleton" wx:for="{{[1,2,3,4]}}" wx:key="*this">
+        <view class="skel-img"></view>
+        <view class="skel-line"></view>
+        <view class="skel-line sm"></view>
+      </view>
+    </view>
+
+    <!-- 产品卡片 -->
+    <view class="product-grid" wx:if="{{!isLoading && recommendList.length > 0}}">
       <view
-        class="recipe-card"
+        class="product-card"
         wx:for="{{recommendList}}"
         wx:key="name"
         bindtap="onRecipeTap"
         data-index="{{index}}"
       >
-        <view class="recipe-img">
-          <image src="{{item.coverIcon}}" mode="aspectFit" class="cover-img" />
-          <view class="diet-tag" wx:if="{{item.isDietFriendly}}">轻食</view>
+        <view class="product-media">
+          <image src="{{item.coverIcon}}" mode="aspectFit" class="product-img" />
+          <view class="product-badge" wx:if="{{item.isDietFriendly}}">轻食</view>
         </view>
-        <view class="recipe-body">
-          <text class="recipe-name">{{item.name}}</text>
-          <text class="recipe-meta">{{item.cookTime}}分钟 · {{item.calories}}kcal</text>
+        <view class="product-info">
+          <text class="product-name">{{item.name}}</text>
+          <text class="product-meta">{{item.cookTime}}分钟 · {{item.calories}}kcal</text>
         </view>
       </view>
     </view>
@@ -69,4 +91,6 @@
     </view>
   </view>
 
+  <!-- ===== 底部留白 ===== -->
+  <view class="bottom-spacer"></view>
 </view>

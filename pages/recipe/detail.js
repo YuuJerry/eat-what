@@ -121,6 +121,11 @@ Page({
     }
   },
 
+  // 返回上一页
+  onBack() {
+    wx.navigateBack()
+  },
+
   // 勾选/取消食材
   onCheckIngredient(e) {
     const name = e.currentTarget.dataset.name
