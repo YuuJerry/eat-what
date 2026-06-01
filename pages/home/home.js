@@ -65,5 +65,9 @@ Page({
 
   onGoProfile() {
     wx.switchTab({ url: '/pages/profile/profile' })
+  },
+
+  onRefresh() {
+    this.loadRecommendations(true)
   }
 })
