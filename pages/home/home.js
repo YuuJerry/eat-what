@@ -5,6 +5,7 @@ const { getDishIcon } = require('../../utils/icons.js')
 
 Page({
   data: {
+    greeting: '',
     recommendList: [],
     isLoading: true,
     quickActions: [
@@ -16,7 +17,19 @@ Page({
   },
 
   onLoad() {
+    this.setGreeting()
     this.loadRecommendations()
+  },
+
+  // 根据时间显示不同问候语
+  setGreeting() {
+    const hour = new Date().getHours()
+    let greeting = '晚上好'
+    if (hour < 6) greeting = '夜深了'
+    else if (hour < 11) greeting = '早上好'
+    else if (hour < 14) greeting = '中午好'
+    else if (hour < 17) greeting = '下午好'
+    this.setData({ greeting })
   },
 
   onPullDownRefresh() {

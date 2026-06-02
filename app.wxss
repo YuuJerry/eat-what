@@ -1,60 +1,76 @@
-/* ===== 全局样式 — 星巴克设计语言 ===== */
-/* 来源: awesome-design-md/starbucks/DESIGN.md */
+/* ===== 全局设计系统 — 「厨房笔记本」风格 ===== */
+/* 暖调 · 手工感 · 有温度 · 杂志排版 */
 
 page {
-  background-color: #f2f0eb;
-  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background-color: #FAF6F1;
+  font-family: -apple-system, BlinkMacSystemFont, 'Noto Serif SC', 'PingFang SC', 'Microsoft YaHei', serif;
   font-size: 28rpx;
-  color: rgba(0, 0, 0, 0.87);
+  color: rgba(45, 42, 38, 0.87);
   box-sizing: border-box;
-  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* 卡片 — 12px 圆角 + 星巴克式柔和阴影 */
+/* 卡片 — 暖阴影 + 圆角 */
 .card {
-  background: #ffffff;
+  background: #FFFFFF;
   border-radius: 24rpx;
   padding: 28rpx;
   margin: 0 24rpx 20rpx;
   box-shadow:
-    0 2rpx 4rpx rgba(0, 0, 0, 0.06),
-    0 8rpx 16rpx rgba(0, 0, 0, 0.08);
+    0 2rpx 8rpx rgba(139, 120, 90, 0.06),
+    0 8rpx 24rpx rgba(139, 120, 90, 0.08);
 }
 
-/* 主按钮 — 星巴克绿胶囊 */
+/* 主按钮 — 赤陶色 */
 .btn-primary {
-  background: #00754A;
-  color: #ffffff;
-  border-radius: 100rpx;
-  padding: 20rpx 40rpx;
+  background: #C85A36;
+  color: #fff;
+  border-radius: 28rpx;
+  padding: 22rpx 44rpx;
   text-align: center;
   font-size: 28rpx;
   font-weight: 600;
-  letter-spacing: -0.01em;
-  border: 2rpx solid #00754A;
-  transition: all 0.2s ease;
+  letter-spacing: 2rpx;
+  border: none;
 }
 
 .btn-primary:active {
-  transform: scale(0.95);
+  transform: scale(0.96);
+  opacity: 0.9;
 }
 
-/* 次按钮 — 描边绿胶囊 */
+/* 次按钮 — 鼠尾草绿描边 */
 .btn-secondary {
   background: transparent;
-  color: #00754A;
-  border-radius: 100rpx;
-  padding: 20rpx 40rpx;
+  color: #6B8F71;
+  border-radius: 28rpx;
+  padding: 22rpx 44rpx;
   text-align: center;
   font-size: 28rpx;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  border: 2rpx solid #00754A;
+  font-weight: 500;
+  border: 2rpx solid #6B8F71;
 }
 
 .btn-secondary:active {
-  transform: scale(0.95);
-  background: rgba(0, 117, 74, 0.06);
+  transform: scale(0.96);
+  background: rgba(107, 143, 113, 0.06);
+}
+
+/* 标签 — 赤陶色胶囊 */
+.tag {
+  display: inline-block;
+  font-size: 22rpx;
+  padding: 6rpx 18rpx;
+  border-radius: 100rpx;
+  background: rgba(200, 90, 54, 0.08);
+  color: #C85A36;
+  margin-right: 8rpx;
+  font-weight: 500;
+}
+
+.tag-active {
+  background: #C85A36;
+  color: #fff;
 }
 
 /* 空状态 */
@@ -63,50 +79,34 @@ page {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 80rpx 0;
+  padding: 100rpx 0;
 }
 
 .empty-emoji {
-  font-size: 100rpx;
+  font-size: 80rpx;
   margin-bottom: 20rpx;
+  opacity: 0.6;
 }
 
 .empty-text {
-  color: rgba(0, 0, 0, 0.58);
+  color: #8A8279;
   font-size: 28rpx;
-}
-
-/* 标签 — 星巴克风格 */
-.tag {
-  display: inline-block;
-  font-size: 22rpx;
-  padding: 6rpx 16rpx;
-  border-radius: 100rpx;
-  background: #d4e9e2;
-  color: #1E3932;
-  margin-right: 8rpx;
-  font-weight: 500;
-}
-
-.tag-active {
-  background: #00754A;
-  color: #ffffff;
 }
 
 /* 手绘占位图 */
 .hand-drawn-placeholder {
-  background: #f2f0eb;
-  border: 3rpx dashed #d6dbde;
+  background: #F5EDE4;
+  border: 3rpx dashed #D4C4B0;
   border-radius: 24rpx;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* 文字颜色系统 */
-.text-primary { color: rgba(0, 0, 0, 0.87); }
-.text-secondary { color: rgba(0, 0, 0, 0.58); }
-.text-white { color: #ffffff; }
-.text-white-soft { color: rgba(255, 255, 255, 0.70); }
-.text-green { color: #006241; }
-.text-gold { color: #cba258; }
+/* 装饰线条（赤陶色） */
+.accent-line {
+  width: 48rpx;
+  height: 4rpx;
+  background: #C85A36;
+  border-radius: 2rpx;
+}

@@ -1,133 +1,145 @@
-<!-- 菜谱详情 — 星巴克产品详情风格 -->
+<!-- 菜谱详情 — 杂志菜谱风格 -->
 <view class="page" wx:if="{{recipe}}">
 
-  <!-- ===== 深绿产品头 ===== -->
-  <view class="pdp-header">
-    <view class="pdp-breadcrumb">
-      <text class="bc-link" bindtap="onBack">菜谱</text>
-      <text class="bc-sep">/</text>
-      <text class="bc-current">{{recipe.name}}</text>
+  <!-- ===== 大标题头 ===== -->
+  <view class="detail-hero">
+    <view class="hero-back" bindtap="onBack">
+      <text>← 返回</text>
     </view>
-    <text class="pdp-title">{{recipe.name}}</text>
-    <view class="pdp-meta-row">
-      <text class="pdp-meta">⏱ {{recipe.cookTime}}分钟</text>
-      <text class="pdp-meta">👥 {{recipe.servings}}人份</text>
-      <text class="pdp-meta" wx:if="{{recipe.calories}}">🔥 {{recipe.calories}}kcal</text>
+    <text class="hero-name">{{recipe.name}}</text>
+    <view class="hero-line"></view>
+    <view class="hero-stats">
+      <view class="stat">
+        <text class="stat-num">{{recipe.cookTime}}</text>
+        <text class="stat-label">分钟</text>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat">
+        <text class="stat-num">{{recipe.calories}}</text>
+        <text class="stat-label">千卡</text>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat">
+        <text class="stat-num">{{recipe.servings}}</text>
+        <text class="stat-label">人份</text>
+      </view>
     </view>
   </view>
 
   <!-- ===== 产品图 ===== -->
-  <view class="pdp-image">
-    <image src="{{recipe.coverIcon}}" mode="aspectFit" class="pdp-img" />
-    <view class="pdp-diet" wx:if="{{recipe.isDietFriendly}}">轻食</view>
+  <view class="detail-img">
+    <image src="{{recipe.coverIcon}}" mode="aspectFit" class="main-img" />
+    <view class="img-badge" wx:if="{{recipe.isDietFriendly}}">轻食</view>
   </view>
 
-  <!-- ===== 标签行 ===== -->
-  <view class="tag-row" wx:if="{{recipe.tags && recipe.tags.length > 0}}">
-    <text class="pill-tag {{recipe.isDietFriendly ? 'pill-green' : ''}}" wx:if="{{recipe.isDietFriendly}}">减脂</text>
-    <text class="pill-tag" wx:for="{{recipe.tags}}" wx:key="*this">{{item}}</text>
+  <!-- ===== 标签 ===== -->
+  <view class="tag-bar" wx:if="{{recipe.tags && recipe.tags.length > 0}}">
+    <text class="pill {{recipe.isDietFriendly ? 'pill-green' : ''}}" wx:if="{{recipe.isDietFriendly}}">减脂</text>
+    <text class="pill" wx:for="{{recipe.tags}}" wx:key="*this">{{item}}</text>
   </view>
 
   <!-- ===== 视频教程 ===== -->
-  <view class="band-dark" wx:if="{{recipe.videos && recipe.videos.length > 0}}">
-    <text class="band-title">🎬 视频教程</text>
+  <view class="dark-band" wx:if="{{recipe.videos && recipe.videos.length > 0}}">
+    <text class="band-heading">🎬 视频教程</text>
     <view
-      class="video-row"
+      class="vid-card"
       wx:for="{{recipe.videos}}"
       wx:key="url"
       bindtap="onVideoTap"
       data-video="{{item}}"
     >
-      <view class="video-thumb">
-        <image wx:if="{{item.cover}}" src="{{item.cover}}" mode="aspectFill" class="thumb-img" />
-        <view class="thumb-play"><text>▶</text></view>
-        <text class="thumb-dur" wx:if="{{item.duration}}">{{item.duration}}</text>
+      <view class="vid-thumb">
+        <image wx:if="{{item.cover}}" src="{{item.cover}}" mode="aspectFill" class="vid-img" />
+        <view class="vid-play"><text>▶</text></view>
+        <text class="vid-dur" wx:if="{{item.duration}}">{{item.duration}}</text>
       </view>
-      <view class="video-meta">
-        <text class="video-title">{{item.title}}</text>
-        <text class="video-sub">{{item.author}} · {{item.playText}}</text>
-        <text class="video-cta">点击观看 →</text>
+      <view class="vid-info">
+        <text class="vid-title">{{item.title}}</text>
+        <text class="vid-sub">{{item.author}} · {{item.playText}}</text>
+        <text class="vid-cta">点击观看 →</text>
       </view>
     </view>
   </view>
 
-  <!-- ===== 食材清单 ===== -->
-  <view class="section-card">
-    <view class="card-header" bindtap="onToggleIngredients">
-      <text class="card-title">📦 食材清单</text>
+  <!-- ===== 食材清单（可折叠） ===== -->
+  <view class="white-card">
+    <view class="card-head" bindtap="onToggleIngredients">
+      <text class="card-heading">食材清单</text>
       <text class="card-count">{{recipe.ingredients.length}}种</text>
       <text class="card-arrow">{{showIngredients ? '▲' : '▼'}}</text>
     </view>
-    <view wx:if="{{showIngredients}}" class="ingredient-grid">
+    <view wx:if="{{showIngredients}}" class="ing-grid">
       <view
-        class="ingredient-chip"
+        class="ing-chip"
         wx:for="{{recipe.ingredients}}"
         wx:key="name"
         bindtap="onCheckIngredient"
         data-name="{{item.name}}"
       >
-        <view class="chip-check {{checkedIngredients.includes(item.name) ? 'checked' : ''}}">
+        <view class="ing-check {{checkedIngredients.includes(item.name) ? 'on' : ''}}">
           <text wx:if="{{checkedIngredients.includes(item.name)}}">✓</text>
         </view>
-        <text class="chip-name">{{item.name}}</text>
-        <text class="chip-amount">{{item.amount}}</text>
+        <view class="ing-text">
+          <text class="ing-name">{{item.name}}</text>
+          <text class="ing-amt">{{item.amount}}</text>
+        </view>
       </view>
     </view>
   </view>
 
   <!-- ===== 烹饪步骤 ===== -->
-  <view class="section-card">
-    <text class="card-title">👨‍🍳 烹饪步骤</text>
-    <view class="steps-list">
-      <view class="step-row" wx:for="{{recipe.steps}}" wx:key="index">
+  <view class="white-card">
+    <text class="card-heading">烹饪步骤</text>
+    <view class="step-list">
+      <view class="step" wx:for="{{recipe.steps}}" wx:key="index">
         <view class="step-num"><text>{{index + 1}}</text></view>
-        <text class="step-text">{{item}}</text>
+        <text class="step-txt">{{item}}</text>
       </view>
     </view>
   </view>
 
   <!-- ===== 营养信息 ===== -->
-  <view class="section-card" wx:if="{{recipe.nutritionInfo}}">
-    <text class="card-title">📊 营养信息（每份）</text>
-    <view class="nutrition-table">
+  <view class="white-card" wx:if="{{recipe.nutritionInfo}}">
+    <text class="card-heading">营养信息（每份）</text>
+    <view class="nutr-table">
       <view class="nutr-row">
-        <text class="nutr-label">蛋白质</text>
-        <text class="nutr-value">{{recipe.nutritionInfo.protein}}g</text>
+        <text class="nutr-key">蛋白质</text>
+        <text class="nutr-val">{{recipe.nutritionInfo.protein}}g</text>
       </view>
       <view class="nutr-row">
-        <text class="nutr-label">脂肪</text>
-        <text class="nutr-value">{{recipe.nutritionInfo.fat}}g</text>
+        <text class="nutr-key">脂肪</text>
+        <text class="nutr-val">{{recipe.nutritionInfo.fat}}g</text>
       </view>
       <view class="nutr-row">
-        <text class="nutr-label">碳水</text>
-        <text class="nutr-value">{{recipe.nutritionInfo.carbs}}g</text>
+        <text class="nutr-key">碳水</text>
+        <text class="nutr-val">{{recipe.nutritionInfo.carbs}}g</text>
       </view>
       <view class="nutr-row">
-        <text class="nutr-label">纤维</text>
-        <text class="nutr-value">{{recipe.nutritionInfo.fiber}}g</text>
+        <text class="nutr-key">纤维</text>
+        <text class="nutr-val">{{recipe.nutritionInfo.fiber}}g</text>
       </view>
     </view>
   </view>
 
-  <!-- ===== 免责声明 ===== -->
-  <view class="disclaimer">
+  <!-- ===== 免责 ===== -->
+  <view class="foot-note">
     <text>📋 菜谱仅供参考，请根据实际情况调整</text>
   </view>
 
-  <!-- ===== 底部浮动操作栏 ===== -->
-  <view class="bottom-bar">
-    <view class="bar-btn bar-fav" bindtap="onToggleFavorite">
-      <text>{{isFavorited ? '❤️' : '🤍'}}</text>
-      <text class="bar-label">{{isFavorited ? '已收藏' : '收藏'}}</text>
+  <!-- ===== 底部操作栏 ===== -->
+  <view class="bar">
+    <view class="bar-btn" bindtap="onToggleFavorite">
+      <text class="bar-icon">{{isFavorited ? '❤️' : '🤍'}}</text>
+      <text class="bar-txt">{{isFavorited ? '已收藏' : '收藏'}}</text>
     </view>
-    <button class="bar-btn bar-share" open-type="share">
-      <text>📤</text>
-      <text class="bar-label">分享</text>
+    <button class="bar-btn share" open-type="share">
+      <text class="bar-icon">📤</text>
+      <text class="bar-txt">分享</text>
     </button>
   </view>
 </view>
 
-<!-- 加载状态 -->
-<view class="loading-state" wx:if="{{isLoading}}">
-  <text class="loading-text">加载中...</text>
+<!-- 加载 -->
+<view class="loading" wx:if="{{isLoading}}">
+  <text class="loading-txt">加载中...</text>
 </view>
