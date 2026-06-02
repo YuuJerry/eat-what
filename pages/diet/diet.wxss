@@ -1,188 +1,33 @@
-/* 页面容器 */
-.container {
-  padding: 20rpx 24rpx;
-  padding-bottom: 40rpx;
-}
+/* 减脂餐 — 统一设计系统 */
 
-/* AI 提示 */
-.ai-hint {
-  text-align: center;
-  margin-bottom: 20rpx;
-}
+.page { background: #F8F9FA; min-height: 100vh; padding-bottom: 120rpx; }
 
-.ai-hint-text {
-  font-size: 22rpx;
-  color: #999;
-}
+.page-hint { text-align: center; padding: 20rpx 0 12rpx; font-size: 24rpx; color: #636E72; }
 
-/* ===== 筛选栏样式 ===== */
-.filter-bar {
-  display: flex;
-  gap: 16rpx;
-  margin-bottom: 24rpx;
-}
+/* 菜谱行 */
+.recipe-list { padding: 0 24rpx; }
+.recipe-row { display: flex; gap: 16rpx; margin-bottom: 16rpx; }
+.recipe-row:active { transform: scale(0.98); }
+.rr-img { width: 160rpx; height: 160rpx; border-radius: 16rpx; background: #F8F9FA; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.rr-icon { width: 120rpx; height: 120rpx; }
+.rr-body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+.rr-name { font-size: 28rpx; font-weight: 600; color: #2D3436; display: block; margin-bottom: 6rpx; }
+.rr-meta { display: flex; gap: 16rpx; font-size: 22rpx; color: #636E72; margin-bottom: 8rpx; }
+.rr-cal { color: #FFB300; font-weight: 500; }
+.rr-nutr { display: flex; gap: 12rpx; font-size: 20rpx; color: #4ECDC4; margin-bottom: 8rpx; }
+.rr-tags { display: flex; flex-wrap: wrap; gap: 6rpx; }
 
-.filter-item {
-  padding: 12rpx 28rpx;
-  border-radius: 40rpx;
-  background: #fff;
-  border: 2rpx solid #eee;
-  font-size: 26rpx;
-  color: #666;
-}
+/* 博主推荐 */
+.section { padding: 32rpx 24rpx 0; }
+.section-title { font-size: 28rpx; font-weight: 600; color: #2D3436; display: block; margin-bottom: 16rpx; }
+.blogger-list { display: flex; flex-direction: column; gap: 12rpx; }
+.blogger-card { display: flex; align-items: center; gap: 16rpx; }
+.blogger-avatar { font-size: 40rpx; }
+.blogger-info { flex: 1; }
+.blogger-name { font-size: 26rpx; font-weight: 600; color: #2D3436; display: block; }
+.blogger-desc { font-size: 22rpx; color: #636E72; display: block; margin-top: 2rpx; }
+.blogger-platform { font-size: 20rpx; color: #E94560; background: rgba(233,69,96,0.08); padding: 4rpx 12rpx; border-radius: 100rpx; font-weight: 500; }
 
-/* 筛选项激活态：绿色高亮 */
-.filter-item.active {
-  background: #4ECDC4;
-  color: #fff;
-  border-color: #4ECDC4;
-}
-
-/* ===== 菜谱列表样式 ===== */
-/* 菜谱卡片：横向布局 */
-.recipe-card {
-  display: flex;
-  margin-left: 0;
-  margin-right: 0;
-}
-
-/* 菜谱封面：固定宽高 */
-.recipe-cover {
-  width: 180rpx;
-  height: 180rpx;
-  border-radius: 16rpx;
-  flex-shrink: 0;
-}
-
-/* 封面 emoji 图标大小 */
-.cover-emoji {
-  font-size: 60rpx;
-}
-
-/* 封面手绘图标 */
-.cover-icon-img {
-  width: 120rpx;
-  height: 120rpx;
-}
-
-/* 菜谱信息区域：占据剩余空间 */
-.recipe-info {
-  flex: 1;
-  margin-left: 20rpx;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-/* 菜谱名称 */
-.recipe-name {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 8rpx;
-}
-
-/* 菜谱元信息：热量和时间 */
-.recipe-meta {
-  display: flex;
-  gap: 20rpx;
-  margin-bottom: 8rpx;
-}
-
-/* 热量标签：橙色背景突出显示 */
-.meta-cal {
-  font-size: 24rpx;
-  color: #FF8C00;
-  background: #FFF0E5;
-  padding: 4rpx 12rpx;
-  border-radius: 12rpx;
-}
-
-/* 烹饪时间 */
-.meta-time {
-  font-size: 24rpx;
-  color: #999;
-}
-
-/* 营养成分行：蛋白、脂肪、碳水横向排列 */
-.recipe-nutrition {
-  display: flex;
-  gap: 16rpx;
-  margin-bottom: 10rpx;
-}
-
-/* 单个营养成分项 */
-.nutrition-item {
-  font-size: 22rpx;
-  color: #4ECDC4;
-}
-
-.recipe-tags {
-  display: flex;
-  gap: 8rpx;
-}
-
-/* ===== 博主推荐样式 ===== */
-.blogger-section {
-  margin-top: 40rpx;
-}
-
-/* 区块标题：加粗大字 */
-.section-title {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333;
-  display: block;
-  margin-bottom: 16rpx;
-}
-
-/* 博主列表：垂直排列 */
-.blogger-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12rpx;
-}
-
-/* 单个博主卡片：白色背景圆角 */
-.blogger-card {
-  display: flex;
-  align-items: center;
-  background: #fff;
-  border-radius: 16rpx;
-  padding: 20rpx;
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
-}
-
-/* 博主头像 emoji */
-.blogger-avatar {
-  font-size: 48rpx;
-  margin-right: 16rpx;
-}
-
-/* 博主信息区域 */
-.blogger-info {
-  flex: 1;
-}
-
-/* 博主名称 */
-.blogger-name {
-  font-size: 28rpx;
-  font-weight: bold;
-  color: #333;
-  display: block;
-}
-
-/* 博主简介 */
-.blogger-desc {
-  font-size: 24rpx;
-  color: #999;
-}
-
-/* 博主平台标签：红色背景 */
-.blogger-platform {
-  font-size: 22rpx;
-  color: #fff;
-  background: #FF6B6B;
-  padding: 6rpx 16rpx;
-  border-radius: 12rpx;
-}
+/* 骨架屏 */
+.rr-line { height: 24rpx; border-radius: 8rpx; margin-bottom: 10rpx; }
+.rr-line.sm { width: 50%; }

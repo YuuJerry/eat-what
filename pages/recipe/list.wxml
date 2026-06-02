@@ -1,75 +1,51 @@
-<!-- 菜谱列表页面 -->
-<view class="container">
-  <!-- 搜索栏 -->
-  <view class="search-bar">
-    <input
-      class="search-input"
-      placeholder="搜索菜谱或食材"
-      value="{{keyword}}"
-      bindinput="onSearchInput"
-      bindconfirm="onSearch"
-      confirm-type="search"
-    />
-    <view class="search-btn" bindtap="onSearch">
-      <text>🔍</text>
+<!-- 菜谱列表 -->
+<view class="page">
+  <!-- 搜索条 -->
+  <view class="search-section">
+    <view class="search-bar">
+      <text class="search-icon">🔍</text>
+      <input class="search-input" placeholder="搜索菜谱或食材" value="{{keyword}}" bindinput="onSearchInput" bindconfirm="onSearch" confirm-type="search" />
+      <view class="search-go" wx:if="{{keyword}}" bindtap="onSearch"><text>搜索</text></view>
     </view>
   </view>
 
-  <!-- 分类标签栏 -->
-  <scroll-view scroll-x class="category-scroll" enable-flex>
-    <view
-      class="category-tab {{activeCategory === item ? 'active' : ''}}"
-      wx:for="{{categories}}"
-      wx:key="*this"
-      bindtap="onCategoryChange"
-      data-cat="{{item}}"
-    >
+  <!-- 分类标签 -->
+  <scroll-view scroll-x class="cat-scroll" enable-flex>
+    <view class="cat-pill {{activeCategory === item ? 'active' : ''}}" wx:for="{{categories}}" wx:key="*this" bindtap="onCategoryChange" data-cat="{{item}}">
       <text>{{item}}</text>
     </view>
   </scroll-view>
 
   <!-- 提示 -->
-  <view class="ai-hint" wx:if="{{recipes.length > 0}}">
-    <text class="ai-hint-text">📖 下拉刷新换一批</text>
+  <view class="hint" wx:if="{{recipes.length > 0}}">
+    <text class="hint-text">下拉刷新换一批</text>
   </view>
 
-  <!-- 菜谱列表网格 -->
-  <view class="recipe-grid">
-    <view
-      class="recipe-card"
-      wx:for="{{recipes}}"
-      wx:key="name"
-      bindtap="onRecipeTap"
-      data-index="{{index}}"
-    >
-      <view class="recipe-cover hand-drawn-placeholder">
-        <image src="{{item.coverIcon}}" mode="aspectFit" class="cover-icon-img" />
+  <!-- 菜谱网格 -->
+  <view class="recipe-grid" wx:if="{{!isLoading && recipes.length > 0}}">
+    <view class="recipe-card" wx:for="{{recipes}}" wx:key="name" bindtap="onRecipeTap" data-index="{{index}}">
+      <view class="card-media">
+        <image src="{{item.coverIcon}}" mode="aspectFit" class="card-img" />
+        <view class="card-badge" wx:if="{{item.isDietFriendly}}">轻食</view>
       </view>
-      <view class="recipe-info">
-        <text class="recipe-name">{{item.name}}</text>
-        <view class="recipe-meta">
-          <text class="meta-item">⏱ {{item.cookTime}}分钟</text>
-          <text class="meta-item" wx:if="{{item.calories}}">🔥 {{item.calories}}kcal</text>
-        </view>
-        <view class="recipe-bottom">
-          <view class="recipe-tags">
-            <text class="tag {{item.isDietFriendly ? 'tag-active' : ''}}" wx:if="{{item.isDietFriendly}}">减脂</text>
-            <text class="tag" wx:for="{{item.tags}}" wx:for-item="tag" wx:key="*this" wx:if="{{index < 1}}">{{tag}}</text>
-          </view>
-        </view>
+      <view class="card-body">
+        <text class="card-name">{{item.name}}</text>
+        <text class="card-meta">{{item.cookTime}}分 · {{item.calories}}kcal</text>
       </view>
     </view>
   </view>
 
-  <!-- 加载状态 -->
-  <view class="load-more" wx:if="{{isLoading}}">
-    <text>📖 加载中...</text>
+  <!-- 骨架屏 -->
+  <view class="recipe-grid" wx:if="{{isLoading}}">
+    <view class="recipe-card" wx:for="{{[1,2,3,4]}}" wx:key="*this">
+      <view class="card-media"><view class="skeleton skel-img"></view></view>
+      <view class="card-body"><view class="skeleton skel-line"></view><view class="skeleton skel-line sm"></view></view>
+    </view>
   </view>
 
   <!-- 空状态 -->
   <view class="empty-state" wx:if="{{!isLoading && recipes.length === 0}}">
     <text class="empty-emoji">🍽️</text>
     <text class="empty-text">暂无菜谱</text>
-    <text class="empty-hint">下拉刷新试试</text>
   </view>
 </view>

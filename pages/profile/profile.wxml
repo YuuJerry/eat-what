@@ -1,106 +1,60 @@
-<!-- 个人偏好设置页面 -->
-<view class="container">
-  <!-- 用户信息卡片 -->
-  <view class="user-card card">
-    <view class="avatar">
-      <text>👤</text>
-    </view>
+<!-- 个人中心 -->
+<view class="page">
+  <!-- 用户头部 -->
+  <view class="profile-hero">
+    <view class="avatar"><text>👤</text></view>
     <view class="user-info">
       <text class="user-name">美食家</text>
-      <text class="user-desc">设置偏好，获取个性化推荐</text>
+      <text class="user-desc">探索每一餐的美好</text>
     </view>
   </view>
 
-  <!-- 我的收藏 -->
+  <!-- 收藏 -->
   <view class="card">
-    <view class="section-header-row" bindtap="onToggleFavorites">
-      <text class="section-title">❤️ 我的收藏 ({{favorites.length}})</text>
-      <text class="section-arrow">{{showFavorites ? '▲' : '▼'}}</text>
+    <view class="card-head" bindtap="onToggleFavorites">
+      <text class="card-title">❤️ 我的收藏</text>
+      <text class="card-count">{{favorites.length}}</text>
+      <text class="card-arrow">{{showFavorites ? '▲' : '▼'}}</text>
     </view>
-
-    <!-- 收藏列表 -->
     <view wx:if="{{showFavorites && favorites.length > 0}}" class="fav-list">
-      <view class="fav-card" wx:for="{{favorites}}" wx:key="name">
-        <view class="fav-header">
-          <view class="fav-cover">
-            <image src="{{item.coverIcon}}" mode="aspectFit" class="fav-cover-img" />
-          </view>
-          <view class="fav-info">
-            <text class="fav-name">{{item.name}}</text>
-            <view class="fav-meta">
-              <text wx:if="{{item.cookTime}}">⏱ {{item.cookTime}}分钟</text>
-              <text wx:if="{{item.calories}}">🔥 {{item.calories}}kcal</text>
-            </view>
-          </view>
-          <text class="fav-delete" bindtap="onDeleteFavorite" data-name="{{item.name}}">🗑</text>
+      <view class="fav-item" wx:for="{{favorites}}" wx:key="name">
+        <view class="fav-info">
+          <text class="fav-name">{{item.name}}</text>
+          <text class="fav-meta" wx:if="{{item.cookTime}}">⏱ {{item.cookTime}}分 · 🔥 {{item.calories}}kcal</text>
         </view>
-
-        <!-- 用料 -->
-        <view class="fav-ingredients" wx:if="{{item.ingredients && item.ingredients.length > 0}}">
-          <text class="fav-sub">📋 用料：</text>
-          <text class="fav-ing-text">{{item.ingredientsText}}</text>
-        </view>
-
-        <!-- 步骤 -->
-        <view class="fav-steps" wx:if="{{item.steps && item.steps.length > 0}}">
-          <view class="fav-steps-toggle" bindtap="onToggleFavSteps" data-index="{{index}}">
-            <text>{{item.showSteps ? '🔽 收起步骤' : '▶️ 查看步骤'}}</text>
-          </view>
-          <view wx:if="{{item.showSteps}}" class="fav-steps-list">
-            <view class="fav-step" wx:for="{{item.steps}}" wx:for-item="step" wx:for-index="sidx" wx:key="*this">
-              <text class="step-num">{{sidx + 1}}.</text>
-              <text class="step-text">{{step}}</text>
-            </view>
-          </view>
-        </view>
+        <text class="fav-del" bindtap="onDeleteFavorite" data-index="{{index}}">✕</text>
       </view>
     </view>
-
-    <!-- 空状态 -->
-    <view wx:if="{{showFavorites && favorites.length === 0}}" class="fav-empty">
-      <text class="empty-emoji">💭</text>
-      <text class="empty-text">还没有收藏的菜谱</text>
-      <text class="empty-hint">去冰箱推荐页面找找灵感吧</text>
+    <view wx:if="{{showFavorites && favorites.length === 0}}" class="empty-mini">
+      <text>还没有收藏哦~</text>
     </view>
   </view>
 
-  <!-- 口味偏好设置 -->
+  <!-- 口味偏好 -->
   <view class="card">
-    <text class="section-title">👅 口味偏好</text>
-    <view class="slider-group">
-      <view class="slider-item">
-        <text class="slider-label">🌶️ 辣度</text>
-        <slider min="0" max="5" value="{{preferences.spicy}}" activeColor="#FF6B6B" block-size="20" bindchange="onSpicyChange" />
-        <text class="slider-value">{{preferences.spicy}}</text>
-      </view>
-      <view class="slider-item">
-        <text class="slider-label">🍬 甜度</text>
-        <slider min="0" max="5" value="{{preferences.sweet}}" activeColor="#FFE66D" block-size="20" bindchange="onSweetChange" />
-        <text class="slider-value">{{preferences.sweet}}</text>
-      </view>
-      <view class="slider-item">
-        <text class="slider-label">🍋 酸度</text>
-        <slider min="0" max="5" value="{{preferences.sour}}" activeColor="#4ECDC4" block-size="20" bindchange="onSourChange" />
-        <text class="slider-value">{{preferences.sour}}</text>
-      </view>
+    <text class="card-title">🌶️ 口味偏好</text>
+    <view class="slider-row">
+      <text class="slider-label">辣度</text>
+      <slider class="slider" min="0" max="5" step="1" value="{{preferences.spicy}}" activeColor="#E94560" bindchanging="onSliderChange" data-key="spicy" />
+      <text class="slider-val">{{preferences.spicy}}</text>
+    </view>
+    <view class="slider-row">
+      <text class="slider-label">甜度</text>
+      <slider class="slider" min="0" max="5" step="1" value="{{preferences.sweet}}" activeColor="#FFB300" bindchanging="onSliderChange" data-key="sweet" />
+      <text class="slider-val">{{preferences.sweet}}</text>
+    </view>
+    <view class="slider-row">
+      <text class="slider-label">酸度</text>
+      <slider class="slider" min="0" max="5" step="1" value="{{preferences.sour}}" activeColor="#4ECDC4" bindchanging="onSliderChange" data-key="sour" />
+      <text class="slider-val">{{preferences.sour}}</text>
     </view>
   </view>
 
   <!-- 饮食目标 -->
   <view class="card">
-    <text class="section-title">🎯 饮食目标</text>
-    <view class="goal-list">
-      <view class="goal-item {{dietGoal === item ? 'active' : ''}}" wx:for="{{dietGoals}}" wx:key="*this" bindtap="onDietGoalChange" data-idx="{{index}}">
-        <text>{{item}}</text>
-      </view>
-    </view>
-  </view>
-
-  <!-- 过敏源 -->
-  <view class="card">
-    <text class="section-title">⚠️ 过敏源</text>
-    <view class="tag-list">
-      <view class="tag-item {{allergyMap[item] ? 'selected allergy' : ''}}" wx:for="{{commonAllergies}}" wx:key="*this" bindtap="onToggleAllergy" data-name="{{item}}">
+    <text class="card-title">🎯 饮食目标</text>
+    <view class="goal-pills">
+      <view class="goal-pill {{dietGoal === item ? 'active' : ''}}" wx:for="{{['减脂','增肌','均衡']}}" wx:key="*this" bindtap="onSelectGoal" data-goal="{{item}}">
         <text>{{item}}</text>
       </view>
     </view>
@@ -108,18 +62,18 @@
 
   <!-- 忌口 -->
   <view class="card">
-    <text class="section-title">🙅 不喜欢</text>
+    <text class="card-title">🚫 忌口</text>
     <view class="tag-list">
-      <view class="tag-item {{dislikeMap[item] ? 'selected dislike' : ''}}" wx:for="{{commonDislikes}}" wx:key="*this" bindtap="onToggleDislike" data-name="{{item}}">
+      <view class="pref-tag {{dislikeMap[item] ? 'active' : ''}}" wx:for="{{['香菜','葱','蒜','姜','辣椒','花椒','海鲜','牛奶']}}" wx:key="*this" bindtap="onToggleDislike" data-name="{{item}}">
         <text>{{item}}</text>
       </view>
     </view>
   </view>
 
-  <!-- 保存按钮 -->
-  <view class="save-action">
+  <!-- 保存 -->
+  <view class="save-area">
     <view class="btn-primary" bindtap="onSave">
-      <text>{{isSaving ? '保存中...' : '保存偏好'}}</text>
+      <text>{{isSaving ? '保存中...' : '保存设置'}}</text>
     </view>
   </view>
 </view>

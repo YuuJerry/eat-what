@@ -11,14 +11,14 @@
     "pages/index/index"
   ],
   "window": {
-    "navigationBarBackgroundColor": "#FF6B6B",
+    "navigationBarBackgroundColor": "#1A1A2E",
     "navigationBarTitleText": "今天吃什么",
     "navigationBarTextStyle": "white",
-    "backgroundColor": "#FFF5F5"
+    "backgroundColor": "#F8F9FA"
   },
   "tabBar": {
-    "color": "#999",
-    "selectedColor": "#FF6B6B",
+    "color": "#636E72",
+    "selectedColor": "#E94560",
     "backgroundColor": "#fff",
     "borderStyle": "white",
     "list": [

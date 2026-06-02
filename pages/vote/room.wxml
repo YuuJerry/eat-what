@@ -1,137 +1,78 @@
-<!-- 投票房间页面模板 - 包含创建投票、投票和结果三种模式 -->
-<view class="container">
-  <!-- ===== 创建投票模式 ===== -->
+<!-- 投票房间 -->
+<view class="page">
+  <!-- 创建模式 -->
   <view wx:if="{{mode === 'create'}}">
-    <!-- 投票标题输入卡片 -->
     <view class="card">
-      <text class="section-title">🗳️ 创建投票</text>
-      <input
-        class="title-input"
-        placeholder="投票标题（如：今晚吃什么）"
-        value="{{title}}"
-        bindinput="onTitleInput"
-      />
+      <text class="card-title">🗳️ 创建投票</text>
+      <input class="title-input" placeholder="投票标题（如：今晚吃什么）" value="{{title}}" bindinput="onTitleInput" />
     </view>
-
-    <!-- 投票选项列表卡片 -->
     <view class="card">
-      <text class="section-title">选项</text>
+      <text class="card-title">选项</text>
       <view class="option-list">
-        <!-- 遍历选项列表，每个选项带删除按钮（仅当选项数大于2时显示） -->
-        <view class="option-item" wx:for="{{options}}" wx:key="index">
-          <input
-            class="option-input"
-            placeholder="输入选项 {{index + 1}}"
-            value="{{item}}"
-            bindinput="onOptionInput"
-            data-idx="{{index}}"
-          />
-          <text
-            class="option-remove"
-            wx:if="{{options.length > 2}}"
-            bindtap="onRemoveOption"
-            data-idx="{{index}}"
-          >✕</text>
+        <view class="option-row" wx:for="{{options}}" wx:key="index">
+          <input class="option-input" placeholder="输入选项 {{index + 1}}" value="{{item}}" bindinput="onOptionInput" data-idx="{{index}}" />
+          <text class="option-remove" wx:if="{{options.length > 2}}" bindtap="onRemoveOption" data-idx="{{index}}">✕</text>
         </view>
       </view>
-      <!-- 添加选项按钮（仅当选项数小于6时显示） -->
       <view class="add-option" bindtap="onAddOption" wx:if="{{options.length < 6}}">
         <text>+ 添加选项</text>
       </view>
     </view>
-
-    <!-- 创建投票按钮 -->
-    <view class="create-action">
+    <view class="action-area">
       <view class="btn-primary" bindtap="onCreateRoom">
         <text>{{isCreating ? '创建中...' : '创建投票房间'}}</text>
       </view>
     </view>
   </view>
 
-  <!-- ===== 投票模式 ===== -->
+  <!-- 投票模式 -->
   <view wx:if="{{mode === 'vote' && room}}">
-    <!-- 房间头部：显示标题和邀请按钮 -->
-    <view class="room-header card">
+    <view class="card room-header">
       <text class="room-title">{{room.title}}</text>
       <text class="room-hint">复制投票码发给好友，好友在小程序首页粘贴即可加入</text>
       <view class="invite-btn" bindtap="onCopyInvite">
         <text>📋 复制投票码发给好友</text>
       </view>
     </view>
-
-    <!-- 投票选项列表 -->
     <view class="card">
-      <text class="section-title">选择你想吃的</text>
+      <text class="card-title">选择你想吃的</text>
       <view class="vote-options">
-        <!-- 遍历房间选项，选中项高亮显示并带勾选标记 -->
-        <view
-          class="vote-option {{myVote === item ? 'selected' : ''}}"
-          wx:for="{{room.options}}"
-          wx:key="*this"
-          bindtap="onSelectOption"
-          data-option="{{item}}"
-        >
-          <text class="option-text">{{item}}</text>
-          <!-- 选中时显示的勾选图标 -->
-          <view class="option-check" wx:if="{{myVote === item}}">
-            <text>✓</text>
-          </view>
+        <view class="vote-opt {{myVote === item ? 'selected' : ''}}" wx:for="{{room.options}}" wx:key="*this" bindtap="onSelectOption" data-option="{{item}}">
+          <text class="opt-text">{{item}}</text>
+          <view class="opt-check" wx:if="{{myVote === item}}"><text>✓</text></view>
         </view>
       </view>
     </view>
-
-    <!-- 投票操作按钮 -->
-    <view class="vote-action">
-      <!-- 确认投票按钮 -->
-      <view class="btn-primary" bindtap="onSubmitVote">
-        <text>确认投票</text>
-      </view>
-      <!-- 查看当前结果按钮 -->
-      <view class="btn-secondary" bindtap="loadResult" style="margin-top: 16rpx;">
-        <text>查看当前结果</text>
-      </view>
+    <view class="action-area">
+      <view class="btn-primary" bindtap="onSubmitVote"><text>确认投票</text></view>
+      <view class="btn-secondary" bindtap="loadResult" style="margin-top:16rpx"><text>查看当前结果</text></view>
     </view>
   </view>
 
-  <!-- ===== 结果模式 ===== -->
+  <!-- 结果模式 -->
   <view wx:if="{{mode === 'result' && result}}">
-    <!-- 结果头部：显示投票标题和总票数 -->
-    <view class="result-header card">
+    <view class="card result-header">
       <text class="result-title">{{result.room.title}}</text>
       <text class="result-total">共 {{result.totalVotes}} 人投票</text>
     </view>
-
-    <!-- 胜出/平局结果卡片 -->
-    <view class="result-card card">
+    <view class="card winner-card">
       <text class="winner-label">{{result.isTie ? '🏆 平局' : '🏆 胜出'}}</text>
       <text class="winner-name">{{result.winner}}</text>
       <text class="winner-votes">{{result.winnerVotes}} 票</text>
     </view>
-
-    <!-- 投票详情：各选项的得票数和进度条 -->
     <view class="card">
-      <text class="section-title">投票详情</text>
+      <text class="card-title">投票详情</text>
       <view class="tally-list">
-        <!-- 遍历投票统计，每项显示选项名、票数和百分比进度条 -->
         <view class="tally-item" wx:for="{{result.tally}}" wx:key="index">
-          <view class="tally-bar-info">
-            <text class="tally-option">{{item[0]}}</text>
+          <view class="tally-info">
+            <text class="tally-name">{{item[0]}}</text>
             <text class="tally-count">{{item[1]}} 票</text>
           </view>
-          <!-- 进度条，宽度按票数占比计算 -->
           <view class="tally-bar">
-            <view
-              class="tally-fill"
-              style="width: {{result.totalVotes > 0 ? (item[1] / result.totalVotes * 100) : 0}}%"
-            ></view>
+            <view class="tally-fill" style="width: {{result.totalVotes > 0 ? (item[1] / result.totalVotes * 100) : 0}}%"></view>
           </view>
         </view>
       </view>
     </view>
-
-    <!-- 分享结果按钮 -->
-    <button class="share-btn-bottom" open-type="share">
-      <text>📤 分享结果</text>
-    </button>
   </view>
 </view>

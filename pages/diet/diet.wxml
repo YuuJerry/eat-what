@@ -1,40 +1,33 @@
-<!-- 减脂餐页面主容器 -->
-<view class="container">
-  <!-- 提示 -->
-  <view class="ai-hint">
-    <text class="ai-hint-text">🥗 减脂菜谱 · 下拉刷新换一批</text>
+<!-- 减脂餐 -->
+<view class="page">
+  <view class="page-hint">
+    <text>🥗 减脂菜谱 · 下拉刷新换一批</text>
   </view>
 
-  <!-- 减脂餐列表：横向卡片布局 -->
-  <view class="recipe-list">
-    <!-- 单个减脂餐卡片 -->
-    <view
-      class="recipe-card card"
-      wx:for="{{recipes}}"
-      wx:key="name"
-      bindtap="onRecipeTap"
-      data-index="{{index}}"
-    >
-      <!-- 封面手绘图标 -->
-      <view class="recipe-cover hand-drawn-placeholder">
-        <image src="{{item.coverIcon}}" mode="aspectFit" class="cover-icon-img" />
-      </view>
-      <!-- 菜谱信息区域 -->
-      <view class="recipe-info">
-        <text class="recipe-name">{{item.name}}</text>
-        <!-- 热量和烹饪时间 -->
-        <view class="recipe-meta">
-          <text class="meta-cal">🔥 {{item.calories}}kcal</text>
-          <text class="meta-time">⏱ {{item.cookTime}}分钟</text>
+  <!-- 骨架屏 -->
+  <view wx:if="{{isLoading}}" class="recipe-list">
+    <view class="recipe-row card" wx:for="{{[1,2,3]}}" wx:key="*this">
+      <view class="skeleton rr-img"></view>
+      <view class="rr-body"><view class="skeleton rr-line"></view><view class="skeleton rr-line sm"></view></view>
+    </view>
+  </view>
+
+  <!-- 菜谱列表 -->
+  <view class="recipe-list" wx:if="{{!isLoading && recipes.length > 0}}">
+    <view class="recipe-row card" wx:for="{{recipes}}" wx:key="name" bindtap="onRecipeTap" data-index="{{index}}">
+      <view class="rr-img"><image src="{{item.coverIcon}}" mode="aspectFit" class="rr-icon" /></view>
+      <view class="rr-body">
+        <text class="rr-name">{{item.name}}</text>
+        <view class="rr-meta">
+          <text class="rr-cal">🔥 {{item.calories}}kcal</text>
+          <text class="rr-time">⏱ {{item.cookTime}}分</text>
         </view>
-        <!-- 营养成分：蛋白质、脂肪、碳水 -->
-        <view class="recipe-nutrition" wx:if="{{item.nutritionInfo}}">
-          <text class="nutrition-item">蛋白 {{item.nutritionInfo.protein}}g</text>
-          <text class="nutrition-item">脂肪 {{item.nutritionInfo.fat}}g</text>
-          <text class="nutrition-item">碳水 {{item.nutritionInfo.carbs}}g</text>
+        <view class="rr-nutr" wx:if="{{item.nutritionInfo}}">
+          <text>蛋白{{item.nutritionInfo.protein}}g</text>
+          <text>脂肪{{item.nutritionInfo.fat}}g</text>
+          <text>碳水{{item.nutritionInfo.carbs}}g</text>
         </view>
-        <!-- 标签区域：减脂标签 + 自定义标签（最多2个） -->
-        <view class="recipe-tags">
+        <view class="rr-tags">
           <text class="tag tag-active">减脂</text>
           <text class="tag" wx:for="{{item.tags}}" wx:for-item="tag" wx:key="*this" wx:if="{{index < 2}}">{{tag}}</text>
         </view>
@@ -42,32 +35,22 @@
     </view>
   </view>
 
-  <!-- 推荐博主区域 -->
-  <view class="blogger-section">
+  <!-- 博主推荐 -->
+  <view class="section" wx:if="{{bloggers.length > 0}}">
     <text class="section-title">📹 推荐博主</text>
     <view class="blogger-list">
-      <!-- 单个博主卡片 -->
-      <view
-        class="blogger-card"
-        wx:for="{{bloggers}}"
-        wx:key="name"
-        bindtap="onBloggerTap"
-        data-blogger="{{item}}"
-      >
-        <!-- 博主头像 emoji -->
+      <view class="blogger-card card" wx:for="{{bloggers}}" wx:key="name" bindtap="onBloggerTap" data-blogger="{{item}}">
         <text class="blogger-avatar">{{item.avatar}}</text>
-        <!-- 博主信息：名称和简介 -->
         <view class="blogger-info">
           <text class="blogger-name">{{item.name}}</text>
           <text class="blogger-desc">{{item.desc}}</text>
         </view>
-        <!-- 平台标签：B站 或 抖音 -->
         <text class="blogger-platform">{{item.platform === 'bilibili' ? 'B站' : '抖音'}}</text>
       </view>
     </view>
   </view>
 
-  <!-- 空状态：无减脂餐数据时显示 -->
+  <!-- 空状态 -->
   <view class="empty-state" wx:if="{{!isLoading && recipes.length === 0}}">
     <text class="empty-emoji">🏃</text>
     <text class="empty-text">暂无减脂餐</text>

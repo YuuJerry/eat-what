@@ -1,339 +1,93 @@
-/* 转盘选餐页容器：纵向排列，水平居中 */
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20rpx 30rpx;
-  min-height: 100vh;
+/* 随机转盘 — 统一设计系统 */
+
+.page {
+  background: #F8F9FA; min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 24rpx; padding-bottom: 120rpx;
 }
 
-/* ========== 结果展示区 ========== */
-/* 结果卡片居中显示 */
-.result-area {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20rpx;
-}
-
-/* 结果卡片：渐变背景，圆角阴影 */
+/* 结果 */
+.result-area { width: 100%; margin-bottom: 20rpx; }
 .result-card {
-  background: linear-gradient(135deg, #FF6B6B, #FF8E8E);
-  border-radius: 24rpx;
-  padding: 30rpx 60rpx;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  box-shadow: 0 8rpx 30rpx rgba(255, 107, 107, 0.3);
-  min-width: 400rpx;
-  transition: transform 0.3s;
+  background: linear-gradient(135deg, #E94560, #FF6B6B);
+  border-radius: 24rpx; padding: 32rpx; text-align: center;
+  box-shadow: 0 8rpx 24rpx rgba(233,69,96,0.25);
 }
+.result-card.spinning { animation: pulse 0.15s infinite alternate; }
+@keyframes pulse { from { transform: scale(1); } to { transform: scale(1.03); } }
+.result-emoji { font-size: 64rpx; display: block; margin-bottom: 8rpx; }
+.result-name { font-size: 36rpx; font-weight: 700; color: #fff; display: block; }
+.result-cat { font-size: 24rpx; color: rgba(255,255,255,0.70); display: block; margin-top: 6rpx; }
 
-/* 旋转中状态：添加脉冲动画 */
-.result-card.spinning {
-  animation: pulse 0.15s infinite alternate;
+/* 转盘 */
+.wheel-wrap {
+  position: relative; width: 480rpx; height: 480rpx;
+  margin-bottom: 24rpx;
 }
-
-/* 脉冲动画：轻微缩放效果 */
-@keyframes pulse {
-  from { transform: scale(1); }
-  to { transform: scale(1.03); }
-}
-
-/* 结果 emoji 图标 */
-.result-emoji {
-  font-size: 80rpx;
-  margin-bottom: 10rpx;
-}
-
-/* 结果食物名称 */
-.result-name {
-  font-size: 40rpx;
-  color: #fff;
-  font-weight: bold;
-}
-
-/* 结果食物分类 */
-.result-category {
-  font-size: 24rpx;
-  color: rgba(255,255,255,0.8);
-  margin-top: 8rpx;
-}
-
-/* ========== 转盘区域 ========== */
-/* 转盘容器：相对定位，用于叠加指针 */
-.wheel-container {
-  position: relative;
-  width: 500rpx;
-  height: 500rpx;
-  margin: 10rpx 0 20rpx;
-}
-
-/* 转盘 Canvas：圆形裁切和阴影 */
 .wheel-canvas {
-  width: 500rpx;
-  height: 500rpx;
-  border-radius: 50%;
-  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.15);
+  width: 100%; height: 100%; border-radius: 50%;
+  box-shadow: 0 8rpx 32rpx rgba(0,0,0,0.15);
+}
+.wheel-pointer {
+  position: absolute; top: -16rpx; left: 50%; transform: translateX(-50%);
+  font-size: 40rpx; color: #E94560; z-index: 10;
 }
 
-/* 指针：绝对定位在转盘顶部正中央 */
-.pointer {
-  position: absolute;
-  top: -10rpx;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
+/* 按钮 */
+.btn-row { display: flex; gap: 16rpx; margin-bottom: 20rpx; }
+.spin-btn {
+  background: linear-gradient(135deg, #E94560, #FF6B6B);
+  color: #fff; border-radius: 100rpx; padding: 18rpx 40rpx;
+  font-size: 28rpx; font-weight: 600;
+  box-shadow: 0 4rpx 16rpx rgba(233,69,96,0.25);
 }
-
-/* 指针箭头图标 */
-.pointer-arrow {
-  font-size: 50rpx;
-  color: #FF6B6B;
-  text-shadow: 0 2rpx 4rpx rgba(0,0,0,0.2);
-}
-
-/* ========== 操作按钮区 ========== */
-/* 两个操作按钮横向排列 */
-.button-area {
-  display: flex;
-  gap: 20rpx;
-  margin-bottom: 30rpx;
-}
-
-/* 按钮通用样式：圆角胶囊按钮 */
-.btn-spin, .btn-random {
-  padding: 20rpx 40rpx;
-  border-radius: 50rpx;
-  box-shadow: 0 6rpx 20rpx rgba(0,0,0,0.15);
-}
-
-/* 转盘按钮：红色渐变 */
-.btn-spin {
-  background: linear-gradient(135deg, #FF6B6B, #FF8E8E);
-}
-
-/* 随机按钮：绿色渐变 */
-.btn-random {
+.spin-btn:active { transform: scale(0.96); }
+.random-btn {
   background: linear-gradient(135deg, #4ECDC4, #6EE7DE);
+  color: #fff; border-radius: 100rpx; padding: 18rpx 40rpx;
+  font-size: 28rpx; font-weight: 600;
+  box-shadow: 0 4rpx 16rpx rgba(78,205,196,0.25);
 }
+.random-btn:active { transform: scale(0.96); }
 
-/* 按钮点击态：缩小 + 透明 */
-.btn-hover {
-  opacity: 0.85;
-  transform: scale(0.97);
+/* 分类标签 */
+.cat-scroll { width: 100%; padding: 0 0 16rpx; white-space: nowrap; }
+.cat-pill {
+  display: inline-flex; padding: 10rpx 24rpx; margin-right: 12rpx;
+  border-radius: 100rpx; background: #fff; border: 2rpx solid #DFE6E9;
+  font-size: 24rpx; color: #636E72; font-weight: 500;
 }
+.cat-pill.active { background: #E94560; border-color: #E94560; color: #fff; }
 
-/* 按钮文字 */
-.btn-text {
-  color: #fff;
-  font-size: 30rpx;
-  font-weight: bold;
+/* 食物列表 */
+.food-card { width: 100%; }
+.food-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16rpx; }
+.food-title { font-size: 28rpx; font-weight: 600; color: #2D3436; }
+.food-add {
+  font-size: 24rpx; color: #4ECDC4; font-weight: 500;
+  border: 2rpx solid #4ECDC4; border-radius: 100rpx; padding: 6rpx 16rpx;
 }
-
-/* ========== 分类标签 ========== */
-/* 分类标签横向滚动容器 */
-.category-scroll {
-  width: 100%;
-  white-space: nowrap;
-  margin-bottom: 20rpx;
-}
-
-/* 单个分类标签：胶囊按钮样式 */
-.category-tag {
-  display: inline-flex;
-  align-items: center;
-  padding: 12rpx 28rpx;
-  margin-right: 16rpx;
-  border-radius: 40rpx;
-  background: #fff;
-  border: 2rpx solid #eee;
-  font-size: 26rpx;
-  color: #666;
-}
-
-/* 选中的分类标签：红色高亮 */
-.category-tag.active {
-  background: #FF6B6B;
-  color: #fff;
-  border-color: #FF6B6B;
-}
-
-/* ========== 食物列表 ========== */
-/* 食物列表容器：白底卡片，弹性布局填满剩余空间 */
-.food-list {
-  width: 100%;
-  background: #fff;
-  border-radius: 20rpx;
-  padding: 24rpx;
-  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.06);
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-/* 列表头部：标题和添加按钮横向排列 */
-.food-list-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16rpx;
-}
-
-/* 列表标题 */
-.food-list-title {
-  font-size: 28rpx;
-  font-weight: bold;
-  color: #333;
-}
-
-/* 添加按钮：绿色胶囊 */
-.btn-add {
-  background: #4ECDC4;
-  color: #fff;
-  font-size: 24rpx;
-  padding: 10rpx 24rpx;
-  border-radius: 30rpx;
-}
-
-/* 食物滚动区域：限制最大高度 */
-.food-scroll {
-  flex: 1;
-  max-height: 400rpx;
-}
-
-/* 单个食物项：横向排列，底部边框分隔 */
+.food-scroll { max-height: 500rpx; }
 .food-item {
-  display: flex;
-  align-items: center;
-  padding: 16rpx 12rpx;
-  border-bottom: 1rpx solid #f5f5f5;
+  display: flex; align-items: center; gap: 12rpx;
+  padding: 12rpx 0; border-bottom: 1rpx solid #F0F0F0;
 }
+.food-item:last-child { border-bottom: none; }
+.food-icon-wrap { width: 40rpx; height: 40rpx; display: flex; align-items: center; justify-content: center; font-size: 28rpx; }
+.food-icon { width: 100%; height: 100%; }
+.food-name { flex: 1; font-size: 26rpx; color: #2D3436; }
+.food-cat-tag { font-size: 20rpx; color: #636E72; background: #F0F0F0; padding: 2rpx 10rpx; border-radius: 100rpx; }
+.food-actions { display: flex; gap: 8rpx; }
+.food-edit { font-size: 24rpx; padding: 4rpx; }
+.food-del { font-size: 24rpx; color: #636E72; padding: 4rpx; }
+.food-del:active { color: #E94560; }
 
-/* 食物 emoji 图标 */
-.food-emoji {
-  font-size: 36rpx;
-  margin-right: 16rpx;
-}
-
-/* 食物手绘图标 */
-.food-icon-wrap {
-  width: 48rpx;
-  height: 48rpx;
-  margin-right: 16rpx;
-  flex-shrink: 0;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.food-icon-img {
-  width: 44rpx;
-  height: 44rpx;
-}
-
-/* 食物名称：占据剩余空间 */
-.food-name {
-  flex: 1;
-  font-size: 28rpx;
-  color: #333;
-}
-
-/* 食物分类标签：灰色小标签 */
-.food-tag {
-  font-size: 22rpx;
-  color: #999;
-  background: #f5f5f5;
-  padding: 4rpx 16rpx;
-  border-radius: 16rpx;
-  margin-right: 12rpx;
-}
-
-/* 食物编辑按钮 */
-.food-edit {
-  font-size: 28rpx;
-  color: #4ECDC4;
-  padding: 8rpx 12rpx;
-}
-
-/* 食物删除按钮 */
-.food-delete {
-  font-size: 28rpx;
-  color: #ccc;
-  padding: 8rpx 16rpx;
-}
-
-/* 删除按钮点击态变红 */
-.food-delete:active {
-  color: #FF6B6B;
-}
-
-/* ========== 添加食物弹窗 ========== */
-/* 弹窗遮罩层：全屏半透明黑色 */
-.modal-mask {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0,0,0,0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 100;
-}
-
-/* 弹窗主体：白底圆角居中 */
-.modal {
-  background: #fff;
-  border-radius: 24rpx;
-  padding: 40rpx;
-  width: 600rpx;
-}
-
-/* 弹窗标题 */
-.modal-title {
-  font-size: 34rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 30rpx;
-  display: block;
-  text-align: center;
-}
-
-/* 弹窗输入框 */
-.modal-input {
-  border: 2rpx solid #eee;
-  border-radius: 12rpx;
-  padding: 20rpx 24rpx;
-  font-size: 28rpx;
-  margin-bottom: 30rpx;
-}
-
-/* 弹窗按钮组：取消和确认横向排列 */
-.modal-btns {
-  display: flex;
-  gap: 20rpx;
-}
-
-/* 弹窗按钮通用样式 */
-.modal-btn {
-  flex: 1;
-  text-align: center;
-  padding: 20rpx;
-  border-radius: 12rpx;
-  font-size: 28rpx;
-}
-
-/* 取消按钮：灰色背景 */
-.modal-btn.cancel {
-  background: #f5f5f5;
-  color: #666;
-}
-
-/* 确认按钮：红色背景 */
-.modal-btn.confirm {
-  background: #FF6B6B;
-  color: #fff;
-}
+/* 弹窗 */
+.modal-mask { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 100; display: flex; align-items: center; justify-content: center; }
+.modal { background: #fff; border-radius: 24rpx; padding: 28rpx; width: 600rpx; }
+.modal-title { font-size: 30rpx; font-weight: 600; color: #2D3436; display: block; margin-bottom: 20rpx; }
+.modal-input { width: 100%; font-size: 28rpx; padding: 16rpx; border: 2rpx solid #DFE6E9; border-radius: 12rpx; margin-bottom: 20rpx; }
+.modal-btns { display: flex; gap: 16rpx; }
+.modal-btn { flex: 1; padding: 16rpx; border-radius: 16rpx; text-align: center; font-size: 28rpx; font-weight: 500; }
+.modal-btn.cancel { background: #F8F9FA; color: #636E72; }
+.modal-btn.confirm { background: #E94560; color: #fff; }

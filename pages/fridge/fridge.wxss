@@ -1,527 +1,129 @@
-/* 页面容器 */
-.container {
-  padding: 20rpx 24rpx 40rpx;
+/* 冰箱推荐 — 统一设计系统 */
+
+.page { background: #F8F9FA; min-height: 100vh; padding-bottom: 40rpx; }
+
+/* 已选食材区 */
+.selected-bar { background: #fff; padding: 20rpx 24rpx; margin-bottom: 12rpx; }
+.selected-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12rpx; }
+.selected-title { font-size: 28rpx; font-weight: 600; color: #2D3436; }
+.selected-clear { font-size: 24rpx; color: #E94560; }
+.selected-tags { display: flex; flex-wrap: wrap; gap: 10rpx; }
+.sel-tag {
+  background: rgba(233,69,96,0.08); color: #E94560; font-size: 24rpx;
+  padding: 8rpx 18rpx; border-radius: 100rpx; font-weight: 500;
 }
 
-/* ===== 已选食材区域 ===== */
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16rpx;
-}
-
-.section-title {
-  font-size: 30rpx;
-  font-weight: bold;
-  color: #333;
-}
-
-.clear-btn {
-  font-size: 26rpx;
-  color: #FF6B6B;
-}
-
-.selected-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12rpx;
-}
-
-.selected-tag {
-  background: #FF6B6B;
-  color: #fff;
-  font-size: 26rpx;
-  padding: 10rpx 20rpx;
-  border-radius: 30rpx;
-}
-
-.placeholder-text {
-  font-size: 26rpx;
-  color: #ccc;
-}
-
-/* ===== 搜索栏 ===== */
+/* 搜索条 */
+.search-row { padding: 12rpx 24rpx; }
 .search-bar {
-  display: flex;
-  align-items: center;
-  margin: 20rpx 0;
-  background: #fff;
-  border-radius: 50rpx;
-  padding: 4rpx 24rpx;
-  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+  display: flex; align-items: center; gap: 10rpx;
+  background: #1A1A2E; border-radius: 16rpx; padding: 16rpx 20rpx;
+}
+.search-icon { font-size: 26rpx; opacity: 0.5; }
+.search-input { flex: 1; font-size: 26rpx; color: #fff; background: transparent; }
+.search-input::placeholder { color: rgba(255,255,255,0.35); }
+
+/* 分类标签 */
+.cat-scroll { padding: 8rpx 24rpx 12rpx; white-space: nowrap; }
+.cat-pill {
+  display: inline-flex; padding: 10rpx 24rpx; margin-right: 12rpx;
+  border-radius: 100rpx; background: #fff; border: 2rpx solid #DFE6E9;
+  font-size: 24rpx; color: #636E72; font-weight: 500;
+}
+.cat-pill.active { background: #E94560; border-color: #E94560; color: #fff; }
+
+/* 食材网格 */
+.ing-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 12rpx;
+  padding: 0 24rpx 20rpx;
+}
+.ing-item {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 16rpx 4rpx; background: #fff; border-radius: 16rpx;
+  border: 2rpx solid #F0F0F0; position: relative;
+}
+.ing-item.selected { border-color: #E94560; background: rgba(233,69,96,0.04); }
+.ing-item:active { transform: scale(0.95); }
+.ing-icon { width: 48rpx; height: 48rpx; margin-bottom: 6rpx; }
+.ing-img { width: 100%; height: 100%; }
+.ing-name { font-size: 20rpx; color: #2D3436; text-align: center; }
+.ing-check {
+  position: absolute; top: 6rpx; right: 6rpx;
+  width: 28rpx; height: 28rpx; border-radius: 50%;
+  background: #E94560; color: #fff; font-size: 16rpx;
+  display: flex; align-items: center; justify-content: center;
 }
 
-.search-input {
-  flex: 1;
-  font-size: 28rpx;
-  height: 72rpx;
+/* 操作按钮 */
+.actions { display: flex; gap: 12rpx; padding: 0 24rpx 20rpx; }
+.action-btn {
+  flex: 1; background: #E94560; color: #fff; border-radius: 16rpx;
+  padding: 18rpx; text-align: center; font-size: 26rpx; font-weight: 600;
+  box-shadow: 0 4rpx 16rpx rgba(233,69,96,0.25);
+}
+.action-btn:active { transform: scale(0.96); }
+.action-btn.secondary {
+  background: #fff; color: #4ECDC4; border: 2rpx solid #4ECDC4;
+  box-shadow: none;
 }
 
-/* ===== 分类标签 ===== */
-.category-scroll {
-  white-space: nowrap;
-  margin-bottom: 20rpx;
-}
+/* 结果区 */
+.results { padding: 0 24rpx; }
+.results-header { margin-bottom: 16rpx; }
+.results-title { font-size: 28rpx; font-weight: 600; color: #2D3436; }
 
-.category-tab {
-  display: inline-flex;
-  align-items: center;
-  padding: 12rpx 28rpx;
-  margin-right: 16rpx;
-  border-radius: 40rpx;
-  background: #fff;
-  border: 2rpx solid #eee;
-  font-size: 26rpx;
-  color: #666;
-}
+.result-card { margin: 0 0 16rpx; }
+.result-card.can-cook { border-left: 6rpx solid #4ECDC4; }
 
-.category-tab.active {
-  background: #4ECDC4;
-  color: #fff;
-  border-color: #4ECDC4;
-}
+.result-top { display: flex; gap: 16rpx; margin-bottom: 16rpx; }
+.result-cover { width: 100rpx; height: 100rpx; border-radius: 16rpx; background: #F8F9FA; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.rc-img { width: 80rpx; height: 80rpx; }
+.result-info { flex: 1; }
+.result-name { font-size: 28rpx; font-weight: 600; color: #2D3436; display: block; margin-bottom: 4rpx; }
+.result-meta { display: flex; gap: 16rpx; font-size: 22rpx; color: #636E72; }
+.result-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 8rpx; }
+.fav-btn { font-size: 32rpx; }
+.match-badge { font-size: 20rpx; padding: 4rpx 12rpx; border-radius: 100rpx; }
+.match-badge.perfect { background: #E8F8F5; color: #4ECDC4; }
+.match-badge.partial { background: #FFF8E1; color: #FFB300; }
 
-/* ===== 食材网格 ===== */
-.ingredient-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16rpx;
-  margin-bottom: 24rpx;
-}
-
-.ingredient-item {
-  width: calc(25% - 12rpx);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 16rpx 8rpx;
-  background: #fff;
-  border-radius: 16rpx;
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
-  position: relative;
-  box-sizing: border-box;
-}
-
-.ingredient-item.selected {
-  background: #E8F8F5;
-  box-shadow: 0 2rpx 8rpx rgba(78, 205, 196, 0.2);
-}
-
-.ingredient-icon {
-  width: 64rpx;
-  height: 64rpx;
-  border-radius: 16rpx;
-  margin-bottom: 8rpx;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.ingredient-img {
-  width: 56rpx;
-  height: 56rpx;
-}
-
-.ingredient-name {
-  font-size: 24rpx;
-  color: #333;
-  text-align: center;
-}
-
-.check-mark {
-  position: absolute;
-  top: 8rpx;
-  right: 8rpx;
-  width: 32rpx;
-  height: 32rpx;
-  border-radius: 50%;
-  background: #4ECDC4;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20rpx;
-}
-
-/* ===== 操作按钮区 ===== */
-.action-buttons {
-  display: flex;
-  gap: 16rpx;
-  margin: 20rpx 0;
-}
-
-.btn-ai {
-  flex: 1;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: #fff;
-  font-size: 28rpx;
-  font-weight: bold;
-  padding: 22rpx 0;
-  border-radius: 50rpx;
-  text-align: center;
-  box-shadow: 0 6rpx 20rpx rgba(102, 126, 234, 0.3);
-}
-
-.btn-shopping {
-  background: #fff;
-  border: 2rpx solid #4ECDC4;
-  color: #4ECDC4;
-  font-size: 26rpx;
-  font-weight: bold;
-  padding: 20rpx 30rpx;
-  border-radius: 50rpx;
-  text-align: center;
-}
-
-/* ===== 推荐结果 ===== */
-.results-section {
-  margin-top: 20rpx;
-}
-
-.result-card {
-  margin-left: 0;
-  margin-right: 0;
-  transition: all 0.3s;
-}
-
-/* 能做 = 绿色边框 */
-.result-card.can-cook {
-  border-left: 8rpx solid #4ECDC4;
-  box-shadow: 0 4rpx 16rpx rgba(78, 205, 196, 0.2);
-}
-
-/* 差1种 = 金色边框 */
-.result-card.almost {
-  border-left: 8rpx solid #FFB300;
-  box-shadow: 0 4rpx 16rpx rgba(255, 179, 0, 0.15);
-}
-
-.result-header {
-  display: flex;
-  align-items: center;
-}
-
-.result-cover {
-  width: 100rpx;
-  height: 100rpx;
-  border-radius: 16rpx;
-  flex-shrink: 0;
-  overflow: hidden;
-  background: #FFF5F5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.cover-img {
-  width: 80rpx;
-  height: 80rpx;
-}
-
-.result-info {
-  flex: 1;
-  margin-left: 16rpx;
-}
-
-.result-name {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333;
-  display: block;
-}
-
-.result-meta {
-  display: flex;
-  gap: 16rpx;
-  font-size: 24rpx;
-  color: #999;
-  margin-top: 6rpx;
-}
-
-/* 右侧操作区（收藏+匹配度） */
-.header-actions {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8rpx;
-}
-
-.fav-btn {
-  font-size: 36rpx;
-  padding: 4rpx 8rpx;
-}
-
-.match-badge {
-  padding: 8rpx 16rpx;
-  border-radius: 12rpx;
-}
-
-.match-badge.partial {
-  background: #E8F8F5;
-  color: #4ECDC4;
-}
-
-.match-badge.perfect {
-  background: #FFF8E1;
-  color: #FF8F00;
-}
-
-.match-label {
-  font-size: 24rpx;
-  font-weight: bold;
-}
-
-/* 用料清单 */
-.ingredients-list {
-  margin-top: 16rpx;
-  padding-top: 12rpx;
-  border-top: 1rpx solid #f0f0f0;
-}
-
-.sub-title {
-  font-size: 24rpx;
-  color: #666;
-  font-weight: bold;
-  display: block;
-  margin-bottom: 8rpx;
-}
-
-.ingredient-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8rpx;
-}
-
-.ing-tag {
-  font-size: 22rpx;
-  color: #666;
-  background: #f5f5f5;
-  padding: 6rpx 14rpx;
-  border-radius: 16rpx;
-}
+/* 用料 */
+.sub-title { font-size: 24rpx; font-weight: 600; color: #2D3436; display: block; margin-bottom: 10rpx; }
+.ing-tags { display: flex; flex-wrap: wrap; gap: 8rpx; }
+.ing-tag { font-size: 22rpx; background: #F8F9FA; color: #636E72; padding: 6rpx 14rpx; border-radius: 100rpx; }
 
 /* 缺少食材 */
-.missing-section {
-  margin-top: 12rpx;
-  padding-top: 12rpx;
-  border-top: 1rpx solid #f0f0f0;
-}
+.missing { margin-top: 12rpx; font-size: 24rpx; }
+.missing-label { color: #E94560; font-weight: 500; }
+.missing-items { color: #636E72; }
 
-.missing-label {
-  font-size: 24rpx;
-  color: #999;
-}
+/* 步骤 */
+.steps { margin-top: 16rpx; border-top: 1rpx solid #F0F0F0; padding-top: 12rpx; }
+.steps-toggle { font-size: 24rpx; color: #E94560; padding: 8rpx 0; }
+.steps-content { margin-top: 12rpx; }
+.step-item { display: flex; gap: 12rpx; margin-bottom: 12rpx; }
+.step-num { width: 36rpx; height: 36rpx; border-radius: 50%; background: #E94560; color: #fff; font-size: 20rpx; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: 600; }
+.step-txt { font-size: 26rpx; color: #2D3436; line-height: 1.6; flex: 1; }
 
-.missing-items {
-  font-size: 24rpx;
-  color: #FF6B6B;
-}
+/* 视频 */
+.video-section { margin-top: 16rpx; border-top: 1rpx solid #F0F0F0; padding-top: 12rpx; }
+.video-card { display: flex; gap: 14rpx; background: #F8F9FA; border-radius: 14rpx; padding: 12rpx; }
+.video-card:active { background: #EDEDED; }
+.vid-thumb { position: relative; width: 160rpx; height: 100rpx; border-radius: 10rpx; overflow: hidden; flex-shrink: 0; }
+.vid-img { width: 100%; height: 100%; }
+.vid-play { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 40rpx; height: 40rpx; background: rgba(0,0,0,0.5); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 20rpx; }
+.vid-dur { position: absolute; bottom: 4rpx; right: 4rpx; background: rgba(0,0,0,0.65); color: #fff; font-size: 16rpx; padding: 2rpx 6rpx; border-radius: 4rpx; }
+.vid-info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+.vid-title { font-size: 24rpx; color: #2D3436; font-weight: 500; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 4rpx; }
+.vid-sub { font-size: 20rpx; color: #636E72; }
 
-.almost-hint {
-  font-size: 24rpx;
-  color: #FF8F00;
-  font-weight: bold;
-}
-
-/* 步骤预览 */
-.steps-section {
-  margin-top: 12rpx;
-  padding-top: 12rpx;
-  border-top: 1rpx solid #f0f0f0;
-}
-
-.steps-toggle {
-  font-size: 24rpx;
-  color: #667eea;
-  font-weight: bold;
-  padding: 8rpx 0;
-}
-
-.steps-content {
-  margin-top: 12rpx;
-}
-
-.step-item {
-  display: flex;
-  align-items: flex-start;
-  margin-bottom: 12rpx;
-}
-
-.step-num {
-  width: 36rpx;
-  height: 36rpx;
-  border-radius: 50%;
-  background: #667eea;
-  color: #fff;
-  font-size: 22rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  margin-right: 12rpx;
-  margin-top: 4rpx;
-}
-
-.step-text {
-  font-size: 26rpx;
-  color: #333;
-  line-height: 1.5;
-}
-
-/* 空状态 */
-.empty-hint {
-  font-size: 24rpx;
-  color: #ccc;
-  margin-top: 8rpx;
-}
-
-/* ===== 购物清单弹窗 ===== */
-.modal-mask {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0,0,0,0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 100;
-}
-
-.modal {
-  background: #fff;
-  border-radius: 24rpx;
-  padding: 40rpx;
-  width: 620rpx;
-  max-height: 80vh;
-}
-
-.modal-title {
-  font-size: 34rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 24rpx;
-  display: block;
-  text-align: center;
-}
-
-.shopping-content {
-  max-height: 500rpx;
-  margin-bottom: 24rpx;
-}
-
-.shopping-text {
-  font-size: 28rpx;
-  color: #333;
-  line-height: 1.8;
-  white-space: pre-wrap;
-}
-
-.modal-btns {
-  display: flex;
-  gap: 20rpx;
-}
-
-.modal-btn {
-  flex: 1;
-  text-align: center;
-  padding: 20rpx;
-  border-radius: 12rpx;
-  font-size: 28rpx;
-}
-
-.modal-btn.cancel {
-  background: #f5f5f5;
-  color: #666;
-}
-
-.modal-btn.confirm {
-  background: #4ECDC4;
-  color: #fff;
-}
-
-/* ===== 视频教程卡片 ===== */
-.video-section {
-  margin-top: 16rpx;
-  border-top: 1rpx dashed #eee;
-  padding-top: 16rpx;
-}
-
-.video-card {
-  display: flex;
-  background: #f9f9f9;
-  border-radius: 12rpx;
-  overflow: hidden;
-}
-
-.video-thumb {
-  position: relative;
-  width: 200rpx;
-  min-height: 120rpx;
-  flex-shrink: 0;
-  background: #222;
-}
-
-.video-thumb-img {
-  width: 100%;
-  height: 100%;
-}
-
-.video-play-btn {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 48rpx;
-  height: 48rpx;
-  background: rgba(0,0,0,0.5);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font-size: 24rpx;
-}
-
-.video-time {
-  position: absolute;
-  bottom: 6rpx;
-  right: 6rpx;
-  background: rgba(0,0,0,0.7);
-  color: #fff;
-  font-size: 18rpx;
-  padding: 2rpx 6rpx;
-  border-radius: 4rpx;
-}
-
-.video-detail {
-  flex: 1;
-  padding: 12rpx 16rpx;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.video-title {
-  font-size: 24rpx;
-  color: #333;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  margin-bottom: 6rpx;
-}
-
-.video-info-text {
-  font-size: 20rpx;
-  color: #999;
-  margin-bottom: 4rpx;
-}
-
-.video-hint {
-  font-size: 20rpx;
-  color: #00a1d6;
-}
+/* 弹窗 */
+.modal-mask { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 100; display: flex; align-items: center; justify-content: center; }
+.modal { background: #fff; border-radius: 24rpx; padding: 28rpx; width: 620rpx; max-height: 80vh; }
+.modal-title { font-size: 30rpx; font-weight: 600; color: #2D3436; display: block; margin-bottom: 16rpx; }
+.modal-body { max-height: 50vh; }
+.modal-text { font-size: 26rpx; color: #2D3436; line-height: 1.7; white-space: pre-wrap; }
+.modal-btns { display: flex; gap: 16rpx; margin-top: 20rpx; }
+.modal-btn { flex: 1; padding: 16rpx; border-radius: 16rpx; text-align: center; font-size: 28rpx; font-weight: 500; }
+.modal-btn.cancel { background: #F8F9FA; color: #636E72; }
+.modal-btn.confirm { background: #E94560; color: #fff; }
