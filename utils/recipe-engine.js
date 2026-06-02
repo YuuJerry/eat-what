@@ -95,9 +95,6 @@ function recommend(recipes, options = {}) {
     // 难度适中加分
     if (r.difficulty <= 2) score += 5
 
-    // 热度加分（likes 归一化）
-    score += Math.min((r.likes || 50) / 20, 10)
-
     // 随机因子（保证每次推荐有变化）
     score += Math.random() * 20
 

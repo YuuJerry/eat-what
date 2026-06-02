@@ -31,9 +31,9 @@
   </view>
 
   <!-- 空状态 -->
-  <view class="empty-state" wx:if="{{myRooms.length === 0}}">
+  <view class="empty-state" wx:if="{{myRooms.length === 0 && !isLoading}}">
     <text class="empty-emoji">🗳️</text>
     <text class="empty-text">还没有投票记录</text>
-    <text class="empty-hint">发起一个投票，和朋友一起决定吃什么吧！</text>
+    <text class="empty-text">发起一个投票，和朋友一起决定吃什么吧！</text>
   </view>
 </view>

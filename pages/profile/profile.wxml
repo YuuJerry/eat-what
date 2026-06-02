@@ -22,7 +22,7 @@
           <text class="fav-name">{{item.name}}</text>
           <text class="fav-meta" wx:if="{{item.cookTime}}">⏱ {{item.cookTime}}分 · 🔥 {{item.calories}}kcal</text>
         </view>
-        <text class="fav-del" bindtap="onDeleteFavorite" data-index="{{index}}">✕</text>
+        <text class="fav-del" bindtap="onDeleteFavorite" data-name="{{item.name}}">✕</text>
       </view>
     </view>
     <view wx:if="{{showFavorites && favorites.length === 0}}" class="empty-mini">

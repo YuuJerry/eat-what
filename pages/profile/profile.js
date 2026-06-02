@@ -77,14 +77,20 @@ Page({
     this.setData({ favorites: favs })
   },
 
-  // 口味偏好滑块
-  onSpicyChange(e) { this.setData({ 'preferences.spicy': e.detail.value }) },
-  onSweetChange(e) { this.setData({ 'preferences.sweet': e.detail.value }) },
-  onSourChange(e) { this.setData({ 'preferences.sour': e.detail.value }) },
+  // 口味偏好滑块（统一处理）
+  onSliderChange(e) {
+    const key = e.currentTarget.dataset.key
+    if (key) {
+      this.setData({ ['preferences.' + key]: e.detail.value })
+    }
+  },
 
-  onDietGoalChange(e) {
-    const idx = e.currentTarget.dataset.idx
-    this.setData({ dietGoal: DIET_GOALS[idx] })
+  // 选择饮食目标
+  onSelectGoal(e) {
+    const goal = e.currentTarget.dataset.goal
+    if (goal) {
+      this.setData({ dietGoal: goal })
+    }
   },
 
   onToggleAllergy(e) {

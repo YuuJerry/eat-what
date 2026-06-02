@@ -3,9 +3,9 @@
   <!-- 结果 -->
   <view class="result-area">
     <view class="result-card {{isSpinning ? 'spinning' : ''}}">
-      <text class="result-emoji">{{result ? result.emoji : '🍽️'}}</text>
-      <text class="result-name">{{result ? result.name : '今天吃什么？'}}</text>
-      <text class="result-cat" wx:if="{{result}}">{{result.category}}</text>
+      <text class="result-emoji">{{resultEmoji || '🍽️'}}</text>
+      <text class="result-name">{{resultName || '今天吃什么？'}}</text>
+      <text class="result-cat" wx:if="{{resultCategory}}">{{resultCategory}}</text>
     </view>
   </view>
 
@@ -17,7 +17,7 @@
 
   <!-- 按钮 -->
   <view class="btn-row">
-    <view class="spin-btn" bindtap="onSpin"><text>🎰 转一转</text></view>
+    <view class="spin-btn" bindtap="onSpinWheel"><text>🎰 转一转</text></view>
     <view class="random-btn" bindtap="onRandom"><text>🎲 随机</text></view>
   </view>
 
@@ -32,7 +32,7 @@
   <view class="food-card card">
     <view class="food-header">
       <text class="food-title">🍜 食物列表</text>
-      <view class="food-add" bindtap="onShowAddModal"><text>+ 添加</text></view>
+      <view class="food-add" bindtap="onShowAdd"><text>+ 添加</text></view>
     </view>
     <scroll-view scroll-y class="food-scroll">
       <view class="food-item" wx:for="{{filteredFoods}}" wx:key="name">
@@ -40,33 +40,33 @@
         <text class="food-name">{{item.name}}</text>
         <text class="food-cat-tag">{{item.category}}</text>
         <view class="food-actions">
-          <text class="food-edit" wx:if="{{item.custom}}" bindtap="onShowEditModal" data-index="{{index}}">✏️</text>
-          <text class="food-del" wx:if="{{item.custom}}" bindtap="onDeleteFood" data-index="{{index}}">✕</text>
+          <text class="food-edit" wx:if="{{item.isCustom}}" bindtap="onEditFood" data-name="{{item.name}}">✏️</text>
+          <text class="food-del" wx:if="{{item.isCustom}}" bindtap="onDeleteFood" data-name="{{item.name}}">✕</text>
         </view>
       </view>
     </scroll-view>
   </view>
 
   <!-- 添加弹窗 -->
-  <view class="modal-mask" wx:if="{{showAddModal}}" bindtap="onHideAddModal">
+  <view class="modal-mask" wx:if="{{showAdd}}" bindtap="onHideAdd">
     <view class="modal" catchtap>
       <text class="modal-title">添加食物</text>
-      <input class="modal-input" placeholder="输入食物名称" value="{{newFoodName}}" bindinput="onNewFoodInput" />
+      <input class="modal-input" placeholder="输入食物名称" value="{{newFoodName}}" bindinput="onInputFood" />
       <view class="modal-btns">
-        <view class="modal-btn cancel" bindtap="onHideAddModal"><text>取消</text></view>
+        <view class="modal-btn cancel" bindtap="onHideAdd"><text>取消</text></view>
         <view class="modal-btn confirm" bindtap="onAddFood"><text>添加</text></view>
       </view>
     </view>
   </view>
 
   <!-- 编辑弹窗 -->
-  <view class="modal-mask" wx:if="{{showEditModal}}" bindtap="onHideEditModal">
+  <view class="modal-mask" wx:if="{{showEdit}}" bindtap="onHideEdit">
     <view class="modal" catchtap>
       <text class="modal-title">编辑食物</text>
-      <input class="modal-input" placeholder="食物名称" value="{{editFoodName}}" bindinput="onEditFoodInput" />
+      <input class="modal-input" placeholder="食物名称" value="{{editFoodName}}" bindinput="onInputEditFood" />
       <view class="modal-btns">
-        <view class="modal-btn cancel" bindtap="onHideEditModal"><text>取消</text></view>
-        <view class="modal-btn confirm" bindtap="onEditFood"><text>保存</text></view>
+        <view class="modal-btn cancel" bindtap="onHideEdit"><text>取消</text></view>
+        <view class="modal-btn confirm" bindtap="onConfirmEdit"><text>保存</text></view>
       </view>
     </view>
   </view>
