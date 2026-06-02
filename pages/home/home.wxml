@@ -1,81 +1,86 @@
-<!-- 首页 — 「厨房笔记本」风格 -->
+<!-- 首页 — Bento Grid 模块化布局 -->
 <view class="page">
 
-  <!-- ===== 深咖 Hero — 时间感知 ===== -->
-  <view class="hero">
-    <view class="hero-top">
-      <view>
-        <text class="hero-greeting">{{greeting}}</text>
-        <text class="hero-sub">今天想吃点什么？</text>
-      </view>
-      <view class="hero-avatar" bindtap="onGoProfile">
-        <text>👤</text>
+  <!-- ===== Hero — 全宽大卡 ===== -->
+  <view class="bento-hero" bindtap="onGoSearch">
+    <view class="hero-bg"></view>
+    <view class="hero-content">
+      <text class="hero-time">{{greeting}}</text>
+      <text class="hero-title">今天想吃什么？</text>
+      <view class="hero-search">
+        <text class="hero-search-icon">🔍</text>
+        <text class="hero-search-txt">搜索菜谱或食材</text>
       </view>
     </view>
-    <!-- 搜索入口 -->
-    <view class="hero-search" bindtap="onGoSearch">
-      <text class="search-icon">🔍</text>
-      <text class="search-text">搜索菜谱或食材...</text>
+    <view class="hero-avatar" bindtap="onGoProfile">
+      <text>👤</text>
     </view>
   </view>
 
-  <!-- ===== 功能入口 — 赤陶色胶囊横排 ===== -->
-  <view class="pill-row">
-    <view class="pill" bindtap="onQuickAction" data-url="/pages/fridge/fridge">
-      <text class="pill-icon">🧊</text>
-      <text class="pill-text">冰箱推荐</text>
+  <!-- ===== Bento 功能区 — 2x2 不等高网格 ===== -->
+  <view class="bento-grid">
+    <!-- 大卡：冰箱推荐（占2格高） -->
+    <view class="bento-card bento-tall bento-green" bindtap="onQuickAction" data-url="/pages/fridge/fridge">
+      <text class="bento-emoji">🧊</text>
+      <text class="bento-title">冰箱推荐</text>
+      <text class="bento-desc">看看有什么能做</text>
     </view>
-    <view class="pill" bindtap="onQuickAction" data-url="/pages/diet/diet">
-      <text class="pill-icon">🥗</text>
-      <text class="pill-text">减脂餐</text>
+    <!-- 小卡：减脂餐 -->
+    <view class="bento-card bento-cream" bindtap="onQuickAction" data-url="/pages/diet/diet">
+      <text class="bento-emoji">🥗</text>
+      <text class="bento-title">减脂餐</text>
     </view>
-    <view class="pill" bindtap="onQuickAction" data-url="/pages/vote/room">
-      <text class="pill-icon">🗳️</text>
-      <text class="pill-text">投票</text>
+    <!-- 小卡：投票 -->
+    <view class="bento-card bento-cream" bindtap="onQuickAction" data-url="/pages/vote/room">
+      <text class="bento-emoji">🗳️</text>
+      <text class="bento-title">投票</text>
     </view>
-    <view class="pill" bindtap="onQuickAction" data-url="/pages/index/index">
-      <text class="pill-icon">🎲</text>
-      <text class="pill-text">转盘</text>
+    <!-- 大卡：随机转盘（占2格宽） -->
+    <view class="bento-card bento-wide bento-dark" bindtap="onQuickAction" data-url="/pages/index/index">
+      <view class="bento-wide-left">
+        <text class="bento-emoji">🎲</text>
+        <text class="bento-title">随机转盘</text>
+        <text class="bento-desc">帮你决定吃什么</text>
+      </view>
+      <text class="bento-wide-arrow">→</text>
     </view>
   </view>
 
-  <!-- ===== 今日推荐 — 交错网格 ===== -->
+  <!-- ===== 今日推荐 — Bento 瀑布流 ===== -->
   <view class="section">
     <view class="section-head">
       <view>
-        <text class="section-title">今日推荐</text>
-        <view class="accent-line"></view>
+        <text class="section-label">今日推荐</text>
+        <view class="section-line"></view>
       </view>
-      <view class="refresh-btn" bindtap="onRefresh">
-        <text class="refresh-text">换一批</text>
-      </view>
+      <text class="section-link" bindtap="onRefresh">换一批</text>
     </view>
 
     <!-- 骨架屏 -->
-    <view wx:if="{{isLoading}}" class="stagger-grid">
-      <view class="skel-card tall" wx:for="{{[1,2,3,4]}}" wx:key="*this">
+    <view wx:if="{{isLoading}}" class="bento-recipe-grid">
+      <view class="bento-recipe tall" wx:for="{{[1,2,3,4]}}" wx:key="*this">
         <view class="skel-img"></view>
-        <view class="skel-line"></view>
-        <view class="skel-line short"></view>
+        <view class="skel-txt"></view>
       </view>
     </view>
 
-    <!-- 交错卡片网格 -->
-    <view class="stagger-grid" wx:if="{{!isLoading && recommendList.length > 0}}">
+    <!-- 菜谱 Bento 网格 -->
+    <view class="bento-recipe-grid" wx:if="{{!isLoading && recommendList.length > 0}}">
       <view
-        class="recipe-card {{index % 3 === 0 ? 'tall' : ''}}"
+        class="bento-recipe {{index === 0 ? 'tall' : ''}} {{index === 3 ? 'wide' : ''}}"
         wx:for="{{recommendList}}"
         wx:key="name"
         bindtap="onRecipeTap"
         data-index="{{index}}"
       >
-        <view class="card-media">
-          <image src="{{item.coverIcon}}" mode="aspectFit" class="card-img" />
-          <view class="card-badge" wx:if="{{item.isDietFriendly}}">轻食</view>
+        <view class="br-media">
+          <image src="{{item.coverIcon}}" mode="aspectFit" class="br-img" />
+          <view class="br-badge" wx:if="{{item.isDietFriendly}}">轻食</view>
+          <view class="br-time">{{item.cookTime}}min</view>
         </view>
-        <view class="card-body">
-          <text class="card-name">{{item.name}}</text>
-          <text class="card-meta">{{item.cookTime}}分钟 · {{item.calories}}kcal</text>
+        <view class="br-body">
+          <text class="br-name">{{item.name}}</text>
+          <text class="br-cal" wx:if="{{item.calories}}">{{item.calories}}kcal</text>
         </view>
       </view>
     </view>
