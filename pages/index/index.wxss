@@ -1,97 +1,383 @@
-/* 随机转盘 — 统一设计系统 */
+/* ========================================
+   随机转盘页 - 完全重写
+   设计稿配色:
+   - 页面背景: #FFF8F0 (暖米色)
+   - 主色(珊瑚红): #E94560
+   - 辅色(翡翠绿): #4ECDC4
+   - 文字主色: #2D3436
+   - 文字辅色: #636E72
+   - 卡片白: #FFFFFF
+   - 分割线: #F0EDED
+   ======================================== */
 
+/* === 页面容器 === */
 .page {
-  background: #FFF5F5; min-height: 100vh;
-  display: flex; flex-direction: column; align-items: center;
-  padding: 24rpx; padding-bottom: 120rpx;
+  min-height: 100vh;
+  background: #FFF8F0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40rpx 32rpx 160rpx;
+  box-sizing: border-box;
 }
 
-/* 标题 */
+/* === 标题 === */
 .page-title {
-  font-size: 36rpx; font-weight: 700; color: #2D3436;
-  display: block; text-align: center; margin-bottom: 20rpx;
+  display: block;
+  font-size: 44rpx;
+  font-weight: 800;
+  color: #2D3436;
+  text-align: center;
+  margin-bottom: 32rpx;
+  letter-spacing: 2rpx;
 }
 
-/* 结果 */
-.result-area { width: 100%; margin-bottom: 20rpx; }
+/* === 结果区 === */
+.result-area {
+  width: 100%;
+  margin-bottom: 36rpx;
+}
+
 .result-card {
-  background: #fff;
-  border-radius: 24rpx; padding: 28rpx; text-align: center;
-  box-shadow: 0 4rpx 16rpx rgba(0,0,0,0.06);
+  background: #FFFFFF;
+  border-radius: 28rpx;
+  padding: 32rpx 40rpx;
+  text-align: center;
+  box-shadow: 0 6rpx 24rpx rgba(0, 0, 0, 0.06);
 }
-.result-card.spinning { animation: pulse 0.15s infinite alternate; }
-@keyframes pulse { from { transform: scale(1); } to { transform: scale(1.03); } }
-.result-text { font-size: 32rpx; font-weight: 600; color: #E94560; display: block; }
 
-/* 转盘 */
+.result-card.spinning {
+  animation: resultPulse 0.2s infinite alternate;
+}
+
+@keyframes resultPulse {
+  from { transform: scale(1); }
+  to { transform: scale(1.04); }
+}
+
+.result-text {
+  display: block;
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #E94560;
+  letter-spacing: 1rpx;
+}
+
+/* === 转盘区域 === */
 .wheel-wrap {
-  position: relative; width: 480rpx; height: 480rpx;
+  position: relative;
+  width: 520rpx;
+  height: 520rpx;
+  margin-bottom: 36rpx;
+}
+
+.wheel-canvas {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  box-shadow:
+    0 10rpx 40rpx rgba(0, 0, 0, 0.12),
+    0 2rpx 8rpx rgba(0, 0, 0, 0.06);
+}
+
+/* 指针 */
+.wheel-pointer {
+  position: absolute;
+  top: -8rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  width: 0;
+  height: 0;
+  border-left: 22rpx solid transparent;
+  border-right: 22rpx solid transparent;
+  border-top: 40rpx solid #E94560;
+  filter: drop-shadow(0 4rpx 8rpx rgba(233, 69, 96, 0.35));
+}
+
+.pointer-arrow {
+  display: none;
+}
+
+/* === 操作按钮 === */
+.btn-row {
+  display: flex;
+  gap: 24rpx;
+  margin-bottom: 32rpx;
+  width: 100%;
+  justify-content: center;
+}
+
+/* 转一转 - 珊瑚红渐变 */
+.btn-spin {
+  background: linear-gradient(135deg, #E94560, #FF6B6B);
+  color: #FFFFFF;
+  border-radius: 48rpx;
+  padding: 24rpx 56rpx;
+  font-size: 30rpx;
+  font-weight: 700;
+  letter-spacing: 2rpx;
+  box-shadow: 0 6rpx 20rpx rgba(233, 69, 96, 0.35);
+  transition: transform 0.15s ease;
+}
+
+.btn-spin:active {
+  transform: scale(0.95);
+}
+
+/* 随机 - 翡翠绿渐变 */
+.btn-random {
+  background: linear-gradient(135deg, #4ECDC4, #6EE7DE);
+  color: #FFFFFF;
+  border-radius: 48rpx;
+  padding: 24rpx 56rpx;
+  font-size: 30rpx;
+  font-weight: 700;
+  letter-spacing: 2rpx;
+  box-shadow: 0 6rpx 20rpx rgba(78, 205, 196, 0.35);
+  transition: transform 0.15s ease;
+}
+
+.btn-random:active {
+  transform: scale(0.95);
+}
+
+/* === 分类标签 - 横向滚动 === */
+.cat-scroll {
+  width: 100%;
+  white-space: nowrap;
+  margin-bottom: 28rpx;
+  padding: 4rpx 0;
+}
+
+.cat-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14rpx 32rpx;
+  margin-right: 16rpx;
+  border-radius: 40rpx;
+  background: #FFFFFF;
+  border: 2rpx solid #E8E0DA;
+  font-size: 26rpx;
+  font-weight: 500;
+  color: #636E72;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
+}
+
+.cat-pill.active {
+  background: linear-gradient(135deg, #E94560, #FF6B6B);
+  border-color: transparent;
+  color: #FFFFFF;
+  box-shadow: 0 4rpx 16rpx rgba(233, 69, 96, 0.3);
+}
+
+/* === 食物列表区域 === */
+.food-section {
+  width: 100%;
+  background: #FFFFFF;
+  border-radius: 28rpx;
+  padding: 32rpx;
+  box-shadow: 0 6rpx 24rpx rgba(0, 0, 0, 0.06);
+  box-sizing: border-box;
+}
+
+.food-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: 24rpx;
 }
-.wheel-canvas {
-  width: 100%; height: 100%; border-radius: 50%;
-  box-shadow: 0 8rpx 32rpx rgba(0,0,0,0.15);
-}
-.wheel-pointer {
-  position: absolute; top: -16rpx; left: 50%; transform: translateX(-50%);
-  font-size: 40rpx; color: #E94560; z-index: 10;
+
+.food-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #2D3436;
 }
 
-/* 按钮 */
-.btn-row { display: flex; gap: 16rpx; margin-bottom: 20rpx; }
-.spin-btn {
-  background: linear-gradient(135deg, #E94560, #FF6B6B);
-  color: #fff; border-radius: 100rpx; padding: 18rpx 40rpx;
-  font-size: 28rpx; font-weight: 600;
-  box-shadow: 0 4rpx 16rpx rgba(233,69,96,0.25);
+.food-add-btn {
+  border: 2rpx solid #4ECDC4;
+  border-radius: 32rpx;
+  padding: 10rpx 24rpx;
+  font-size: 24rpx;
+  font-weight: 600;
+  color: #4ECDC4;
+  transition: all 0.15s ease;
 }
-.spin-btn:active { transform: scale(0.96); }
-.random-btn {
-  background: linear-gradient(135deg, #4ECDC4, #6EE7DE);
-  color: #fff; border-radius: 100rpx; padding: 18rpx 40rpx;
-  font-size: 28rpx; font-weight: 600;
-  box-shadow: 0 4rpx 16rpx rgba(78,205,196,0.25);
-}
-.random-btn:active { transform: scale(0.96); }
 
-/* 分类标签 */
-.cat-scroll { width: 100%; padding: 0 0 16rpx; white-space: nowrap; }
-.cat-pill {
-  display: inline-flex; padding: 10rpx 24rpx; margin-right: 12rpx;
-  border-radius: 100rpx; background: #fff; border: 2rpx solid #DFE6E9;
-  font-size: 24rpx; color: #636E72; font-weight: 500;
+.food-add-btn:active {
+  background: #4ECDC4;
+  color: #FFFFFF;
 }
-.cat-pill.active { background: #E94560; border-color: #E94560; color: #fff; }
 
-/* 食物列表 */
-.food-card { width: 100%; }
-.food-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16rpx; }
-.food-title { font-size: 28rpx; font-weight: 600; color: #2D3436; }
-.food-add {
-  font-size: 24rpx; color: #4ECDC4; font-weight: 500;
-  border: 2rpx solid #4ECDC4; border-radius: 100rpx; padding: 6rpx 16rpx;
+.food-scroll {
+  max-height: 560rpx;
 }
-.food-scroll { max-height: 500rpx; }
+
+/* 食物列表项 */
 .food-item {
-  display: flex; align-items: center; gap: 12rpx;
-  padding: 12rpx 0; border-bottom: 1rpx solid #F0F0F0;
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #F0EDED;
 }
-.food-item:last-child { border-bottom: none; }
-.food-icon-wrap { width: 40rpx; height: 40rpx; display: flex; align-items: center; justify-content: center; font-size: 28rpx; }
-.food-icon { width: 100%; height: 100%; }
-.food-name { flex: 1; font-size: 26rpx; color: #2D3436; }
-.food-cat-tag { font-size: 20rpx; color: #636E72; background: #F0F0F0; padding: 2rpx 10rpx; border-radius: 100rpx; }
-.food-actions { display: flex; gap: 8rpx; }
-.food-edit { font-size: 24rpx; padding: 4rpx; }
-.food-del { font-size: 24rpx; color: #636E72; padding: 4rpx; }
-.food-del:active { color: #E94560; }
 
-/* 弹窗 */
-.modal-mask { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 100; display: flex; align-items: center; justify-content: center; }
-.modal { background: #fff; border-radius: 24rpx; padding: 28rpx; width: 600rpx; }
-.modal-title { font-size: 30rpx; font-weight: 600; color: #2D3436; display: block; margin-bottom: 20rpx; }
-.modal-input { width: 100%; font-size: 28rpx; padding: 16rpx; border: 2rpx solid #DFE6E9; border-radius: 12rpx; margin-bottom: 20rpx; }
-.modal-btns { display: flex; gap: 16rpx; }
-.modal-btn { flex: 1; padding: 16rpx; border-radius: 16rpx; text-align: center; font-size: 28rpx; font-weight: 500; }
-.modal-btn.cancel { background: #F8F9FA; color: #636E72; }
-.modal-btn.confirm { background: #E94560; color: #fff; }
+.food-item:last-child {
+  border-bottom: none;
+}
+
+/* 食物图标 */
+.food-icon-box {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 16rpx;
+  background: #FFF8F0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.food-icon-img {
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.food-icon-emoji {
+  font-size: 32rpx;
+  line-height: 1;
+}
+
+/* 食物名称 */
+.food-name {
+  flex: 1;
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #2D3436;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 食物分类标签 */
+.food-cat-tag {
+  font-size: 20rpx;
+  font-weight: 500;
+  color: #636E72;
+  background: #F5F0EB;
+  padding: 6rpx 16rpx;
+  border-radius: 20rpx;
+  flex-shrink: 0;
+}
+
+/* 食物操作按钮 */
+.food-actions {
+  display: flex;
+  gap: 8rpx;
+  flex-shrink: 0;
+}
+
+.food-action-btn {
+  width: 52rpx;
+  height: 52rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14rpx;
+  background: #F5F0EB;
+  font-size: 24rpx;
+  transition: all 0.15s ease;
+}
+
+.food-action-btn:active {
+  background: #E8DDD6;
+}
+
+.food-action-del:active {
+  background: #FFE0E0;
+}
+
+/* === 弹窗遮罩 === */
+.modal-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 弹窗主体 */
+.modal-box {
+  width: 620rpx;
+  background: #FFFFFF;
+  border-radius: 32rpx;
+  padding: 48rpx 40rpx 40rpx;
+  box-shadow: 0 20rpx 60rpx rgba(0, 0, 0, 0.15);
+}
+
+.modal-title {
+  display: block;
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #2D3436;
+  text-align: center;
+  margin-bottom: 32rpx;
+}
+
+/* 输入框 */
+.modal-input-wrap {
+  margin-bottom: 36rpx;
+}
+
+.modal-input {
+  width: 100%;
+  font-size: 30rpx;
+  color: #2D3436;
+  padding: 20rpx 24rpx;
+  border: 2rpx solid #E8E0DA;
+  border-radius: 16rpx;
+  background: #FFFAF6;
+  box-sizing: border-box;
+}
+
+.modal-placeholder {
+  color: #C0B8B2;
+}
+
+/* 弹窗按钮 */
+.modal-btns {
+  display: flex;
+  gap: 20rpx;
+}
+
+.modal-btn {
+  flex: 1;
+  padding: 22rpx 0;
+  border-radius: 20rpx;
+  text-align: center;
+  font-size: 30rpx;
+  font-weight: 600;
+  transition: transform 0.15s ease;
+}
+
+.modal-btn:active {
+  transform: scale(0.97);
+}
+
+.modal-btn-cancel {
+  background: #F5F0EB;
+  color: #636E72;
+}
+
+.modal-btn-confirm {
+  background: linear-gradient(135deg, #E94560, #FF6B6B);
+  color: #FFFFFF;
+  box-shadow: 0 4rpx 16rpx rgba(233, 69, 96, 0.3);
+}

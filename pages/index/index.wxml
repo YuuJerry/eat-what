@@ -1,9 +1,10 @@
-<!-- 随机转盘 -->
+<!-- 随机转盘页 -->
 <view class="page">
+
   <!-- 标题 -->
   <text class="page-title">今天吃什么</text>
 
-  <!-- 结果 -->
+  <!-- 结果区 -->
   <view class="result-area">
     <view class="result-card {{isSpinning ? 'spinning' : ''}}">
       <text class="result-text">今天吃：{{resultName || '？'}}</text>
@@ -13,62 +14,115 @@
   <!-- 转盘 -->
   <view class="wheel-wrap">
     <canvas type="2d" id="wheelCanvas" class="wheel-canvas"></canvas>
-    <view class="wheel-pointer"><text>▼</text></view>
+    <view class="wheel-pointer">
+      <view class="pointer-arrow"></view>
+    </view>
   </view>
 
-  <!-- 按钮 -->
+  <!-- 操作按钮 -->
   <view class="btn-row">
-    <view class="spin-btn" bindtap="onSpinWheel"><text>转一转</text></view>
-    <view class="random-btn" bindtap="onRandom"><text>随机</text></view>
+    <view class="btn-spin" bindtap="onSpinWheel">
+      <text>转一转</text>
+    </view>
+    <view class="btn-random" bindtap="onRandom">
+      <text>随机</text>
+    </view>
   </view>
 
-  <!-- 分类标签 -->
-  <scroll-view scroll-x class="cat-scroll" enable-flex>
-    <view class="cat-pill {{activeCategory === item ? 'active' : ''}}" wx:for="{{categories}}" wx:key="*this" bindtap="onCategoryChange" data-cat="{{item}}">
+  <!-- 分类标签 - 横向滚动 -->
+  <scroll-view scroll-x class="cat-scroll" enable-flex enhanced show-scrollbar="{{false}}">
+    <view
+      class="cat-pill {{activeCategory === item ? 'active' : ''}}"
+      wx:for="{{categories}}"
+      wx:key="*this"
+      bindtap="onCategoryChange"
+      data-cat="{{item}}"
+    >
       <text>{{item}}</text>
     </view>
   </scroll-view>
 
   <!-- 食物列表 -->
-  <view class="food-card card">
+  <view class="food-section">
     <view class="food-header">
       <text class="food-title">🍜 食物列表</text>
-      <view class="food-add" bindtap="onShowAdd"><text>+ 添加</text></view>
+      <view class="food-add-btn" bindtap="onShowAdd">
+        <text>+ 添加</text>
+      </view>
     </view>
+
     <scroll-view scroll-y class="food-scroll">
       <view class="food-item" wx:for="{{filteredFoods}}" wx:key="name">
-        <view class="food-icon-wrap"><image src="{{item.icon}}" mode="aspectFit" class="food-icon" wx:if="{{item.icon}}" /><text wx:else>{{item.emoji || '🍽️'}}</text></view>
+        <!-- 图标 -->
+        <view class="food-icon-box">
+          <image src="{{item.icon}}" mode="aspectFit" class="food-icon-img" wx:if="{{item.icon}}" />
+          <text wx:else class="food-icon-emoji">{{item.emoji || '🍽️'}}</text>
+        </view>
+        <!-- 名称 -->
         <text class="food-name">{{item.name}}</text>
+        <!-- 分类标签 -->
         <text class="food-cat-tag">{{item.category}}</text>
-        <view class="food-actions">
-          <text class="food-edit" wx:if="{{item.isCustom}}" bindtap="onEditFood" data-name="{{item.name}}">✏️</text>
-          <text class="food-del" wx:if="{{item.isCustom}}" bindtap="onDeleteFood" data-name="{{item.name}}">✕</text>
+        <!-- 操作按钮 (仅自定义食物) -->
+        <view class="food-actions" wx:if="{{item.isCustom}}">
+          <view class="food-action-btn" bindtap="onEditFood" data-name="{{item.name}}">
+            <text>✏️</text>
+          </view>
+          <view class="food-action-btn food-action-del" bindtap="onDeleteFood" data-name="{{item.name}}">
+            <text>✕</text>
+          </view>
         </view>
       </view>
     </scroll-view>
   </view>
 
-  <!-- 添加弹窗 -->
+  <!-- 添加食物弹窗 -->
   <view class="modal-mask" wx:if="{{showAdd}}" bindtap="onHideAdd">
-    <view class="modal" catchtap>
+    <view class="modal-box" catchtap>
       <text class="modal-title">添加食物</text>
-      <input class="modal-input" placeholder="输入食物名称" value="{{newFoodName}}" bindinput="onInputFood" />
+      <view class="modal-input-wrap">
+        <input
+          class="modal-input"
+          placeholder="输入食物名称"
+          placeholder-class="modal-placeholder"
+          value="{{newFoodName}}"
+          bindinput="onInputFood"
+          focus="{{showAdd}}"
+        />
+      </view>
       <view class="modal-btns">
-        <view class="modal-btn cancel" bindtap="onHideAdd"><text>取消</text></view>
-        <view class="modal-btn confirm" bindtap="onAddFood"><text>添加</text></view>
+        <view class="modal-btn modal-btn-cancel" bindtap="onHideAdd">
+          <text>取消</text>
+        </view>
+        <view class="modal-btn modal-btn-confirm" bindtap="onAddFood">
+          <text>添加</text>
+        </view>
       </view>
     </view>
   </view>
 
-  <!-- 编辑弹窗 -->
+  <!-- 编辑食物弹窗 -->
   <view class="modal-mask" wx:if="{{showEdit}}" bindtap="onHideEdit">
-    <view class="modal" catchtap>
+    <view class="modal-box" catchtap>
       <text class="modal-title">编辑食物</text>
-      <input class="modal-input" placeholder="食物名称" value="{{editFoodName}}" bindinput="onInputEditFood" />
+      <view class="modal-input-wrap">
+        <input
+          class="modal-input"
+          placeholder="食物名称"
+          placeholder-class="modal-placeholder"
+          value="{{editFoodName}}"
+          bindinput="onInputEditFood"
+          focus="{{showEdit}}"
+        />
+      </view>
       <view class="modal-btns">
-        <view class="modal-btn cancel" bindtap="onHideEdit"><text>取消</text></view>
-        <view class="modal-btn confirm" bindtap="onConfirmEdit"><text>保存</text></view>
+        <view class="modal-btn modal-btn-cancel" bindtap="onHideEdit">
+          <text>取消</text>
+        </view>
+        <view class="modal-btn modal-btn-confirm" bindtap="onConfirmEdit">
+          <text>保存</text>
+        </view>
       </view>
     </view>
   </view>
+
 </view>

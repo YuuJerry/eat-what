@@ -1,38 +1,49 @@
 <!-- 减脂餐 -->
 <view class="page">
+  <!-- 顶部提示 -->
   <view class="page-hint">
     <text>🥗 减脂菜谱 · 下拉刷新换一批</text>
   </view>
 
   <!-- 骨架屏 -->
   <view wx:if="{{isLoading}}" class="recipe-list">
-    <view class="recipe-row card" wx:for="{{[1,2,3]}}" wx:key="*this">
-      <view class="skeleton rr-img"></view>
-      <view class="rr-body"><view class="skeleton rr-line"></view><view class="skeleton rr-line sm"></view></view>
+    <view class="recipe-card" wx:for="{{[1,2,3]}}" wx:key="*this">
+      <view class="skeleton skeleton-icon"></view>
+      <view class="skeleton-body">
+        <view class="skeleton skeleton-line w60"></view>
+        <view class="skeleton skeleton-line w40"></view>
+        <view class="skeleton skeleton-line w80"></view>
+        <view class="skeleton-tags">
+          <view class="skeleton skeleton-tag"></view>
+          <view class="skeleton skeleton-tag short"></view>
+        </view>
+      </view>
     </view>
   </view>
 
   <!-- 菜谱列表 -->
   <view class="recipe-list" wx:if="{{!isLoading && recipes.length > 0}}">
-    <view class="recipe-row card" wx:for="{{recipes}}" wx:key="name" bindtap="onRecipeTap" data-index="{{index}}">
-      <view class="rr-img"><image src="{{item.coverIcon}}" mode="aspectFit" class="rr-icon" /></view>
-      <view class="rr-body">
-        <text class="rr-name">{{item.name}}</text>
-        <view class="rr-meta">
-          <text class="rr-cal">🔥 {{item.calories}}kcal</text>
-          <text class="rr-dot">·</text>
-          <text class="rr-time">⏱ {{item.cookTime}}分</text>
+    <view class="recipe-card" wx:for="{{recipes}}" wx:key="name" bindtap="onRecipeTap" data-index="{{index}}">
+      <view class="rc-icon-wrap">
+        <image src="{{item.coverIcon}}" mode="aspectFit" class="rc-icon" />
+      </view>
+      <view class="rc-body">
+        <text class="rc-name">{{item.name}}</text>
+        <view class="rc-meta">
+          <text class="rc-cal">🔥 {{item.calories}}kcal</text>
+          <text class="rc-dot">·</text>
+          <text class="rc-time">⏱ {{item.cookTime}}分</text>
         </view>
-        <view class="rr-nutr" wx:if="{{item.nutritionInfo}}">
+        <view class="rc-nutr" wx:if="{{item.nutritionInfo}}">
           <text>蛋白{{item.nutritionInfo.protein}}g</text>
-          <text class="rr-nutr-dot">·</text>
+          <text class="rc-nutr-dot">·</text>
           <text>脂肪{{item.nutritionInfo.fat}}g</text>
-          <text class="rr-nutr-dot">·</text>
+          <text class="rc-nutr-dot">·</text>
           <text>碳水{{item.nutritionInfo.carbs}}g</text>
         </view>
-        <view class="rr-tags">
+        <view class="rc-tags">
           <text class="tag tag-green">减脂</text>
-          <text class="tag" wx:for="{{item.tags}}" wx:for-item="tag" wx:key="*this" wx:if="{{index < 2}}">{{tag}}</text>
+          <text class="tag tag-gray" wx:for="{{item.tags}}" wx:for-item="tag" wx:key="*this" wx:if="{{index < 2}}">{{tag}}</text>
         </view>
       </view>
     </view>
@@ -42,7 +53,7 @@
   <view class="section" wx:if="{{bloggers.length > 0}}">
     <text class="section-title">📹 推荐博主</text>
     <view class="blogger-list">
-      <view class="blogger-card card" wx:for="{{bloggers}}" wx:key="name" bindtap="onBloggerTap" data-blogger="{{item}}">
+      <view class="blogger-card" wx:for="{{bloggers}}" wx:key="name" bindtap="onBloggerTap" data-blogger="{{item}}">
         <text class="blogger-avatar">{{item.avatar}}</text>
         <view class="blogger-info">
           <text class="blogger-name">{{item.name}}</text>

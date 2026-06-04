@@ -1,38 +1,276 @@
 /* 减脂餐 — 统一设计系统 */
 
-.page { background: #F8F9FA; min-height: 100vh; padding-bottom: 120rpx; }
+.page {
+  background: #F8F9FA;
+  min-height: 100vh;
+  padding-bottom: 120rpx;
+}
 
-.page-hint { text-align: center; padding: 20rpx 0 12rpx; font-size: 24rpx; color: #636E72; }
+/* ── 顶部提示 ── */
+.page-hint {
+  text-align: center;
+  padding: 20rpx 0 12rpx;
+  font-size: 24rpx;
+  color: #636E72;
+}
 
-/* 菜谱行 */
-.recipe-list { padding: 0 24rpx; }
-.recipe-row { display: flex; gap: 16rpx; margin-bottom: 16rpx; }
-.recipe-row:active { transform: scale(0.98); }
-.rr-img { width: 160rpx; height: 160rpx; border-radius: 16rpx; background: #F8F9FA; border: 1rpx solid #E8ECEF; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
-.rr-icon { width: 120rpx; height: 120rpx; }
-.rr-body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
-.rr-name { font-size: 28rpx; font-weight: 600; color: #2D3436; display: block; margin-bottom: 6rpx; }
-.rr-meta { display: flex; align-items: center; gap: 8rpx; font-size: 22rpx; color: #636E72; margin-bottom: 8rpx; }
-.rr-cal { color: #FFB300; font-weight: 500; }
-.rr-dot { color: #B2BEC3; font-size: 22rpx; }
-.rr-time { color: #636E72; }
-.rr-nutr { display: flex; align-items: center; gap: 8rpx; font-size: 20rpx; color: #4ECDC4; margin-bottom: 8rpx; }
-.rr-nutr-dot { color: #B2BEC3; font-size: 20rpx; }
-.rr-tags { display: flex; flex-wrap: wrap; gap: 6rpx; }
-.tag { font-size: 20rpx; padding: 4rpx 14rpx; border-radius: 6rpx; color: #636E72; background: #F0F2F5; }
-.tag-green { font-size: 20rpx; padding: 4rpx 14rpx; border-radius: 6rpx; color: #fff; background: #4ECDC4; }
+/* ── 菜谱列表 ── */
+.recipe-list {
+  padding: 0 24rpx;
+}
 
-/* 博主推荐 */
-.section { padding: 32rpx 24rpx 0; }
-.section-title { font-size: 28rpx; font-weight: 600; color: #2D3436; display: block; margin-bottom: 16rpx; }
-.blogger-list { display: flex; flex-direction: column; gap: 12rpx; }
-.blogger-card { display: flex; align-items: center; gap: 16rpx; }
-.blogger-avatar { font-size: 40rpx; }
-.blogger-info { flex: 1; }
-.blogger-name { font-size: 26rpx; font-weight: 600; color: #2D3436; display: block; }
-.blogger-desc { font-size: 22rpx; color: #636E72; display: block; margin-top: 2rpx; }
-.blogger-platform { font-size: 20rpx; color: #E94560; background: rgba(233,69,96,0.08); padding: 4rpx 12rpx; border-radius: 100rpx; font-weight: 500; }
+.recipe-card {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 20rpx;
+  margin-bottom: 16rpx;
+}
 
-/* 骨架屏 */
-.rr-line { height: 24rpx; border-radius: 8rpx; margin-bottom: 10rpx; }
-.rr-line.sm { width: 50%; }
+.recipe-card:active {
+  transform: scale(0.98);
+  opacity: 0.9;
+}
+
+/* 左侧图标区 */
+.rc-icon-wrap {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 16rpx;
+  border: 1rpx solid #E8ECEF;
+  background: #FAFBFC;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.rc-icon {
+  width: 120rpx;
+  height: 120rpx;
+}
+
+/* 右侧内容 */
+.rc-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+
+.rc-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #2D3436;
+  display: block;
+  margin-bottom: 6rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rc-meta {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  font-size: 22rpx;
+  color: #636E72;
+  margin-bottom: 8rpx;
+}
+
+.rc-cal {
+  color: #FFB300;
+  font-weight: 500;
+}
+
+.rc-dot {
+  color: #B2BEC3;
+  font-size: 22rpx;
+}
+
+.rc-time {
+  color: #636E72;
+}
+
+.rc-nutr {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  font-size: 20rpx;
+  color: #4ECDC4;
+  margin-bottom: 8rpx;
+}
+
+.rc-nutr-dot {
+  color: #B2BEC3;
+  font-size: 20rpx;
+}
+
+.rc-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8rpx;
+}
+
+.tag {
+  font-size: 20rpx;
+  padding: 4rpx 14rpx;
+  border-radius: 6rpx;
+}
+
+.tag-green {
+  color: #fff;
+  background: #4ECDC4;
+}
+
+.tag-gray {
+  color: #636E72;
+  background: #F0F2F5;
+}
+
+/* ── 骨架屏 ── */
+.skeleton {
+  background: linear-gradient(90deg, #F0F0F0 25%, #E0E0E0 50%, #F0F0F0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 8rpx;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.skeleton-icon {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 16rpx;
+  flex-shrink: 0;
+}
+
+.skeleton-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.skeleton-line {
+  height: 24rpx;
+  border-radius: 8rpx;
+}
+
+.skeleton-line.w60 { width: 60%; }
+.skeleton-line.w40 { width: 40%; }
+.skeleton-line.w80 { width: 80%; }
+
+.skeleton-tags {
+  display: flex;
+  gap: 8rpx;
+}
+
+.skeleton-tag {
+  width: 80rpx;
+  height: 32rpx;
+  border-radius: 6rpx;
+}
+
+.skeleton-tag.short {
+  width: 60rpx;
+}
+
+/* ── 博主推荐 ── */
+.section {
+  padding: 32rpx 24rpx 0;
+}
+
+.section-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #2D3436;
+  display: block;
+  margin-bottom: 16rpx;
+}
+
+.blogger-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.blogger-card {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 20rpx;
+}
+
+.blogger-card:active {
+  opacity: 0.85;
+}
+
+.blogger-avatar {
+  font-size: 44rpx;
+  width: 72rpx;
+  height: 72rpx;
+  line-height: 72rpx;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.blogger-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.blogger-name {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #2D3436;
+  display: block;
+}
+
+.blogger-desc {
+  font-size: 22rpx;
+  color: #636E72;
+  display: block;
+  margin-top: 4rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.blogger-platform {
+  font-size: 20rpx;
+  color: #fff;
+  background: #E94560;
+  padding: 6rpx 16rpx;
+  border-radius: 100rpx;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+/* ── 空状态 ── */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 160rpx 0;
+}
+
+.empty-emoji {
+  font-size: 80rpx;
+  margin-bottom: 20rpx;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #B2BEC3;
+}

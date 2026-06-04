@@ -1,6 +1,7 @@
 <!-- 冰箱推荐 -->
 <view class="page">
-  <!-- 已选食材 -->
+
+  <!-- 已选食材区 -->
   <view class="selected-bar" wx:if="{{selectedIngredients.length > 0}}">
     <view class="selected-header">
       <text class="selected-title">🧊 我的冰箱</text>
@@ -8,7 +9,8 @@
     </view>
     <view class="selected-tags">
       <view class="sel-tag" wx:for="{{selectedIngredients}}" wx:key="*this" bindtap="onRemoveIngredient" data-name="{{item}}">
-        <text>{{item}} ✕</text>
+        <text>{{item}}</text>
+        <text class="sel-tag-x">✕</text>
       </view>
     </view>
   </view>
@@ -17,7 +19,7 @@
   <view class="search-row">
     <view class="search-bar">
       <text class="search-icon">🔍</text>
-      <input class="search-input" placeholder="搜索食材" value="{{keyword}}" bindinput="onSearchInput" bindconfirm="onSearchIngredient" confirm-type="search" />
+      <input class="search-input" placeholder="搜索食材" placeholder-class="search-placeholder" value="{{keyword}}" bindinput="onSearchInput" bindconfirm="onSearchIngredient" confirm-type="search" />
     </view>
   </view>
 
@@ -31,70 +33,88 @@
   <!-- 食材网格 -->
   <view class="ing-grid">
     <view class="ing-item {{selectedMap[item.name] ? 'selected' : ''}}" wx:for="{{ingredients}}" wx:key="name" bindtap="onToggleIngredient" data-name="{{item.name}}">
-      <view class="ing-icon"><image src="{{item.icon}}" mode="aspectFit" class="ing-img" /></view>
+      <view class="ing-check" wx:if="{{selectedMap[item.name]}}">
+        <text class="check-icon">✓</text>
+      </view>
+      <view class="ing-icon-wrap">
+        <image src="{{item.icon}}" mode="aspectFit" class="ing-img" />
+      </view>
       <text class="ing-name">{{item.name}}</text>
-      <view class="ing-check" wx:if="{{selectedMap[item.name]}}"><text>✓</text></view>
     </view>
   </view>
 
-  <!-- 操作按钮 -->
+  <!-- 推荐按钮 -->
   <view class="actions" wx:if="{{selectedIngredients.length > 0}}">
-    <view class="action-btn" bindtap="onSearchRecipes">
-      <text>{{isSearching ? '🔍 搜索中...' : '🍳 推荐菜谱 (' + selectedIngredients.length + ')'}}</text>
-    </view>
-    <view class="action-btn secondary" bindtap="onShowShoppingList" wx:if="{{hasSearched}}">
-      <text>📝 购物清单</text>
+    <view class="action-btn recommend-btn" bindtap="onSearchRecipes">
+      <text>{{isSearching ? '搜索中...' : '推荐菜谱 (' + selectedIngredients.length + ')'}}</text>
     </view>
   </view>
 
   <!-- 推荐结果 -->
   <view class="results" wx:if="{{hasSearched}}">
     <view class="results-header">
-      <text class="results-title">🔍 推荐结果 ({{results.length}})</text>
+      <text class="results-title">推荐结果</text>
+      <text class="results-count">{{results.length}} 道菜</text>
     </view>
 
-    <view wx:if="{{results.length > 0}}">
-      <view class="result-card card {{item.missing.length === 0 ? 'can-cook' : ''}}" wx:for="{{results}}" wx:key="name">
-        <!-- 头部 -->
+    <block wx:if="{{results.length > 0}}">
+      <view class="result-card {{item.missing.length === 0 ? 'can-cook' : ''}}" wx:for="{{results}}" wx:key="name">
+
+        <!-- 卡片头部: 图标 + 菜名 + 匹配率 -->
         <view class="result-top">
-          <view class="result-cover"><image src="{{item.coverIcon}}" mode="aspectFit" class="rc-img" /></view>
+          <view class="result-cover">
+            <image src="{{item.coverIcon}}" mode="aspectFit" class="rc-img" />
+          </view>
           <view class="result-info">
             <text class="result-name">{{item.name}}</text>
             <view class="result-meta">
-              <text wx:if="{{item.cookTime}}">⏱ {{item.cookTime}}分</text>
-              <text wx:if="{{item.calories}}">🔥 {{item.calories}}kcal</text>
+              <view class="meta-item" wx:if="{{item.cookTime}}">
+                <text class="meta-icon">⏱</text>
+                <text>{{item.cookTime}}分</text>
+              </view>
+              <view class="meta-item" wx:if="{{item.calories}}">
+                <text class="meta-icon">🔥</text>
+                <text>{{item.calories}}kcal</text>
+              </view>
             </view>
           </view>
-          <view class="result-actions">
+          <view class="result-right">
             <text class="fav-btn" bindtap="onToggleFavorite" data-index="{{index}}">{{item.isFavorited ? '❤️' : '🤍'}}</text>
             <view class="match-badge {{item.missing.length === 0 ? 'perfect' : 'partial'}}">
-              <text>{{item.missing.length === 0 ? '✅ 能做' : '差' + item.missing.length + '种'}}</text>
+              <text>{{item.missing.length === 0 ? '完美匹配' : '差' + item.missing.length + '种'}}</text>
             </view>
           </view>
         </view>
 
-        <!-- 用料 -->
+        <!-- 用料标签 -->
         <view class="result-ings" wx:if="{{item.ingredients.length > 0}}">
-          <text class="sub-title">📋 用料</text>
+          <text class="sub-title">用料</text>
           <view class="ing-tags">
-            <text class="ing-tag" wx:for="{{item.ingredients}}" wx:for-item="ing" wx:key="name">{{ing.name}} {{ing.amount}}</text>
+            <view class="ing-tag" wx:for="{{item.ingredients}}" wx:for-item="ing" wx:key="name">
+              <text>{{ing.name}}</text>
+              <text class="ing-amount" wx:if="{{ing.amount}}">{{ing.amount}}</text>
+            </view>
           </view>
         </view>
 
         <!-- 缺少食材 -->
-        <view class="missing" wx:if="{{item.missing.length > 0}}">
+        <view class="missing-section" wx:if="{{item.missing.length > 0}}">
+          <text class="missing-icon">⚠️</text>
           <text class="missing-label">还差：</text>
           <text class="missing-items">{{item.missingText}}</text>
         </view>
 
         <!-- 步骤 -->
-        <view class="steps" wx:if="{{item.steps.length > 0}}">
+        <view class="steps-section" wx:if="{{item.steps.length > 0}}">
           <view class="steps-toggle" bindtap="onToggleSteps" data-index="{{index}}">
-            <text>{{expandedSteps === index ? '🔽 收起步骤' : '▶️ 查看步骤'}}</text>
+            <text class="toggle-icon">{{expandedSteps === index ? '▼' : '▶'}}</text>
+            <text>{{expandedSteps === index ? '收起步骤' : '查看步骤'}}</text>
           </view>
           <view class="steps-content" wx:if="{{expandedSteps === index}}">
             <view class="step-item" wx:for="{{item.steps}}" wx:for-item="step" wx:for-index="sidx" wx:key="*this">
-              <text class="step-num">{{sidx + 1}}</text>
+              <view class="step-num-wrap">
+                <text class="step-num">{{sidx + 1}}</text>
+              </view>
               <text class="step-txt">{{step}}</text>
             </view>
           </view>
@@ -105,7 +125,7 @@
           <view class="video-card" bindtap="onVideoTap" data-video="{{item.videos[0]}}">
             <view class="vid-thumb">
               <image wx:if="{{item.videos[0].cover}}" src="{{item.videos[0].cover}}" mode="aspectFill" class="vid-img" />
-              <view class="vid-play"><text>▶</text></view>
+              <view class="vid-play"><text class="play-icon">▶</text></view>
               <text class="vid-dur" wx:if="{{item.videos[0].duration}}">{{item.videos[0].duration}}</text>
             </view>
             <view class="vid-info">
@@ -114,24 +134,35 @@
             </view>
           </view>
         </view>
-      </view>
-    </view>
 
+      </view>
+    </block>
+
+    <!-- 空状态 -->
     <view class="empty-state" wx:if="{{results.length === 0 && !isSearching}}">
       <text class="empty-emoji">😅</text>
-      <text class="empty-text">暂无推荐</text>
+      <text class="empty-text">暂无推荐，换个食材试试吧</text>
     </view>
   </view>
 
   <!-- 购物清单弹窗 -->
   <view class="modal-mask" wx:if="{{showShoppingList}}" bindtap="onHideShoppingList">
     <view class="modal" catchtap>
-      <text class="modal-title">📝 购物清单</text>
-      <scroll-view scroll-y class="modal-body"><text class="modal-text">{{shoppingList}}</text></scroll-view>
+      <view class="modal-header">
+        <text class="modal-title">购物清单</text>
+      </view>
+      <scroll-view scroll-y class="modal-body">
+        <text class="modal-text">{{shoppingList}}</text>
+      </scroll-view>
       <view class="modal-btns">
-        <view class="modal-btn cancel" bindtap="onHideShoppingList"><text>关闭</text></view>
-        <view class="modal-btn confirm" bindtap="onCopyShoppingList"><text>📋 复制</text></view>
+        <view class="modal-btn cancel" bindtap="onHideShoppingList">
+          <text>关闭</text>
+        </view>
+        <view class="modal-btn confirm" bindtap="onCopyShoppingList">
+          <text>复制清单</text>
+        </view>
       </view>
     </view>
   </view>
+
 </view>

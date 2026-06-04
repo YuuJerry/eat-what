@@ -1,31 +1,36 @@
 <!-- 投票大厅 -->
 <view class="page">
   <!-- 标题 -->
-  <text class="page-title">聚餐投票</text>
+  <view class="header">
+    <text class="page-title">聚餐投票</text>
+  </view>
 
   <!-- 操作卡 -->
   <view class="action-grid">
     <view class="action-card create" bindtap="onCreateRoom">
-      <view class="ac-icon-wrap"><text class="ac-icon">+</text></view>
-      <text class="ac-title">发起投票</text>
+      <view class="action-icon-circle">
+        <text class="action-icon-plus">+</text>
+      </view>
+      <text class="action-label">发起投票</text>
     </view>
     <view class="action-card join" bindtap="onJoinRoom">
-      <view class="ac-icon-wrap"><text class="ac-icon">⊕</text></view>
-      <text class="ac-title">加入投票</text>
+      <view class="action-icon-circle">
+        <text class="action-icon-join">⊕</text>
+      </view>
+      <text class="action-label">加入投票</text>
     </view>
   </view>
 
-  <!-- 历史记录 -->
-  <view class="section" wx:if="{{myRooms.length > 0}}">
-    <text class="section-title">历史投票</text>
-    <view class="room-list">
-      <view class="room-card card" wx:for="{{myRooms}}" wx:key="code" bindtap="onRoomTap" data-item="{{item}}">
-        <view class="room-info">
-          <text class="room-title">{{item.title}}</text>
-          <view class="room-meta">
-            <text class="room-date">{{item.createTime}}</text>
-            <text class="room-members">成员: {{item.memberCount || 0}}</text>
-          </view>
+  <!-- 历史投票 -->
+  <view class="history-section" wx:if="{{myRooms.length > 0}}">
+    <text class="history-title">历史投票</text>
+    <view class="history-list">
+      <view class="history-card" wx:for="{{myRooms}}" wx:key="code" bindtap="onRoomTap" data-item="{{item}}">
+        <text class="history-card-title">{{item.title}}</text>
+        <view class="history-card-meta">
+          <text class="history-card-date">{{item.createTime}}</text>
+          <text class="history-card-sep">  成员: </text>
+          <text class="history-card-members">{{item.memberCount || 0}}</text>
         </view>
       </view>
     </view>
@@ -35,6 +40,6 @@
   <view class="empty-state" wx:if="{{myRooms.length === 0 && !isLoading}}">
     <text class="empty-emoji">🗳️</text>
     <text class="empty-text">还没有投票记录</text>
-    <text class="empty-text">发起一个投票，和朋友一起决定吃什么吧！</text>
+    <text class="empty-sub">发起一个投票，和朋友一起决定吃什么吧！</text>
   </view>
 </view>

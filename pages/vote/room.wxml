@@ -10,7 +10,9 @@
       <view class="option-list">
         <view class="option-row" wx:for="{{options}}" wx:key="index">
           <text class="option-text">{{item}}</text>
-          <text class="option-remove" wx:if="{{options.length > 2}}" bindtap="onRemoveOption" data-idx="{{index}}">✕</text>
+          <view class="option-remove" wx:if="{{options.length > 2}}" bindtap="onRemoveOption" data-idx="{{index}}">
+            <text>✕</text>
+          </view>
         </view>
       </view>
     </view>

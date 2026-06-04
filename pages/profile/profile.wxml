@@ -1,19 +1,19 @@
 <!-- 个人中心 -->
 <view class="page">
-  <!-- 用户头部 -->
-  <view class="profile-hero">
-    <view class="avatar"><text>👨‍🍳</text></view>
-    <view class="user-info">
-      <text class="user-name">美食家</text>
-      <text class="user-desc">探索每一餐的美好</text>
+
+  <!-- 深色头部 -->
+  <view class="header">
+    <view class="avatar">
+      <text class="avatar-emoji">👨‍🍳</text>
     </view>
+    <text class="user-name">美食家</text>
+    <text class="user-desc">每一餐都值得认真对待</text>
   </view>
 
-  <!-- 收藏 -->
+  <!-- 我的收藏 -->
   <view class="card">
     <view class="card-head" bindtap="onToggleFavorites">
-      <text class="card-title">❤️ 我的收藏</text>
-      <text class="card-count">{{favorites.length}}</text>
+      <text class="card-title">❤️ 我的收藏 ({{favorites.length}})</text>
       <text class="card-arrow">{{showFavorites ? '▲' : '▼'}}</text>
     </view>
     <view wx:if="{{showFavorites && favorites.length > 0}}" class="fav-list">
@@ -25,7 +25,7 @@
         <text class="fav-del" bindtap="onDeleteFavorite" data-name="{{item.name}}">✕</text>
       </view>
     </view>
-    <view wx:if="{{showFavorites && favorites.length === 0}}" class="empty-mini">
+    <view wx:if="{{showFavorites && favorites.length === 0}}" class="fav-empty">
       <text>还没有收藏哦~</text>
     </view>
   </view>
@@ -33,29 +33,53 @@
   <!-- 口味偏好 -->
   <view class="card">
     <text class="card-title">🌶️ 口味偏好</text>
-    <view class="slider-row">
-      <text class="slider-label">辣度</text>
-      <slider class="slider" min="0" max="5" step="1" value="{{preferences.spicy}}" activeColor="#E94560" bindchanging="onSliderChange" data-key="spicy" />
-      <text class="slider-val">{{preferences.spicy}}</text>
+
+    <view class="slider-block">
+      <view class="slider-header">
+        <text class="slider-label">辣度</text>
+        <text class="slider-value" style="color:#E94560;">{{preferences.spicy}}</text>
+      </view>
+      <slider class="slider-spicy" min="0" max="5" step="1"
+        value="{{preferences.spicy}}" activeColor="#E94560" backgroundColor="#F0F0F0"
+        block-size="20" block-color="#E94560"
+        bindchanging="onSliderChange" data-key="spicy" />
     </view>
-    <view class="slider-row">
-      <text class="slider-label">甜度</text>
-      <slider class="slider" min="0" max="5" step="1" value="{{preferences.sweet}}" activeColor="#FFB300" bindchanging="onSliderChange" data-key="sweet" />
-      <text class="slider-val">{{preferences.sweet}}</text>
+
+    <view class="slider-block">
+      <view class="slider-header">
+        <text class="slider-label">甜度</text>
+        <text class="slider-value" style="color:#FFB300;">{{preferences.sweet}}</text>
+      </view>
+      <slider class="slider-sweet" min="0" max="5" step="1"
+        value="{{preferences.sweet}}" activeColor="#FFB300" backgroundColor="#F0F0F0"
+        block-size="20" block-color="#FFB300"
+        bindchanging="onSliderChange" data-key="sweet" />
     </view>
-    <view class="slider-row">
-      <text class="slider-label">酸度</text>
-      <slider class="slider" min="0" max="5" step="1" value="{{preferences.sour}}" activeColor="#4ECDC4" bindchanging="onSliderChange" data-key="sour" />
-      <text class="slider-val">{{preferences.sour}}</text>
+
+    <view class="slider-block">
+      <view class="slider-header">
+        <text class="slider-label">酸度</text>
+        <text class="slider-value" style="color:#4ECDC4;">{{preferences.sour}}</text>
+      </view>
+      <slider class="slider-sour" min="0" max="5" step="1"
+        value="{{preferences.sour}}" activeColor="#4ECDC4" backgroundColor="#F0F0F0"
+        block-size="20" block-color="#4ECDC4"
+        bindchanging="onSliderChange" data-key="sour" />
     </view>
   </view>
 
   <!-- 饮食目标 -->
   <view class="card">
     <text class="card-title">🎯 饮食目标</text>
-    <view class="goal-pills">
-      <view class="goal-pill {{dietGoal === item ? 'active' : ''}}" wx:for="{{['减脂','增肌','均衡']}}" wx:key="*this" bindtap="onSelectGoal" data-goal="{{item}}">
-        <text>{{item}}</text>
+    <view class="goal-row">
+      <view class="goal-pill {{dietGoal === '减脂' ? 'active' : ''}}" bindtap="onSelectGoal" data-goal="减脂">
+        <text>减脂</text>
+      </view>
+      <view class="goal-pill {{dietGoal === '增肌' ? 'active' : ''}}" bindtap="onSelectGoal" data-goal="增肌">
+        <text>增肌</text>
+      </view>
+      <view class="goal-pill {{dietGoal === '均衡' ? 'active' : ''}}" bindtap="onSelectGoal" data-goal="均衡">
+        <text>均衡</text>
       </view>
     </view>
   </view>
@@ -63,17 +87,39 @@
   <!-- 忌口 -->
   <view class="card">
     <text class="card-title">🚫 忌口</text>
-    <view class="tag-list">
-      <view class="pref-tag {{dislikeMap[item] ? 'active' : ''}}" wx:for="{{['香菜','葱','蒜','姜','辣椒','花椒','海鲜','牛奶']}}" wx:key="*this" bindtap="onToggleDislike" data-name="{{item}}">
-        <text>{{item}}</text>
+    <view class="tag-grid">
+      <view class="tag {{dislikeMap['香菜'] ? 'active' : ''}}" bindtap="onToggleDislike" data-name="香菜">
+        <text>香菜</text>
+      </view>
+      <view class="tag {{dislikeMap['葱'] ? 'active' : ''}}" bindtap="onToggleDislike" data-name="葱">
+        <text>葱</text>
+      </view>
+      <view class="tag {{dislikeMap['蒜'] ? 'active' : ''}}" bindtap="onToggleDislike" data-name="蒜">
+        <text>蒜</text>
+      </view>
+      <view class="tag {{dislikeMap['姜'] ? 'active' : ''}}" bindtap="onToggleDislike" data-name="姜">
+        <text>姜</text>
+      </view>
+      <view class="tag {{dislikeMap['辣椒'] ? 'active' : ''}}" bindtap="onToggleDislike" data-name="辣椒">
+        <text>辣椒</text>
+      </view>
+      <view class="tag {{dislikeMap['花椒'] ? 'active' : ''}}" bindtap="onToggleDislike" data-name="花椒">
+        <text>花椒</text>
+      </view>
+      <view class="tag {{dislikeMap['海鲜'] ? 'active' : ''}}" bindtap="onToggleDislike" data-name="海鲜">
+        <text>海鲜</text>
+      </view>
+      <view class="tag {{dislikeMap['牛奶'] ? 'active' : ''}}" bindtap="onToggleDislike" data-name="牛奶">
+        <text>牛奶</text>
       </view>
     </view>
   </view>
 
-  <!-- 保存 -->
-  <view class="save-area">
-    <view class="btn-primary" bindtap="onSave">
+  <!-- 保存按钮 -->
+  <view class="save-wrap">
+    <view class="save-btn" bindtap="onSave">
       <text>{{isSaving ? '保存中...' : '保存设置'}}</text>
     </view>
   </view>
+
 </view>
