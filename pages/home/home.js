@@ -9,10 +9,10 @@ Page({
     recommendList: [],
     isLoading: true,
     quickActions: [
-      { icon: '🧊', title: '冰箱推荐', desc: '看看冰箱里有什么', url: '/pages/fridge/fridge' },
-      { icon: '🏋️', title: '减脂餐', desc: '健康低卡食谱', url: '/pages/diet/diet' },
-      { icon: '🗳️', title: '发起投票', desc: '和朋友一起选', url: '/pages/vote/room' },
-      { icon: '🎰', title: '随机转盘', desc: '帮你决定吃什么', url: '/pages/index/index' }
+      { icon: '🧊', title: '冰箱推荐', desc: '看看冰箱里有什么', url: '/pages/fridge/fridge', imageUrl: '/images/features/fridge.png' },
+      { icon: '🥗', title: '减脂餐', desc: '健康低卡食谱', url: '/pages/diet/diet', imageUrl: '/images/features/diet.png' },
+      { icon: '🗳️', title: '发起投票', desc: '和朋友一起选', url: '/pages/vote/room', imageUrl: '/images/features/vote.png' },
+      { icon: '🎰', title: '随机转盘', desc: '帮你决定吃什么', url: '/pages/index/index', imageUrl: '/images/features/wheel.png' }
     ]
   },
 
@@ -86,5 +86,12 @@ Page({
 
   onGoSearch() {
     wx.switchTab({ url: '/pages/recipe/list' })
+  },
+
+  // 图片加载失败时的处理
+  onImageError(e) {
+    const index = e.currentTarget.dataset.index
+    console.log(`图片加载失败: ${this.data.quickActions[index].title}`)
+    // 可以在这里设置备用图片或隐藏图片
   }
 })
