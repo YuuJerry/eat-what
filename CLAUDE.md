@@ -22,11 +22,36 @@ NODE_PATH="C:/Users/JerryYuu/AppData/Roaming/npm/node_modules" \
 
 ## 📦 上传小程序标准流程（每次上传必读）
 
-每次需要上传小程序预览时，**必须**按以下步骤操作，不要跳过：
+### 方式一：上传到开发版本（推荐）
 
-### 步骤 1：创建临时上传脚本
+使用 `ci.upload()` 上传到微信公众平台的"开发版本"，在后台可看到并设置体验版。
 
-在 `C:/Users/JerryYuu/Desktop/wx-test/upload.js` 创建以下内容：
+```javascript
+const result = await ci.upload({
+  project,
+  version: '1.0.0',  // 版本号
+  desc: '版本描述',
+  setting: { es6: true, minify: true },
+});
+```
+
+### 方式二：生成预览二维码
+
+使用 `ci.preview()` 生成二维码，扫码即可在手机上预览，但**不会**出现在开发版本列表中。
+
+```javascript
+const result = await ci.preview({
+  project,
+  desc: '版本描述',
+  setting: { es6: true, minify: true },
+  qrcodeFormat: 'image',
+  qrcodeOutputDest: path.resolve(__dirname, 'eat-what/preview-qr.png'),
+});
+```
+
+### 完整脚本模板
+
+在 `C:/Users/JerryYuu/Desktop/wx-test/upload.js` 创建：
 
 ```javascript
 const ci = require('miniprogram-ci');
@@ -42,14 +67,14 @@ const path = require('path');
   });
 
   try {
-    const result = await ci.preview({
+    // 上传到开发版本（在微信公众平台后台可见）
+    const result = await ci.upload({
       project,
+      version: '1.0.0',
       desc: '版本描述',
       setting: { es6: true, minify: true },
-      qrcodeFormat: 'image',
-      qrcodeOutputDest: path.resolve(__dirname, 'eat-what/preview-qr.png'),
     });
-    console.log('预览上传成功:', JSON.stringify(result, null, 2));
+    console.log('上传成功:', JSON.stringify(result, null, 2));
   } catch (err) {
     console.error('上传失败:', err);
     process.exit(1);
