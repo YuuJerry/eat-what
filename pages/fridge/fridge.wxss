@@ -3,14 +3,14 @@
 .page { background: #F8F9FA; min-height: 100vh; padding-bottom: 40rpx; }
 
 /* 已选食材区 */
-.selected-bar { background: #fff; padding: 20rpx 24rpx; margin-bottom: 12rpx; }
-.selected-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12rpx; }
-.selected-title { font-size: 28rpx; font-weight: 600; color: #2D3436; }
-.selected-clear { font-size: 24rpx; color: #E94560; }
+.selected-bar { background: #1A1A2E; padding: 24rpx 24rpx 20rpx; margin-bottom: 0; }
+.selected-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14rpx; }
+.selected-title { font-size: 30rpx; font-weight: 700; color: #fff; }
+.selected-clear { font-size: 24rpx; color: #E94560; font-weight: 500; }
 .selected-tags { display: flex; flex-wrap: wrap; gap: 10rpx; }
 .sel-tag {
-  background: rgba(233,69,96,0.08); color: #E94560; font-size: 24rpx;
-  padding: 8rpx 18rpx; border-radius: 100rpx; font-weight: 500;
+  background: #E94560; color: #fff; font-size: 24rpx;
+  padding: 8rpx 20rpx; border-radius: 100rpx; font-weight: 500;
 }
 
 /* 搜索条 */
@@ -44,8 +44,8 @@
 }
 .ing-item.selected { border-color: #E94560; background: rgba(233,69,96,0.04); }
 .ing-item:active { transform: scale(0.95); }
-.ing-icon { width: 48rpx; height: 48rpx; margin-bottom: 6rpx; }
-.ing-img { width: 100%; height: 100%; }
+.ing-icon { width: 64rpx; height: 64rpx; margin-bottom: 8rpx; border-radius: 50%; overflow: hidden; }
+.ing-img { width: 100%; height: 100%; border-radius: 50%; }
 .ing-name { font-size: 20rpx; color: #2D3436; text-align: center; }
 .ing-check {
   position: absolute; top: 6rpx; right: 6rpx;

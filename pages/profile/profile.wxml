@@ -2,7 +2,7 @@
 <view class="page">
   <!-- 用户头部 -->
   <view class="profile-hero">
-    <view class="avatar"><text>👤</text></view>
+    <view class="avatar"><text>👨‍🍳</text></view>
     <view class="user-info">
       <text class="user-name">美食家</text>
       <text class="user-desc">探索每一餐的美好</text>

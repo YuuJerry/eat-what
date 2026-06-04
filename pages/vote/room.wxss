@@ -1,21 +1,40 @@
 /* 投票房间 — 统一设计系统 */
 
-.page { background: #F8F9FA; min-height: 100vh; padding: 24rpx; padding-bottom: 40rpx; }
+.page { background: #FFF5F5; min-height: 100vh; padding: 24rpx; padding-bottom: 40rpx; }
+
+/* 标题 */
+.page-title {
+  font-size: 36rpx; font-weight: 700; color: #2D3436;
+  display: block; text-align: center; margin-bottom: 24rpx;
+}
 
 .card-title { font-size: 28rpx; font-weight: 600; color: #2D3436; display: block; margin-bottom: 16rpx; }
 
 /* 创建模式 */
-.title-input { width: 100%; font-size: 28rpx; padding: 16rpx 0; border-bottom: 2rpx solid #F0F0F0; }
-.option-list { display: flex; flex-direction: column; gap: 12rpx; }
-.option-row { display: flex; align-items: center; gap: 12rpx; }
-.option-input { flex: 1; font-size: 26rpx; padding: 14rpx 16rpx; background: #F8F9FA; border-radius: 12rpx; border: 2rpx solid #F0F0F0; }
+.title-input { width: 100%; font-size: 28rpx; padding: 16rpx 0; }
+.option-list { display: flex; flex-direction: column; }
+.option-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #F0F0F0;
+}
+.option-row:last-child { border-bottom: none; }
+.option-text { font-size: 28rpx; color: #2D3436; flex: 1; }
 .option-remove { font-size: 28rpx; color: #636E72; padding: 8rpx; }
 .add-option {
-  margin-top: 16rpx; padding: 14rpx; text-align: center;
-  border: 2rpx dashed #4ECDC4; border-radius: 12rpx;
+  margin-top: 16rpx; padding: 18rpx; text-align: center;
+  border: 2rpx dashed #4ECDC4; border-radius: 16rpx;
   font-size: 26rpx; color: #4ECDC4; font-weight: 500;
 }
 .action-area { padding: 24rpx; }
+.btn-create {
+  text-align: center; padding: 24rpx;
+  background: #fff; border-radius: 24rpx;
+  border: 2rpx solid #E94560;
+  box-shadow: 0 4rpx 16rpx rgba(233,69,96,0.12);
+}
+.btn-create text { color: #E94560; font-size: 30rpx; font-weight: 600; }
+.btn-create:active { transform: scale(0.97); }
 
 /* 投票模式 */
 .room-header { text-align: center; }

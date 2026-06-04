@@ -1,30 +1,31 @@
 <!-- 投票大厅 -->
 <view class="page">
+  <!-- 标题 -->
+  <text class="page-title">聚餐投票</text>
+
   <!-- 操作卡 -->
   <view class="action-grid">
     <view class="action-card create" bindtap="onCreateRoom">
-      <text class="ac-icon">🗳️</text>
+      <view class="ac-icon-wrap"><text class="ac-icon">+</text></view>
       <text class="ac-title">发起投票</text>
-      <text class="ac-desc">创建投票房间</text>
     </view>
     <view class="action-card join" bindtap="onJoinRoom">
-      <text class="ac-icon">🔗</text>
+      <view class="ac-icon-wrap"><text class="ac-icon">⊕</text></view>
       <text class="ac-title">加入投票</text>
-      <text class="ac-desc">输入投票码</text>
     </view>
   </view>
 
   <!-- 历史记录 -->
   <view class="section" wx:if="{{myRooms.length > 0}}">
-    <text class="section-title">📋 历史投票</text>
+    <text class="section-title">历史投票</text>
     <view class="room-list">
       <view class="room-card card" wx:for="{{myRooms}}" wx:key="code" bindtap="onRoomTap" data-item="{{item}}">
         <view class="room-info">
           <text class="room-title">{{item.title}}</text>
-          <text class="room-code">房间码: {{item.code}}</text>
-        </view>
-        <view class="room-status {{item.status === 'active' ? 'active' : ''}}">
-          <text>{{item.status === 'active' ? '进行中' : '已结束'}}</text>
+          <view class="room-meta">
+            <text class="room-date">{{item.createTime}}</text>
+            <text class="room-members">成员: {{item.memberCount || 0}}</text>
+          </view>
         </view>
       </view>
     </view>

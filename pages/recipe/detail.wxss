@@ -13,6 +13,10 @@
   border-radius: 0 0 32rpx 32rpx;
 }
 
+.hero-status-bar {
+  width: 100%;
+}
+
 .hero-back {
   margin-bottom: 16rpx;
 }
@@ -404,7 +408,8 @@
   background: #FFFFFF;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
+  padding: 0 64rpx;
   box-shadow:
     0 -2rpx 8rpx rgba(139, 120, 90, 0.06),
     0 -8rpx 24rpx rgba(139, 120, 90, 0.08);
@@ -437,6 +442,14 @@
   padding: 0;
   margin: 0;
   line-height: normal;
+  font-size: inherit;
+  color: inherit;
+  text-align: center;
+  box-sizing: content-box;
+}
+
+.bar-btn.share::after {
+  border: none;
 }
 
 /* 加载 */

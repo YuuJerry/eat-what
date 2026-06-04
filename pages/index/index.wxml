@@ -1,11 +1,12 @@
 <!-- 随机转盘 -->
 <view class="page">
+  <!-- 标题 -->
+  <text class="page-title">今天吃什么</text>
+
   <!-- 结果 -->
   <view class="result-area">
     <view class="result-card {{isSpinning ? 'spinning' : ''}}">
-      <text class="result-emoji">{{resultEmoji || '🍽️'}}</text>
-      <text class="result-name">{{resultName || '今天吃什么？'}}</text>
-      <text class="result-cat" wx:if="{{resultCategory}}">{{resultCategory}}</text>
+      <text class="result-text">今天吃：{{resultName || '？'}}</text>
     </view>
   </view>
 
@@ -17,8 +18,8 @@
 
   <!-- 按钮 -->
   <view class="btn-row">
-    <view class="spin-btn" bindtap="onSpinWheel"><text>🎰 转一转</text></view>
-    <view class="random-btn" bindtap="onRandom"><text>🎲 随机</text></view>
+    <view class="spin-btn" bindtap="onSpinWheel"><text>转一转</text></view>
+    <view class="random-btn" bindtap="onRandom"><text>随机</text></view>
   </view>
 
   <!-- 分类标签 -->

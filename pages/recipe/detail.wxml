@@ -3,6 +3,7 @@
 
   <!-- ===== 大标题头 ===== -->
   <view class="detail-hero">
+    <view class="hero-status-bar" style="height: {{statusBarHeight}}px;"></view>
     <view class="hero-back" bindtap="onBack">
       <text>← 返回</text>
     </view>

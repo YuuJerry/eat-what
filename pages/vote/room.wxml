@@ -2,25 +2,24 @@
 <view class="page">
   <!-- 创建模式 -->
   <view wx:if="{{mode === 'create'}}">
+    <text class="page-title">创建投票</text>
     <view class="card">
-      <text class="card-title">🗳️ 创建投票</text>
-      <input class="title-input" placeholder="投票标题（如：今晚吃什么）" value="{{title}}" bindinput="onTitleInput" />
+      <input class="title-input" placeholder="输入选项" value="{{title}}" bindinput="onTitleInput" />
     </view>
     <view class="card">
-      <text class="card-title">选项</text>
       <view class="option-list">
         <view class="option-row" wx:for="{{options}}" wx:key="index">
-          <input class="option-input" placeholder="输入选项 {{index + 1}}" value="{{item}}" bindinput="onOptionInput" data-idx="{{index}}" />
+          <text class="option-text">{{item}}</text>
           <text class="option-remove" wx:if="{{options.length > 2}}" bindtap="onRemoveOption" data-idx="{{index}}">✕</text>
         </view>
       </view>
-      <view class="add-option" bindtap="onAddOption" wx:if="{{options.length < 6}}">
-        <text>+ 添加选项</text>
-      </view>
+    </view>
+    <view class="add-option" bindtap="onAddOption" wx:if="{{options.length < 6}}">
+      <text>+ 添加更多选项</text>
     </view>
     <view class="action-area">
-      <view class="btn-primary" bindtap="onCreateRoom">
-        <text>{{isCreating ? '创建中...' : '创建投票房间'}}</text>
+      <view class="btn-create" bindtap="onCreateRoom">
+        <text>{{isCreating ? '创建中...' : '创建投票'}}</text>
       </view>
     </view>
   </view>

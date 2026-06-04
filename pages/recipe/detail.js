@@ -12,10 +12,15 @@ Page({
     isFavorited: false,
     checkedIngredients: [],
     checkedMap: {},
-    showIngredients: false
+    showIngredients: false,
+    statusBarHeight: 20
   },
 
   onLoad(options) {
+    // 状态栏高度（自定义导航栏适配）
+    const sysInfo = wx.getSystemInfoSync()
+    this.setData({ statusBarHeight: sysInfo.statusBarHeight || 20 })
+
     this.recipeId = options.id ? decodeURIComponent(options.id) : ''
 
     // 优先从 eventChannel 接收完整数据（列表页/首页传入）

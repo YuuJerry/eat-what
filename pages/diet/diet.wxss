@@ -8,14 +8,19 @@
 .recipe-list { padding: 0 24rpx; }
 .recipe-row { display: flex; gap: 16rpx; margin-bottom: 16rpx; }
 .recipe-row:active { transform: scale(0.98); }
-.rr-img { width: 160rpx; height: 160rpx; border-radius: 16rpx; background: #F8F9FA; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.rr-img { width: 160rpx; height: 160rpx; border-radius: 16rpx; background: #F8F9FA; border: 1rpx solid #E8ECEF; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
 .rr-icon { width: 120rpx; height: 120rpx; }
 .rr-body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
 .rr-name { font-size: 28rpx; font-weight: 600; color: #2D3436; display: block; margin-bottom: 6rpx; }
-.rr-meta { display: flex; gap: 16rpx; font-size: 22rpx; color: #636E72; margin-bottom: 8rpx; }
+.rr-meta { display: flex; align-items: center; gap: 8rpx; font-size: 22rpx; color: #636E72; margin-bottom: 8rpx; }
 .rr-cal { color: #FFB300; font-weight: 500; }
-.rr-nutr { display: flex; gap: 12rpx; font-size: 20rpx; color: #4ECDC4; margin-bottom: 8rpx; }
+.rr-dot { color: #B2BEC3; font-size: 22rpx; }
+.rr-time { color: #636E72; }
+.rr-nutr { display: flex; align-items: center; gap: 8rpx; font-size: 20rpx; color: #4ECDC4; margin-bottom: 8rpx; }
+.rr-nutr-dot { color: #B2BEC3; font-size: 20rpx; }
 .rr-tags { display: flex; flex-wrap: wrap; gap: 6rpx; }
+.tag { font-size: 20rpx; padding: 4rpx 14rpx; border-radius: 6rpx; color: #636E72; background: #F0F2F5; }
+.tag-green { font-size: 20rpx; padding: 4rpx 14rpx; border-radius: 6rpx; color: #fff; background: #4ECDC4; }
 
 /* 博主推荐 */
 .section { padding: 32rpx 24rpx 0; }
