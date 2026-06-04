@@ -18,12 +18,12 @@
 
   <!-- Bento 功能区 -->
   <view class="bento-grid">
-    <!-- 冰箱推荐 - 绿色高卡，插画在右侧 -->
+    <!-- 冰箱推荐 - 绿色高卡(span 2行), 左侧文字+右侧插画 -->
     <view class="bento-card card-green" bindtap="onQuickAction" data-url="/pages/fridge/fridge">
       <view class="card-text">
         <text class="card-emoji">🧊</text>
-        <text class="card-title">冰箱推荐</text>
-        <text class="card-desc">看看有什么能做</text>
+        <text class="card-title">冰箱有什么</text>
+        <text class="card-desc">看看冰箱里有什么能做</text>
       </view>
       <image
         class="card-illustration card-illustration-right"
@@ -34,10 +34,10 @@
       />
     </view>
 
-    <!-- 减脂餐 - 白色小卡，插画在下方 -->
+    <!-- 减脂餐 - 白色小卡, emoji+标题, 右下角插画 -->
     <view class="bento-card card-white" bindtap="onQuickAction" data-url="/pages/diet/diet">
       <text class="card-emoji">🥗</text>
-      <text class="card-title">减脂餐</text>
+      <text class="card-title">减脂食谱</text>
       <image
         class="card-illustration card-illustration-bottom"
         src="{{quickActions[1].imageUrl}}"
@@ -47,7 +47,7 @@
       />
     </view>
 
-    <!-- 投票 - 白色小卡，插画在下方 -->
+    <!-- 投票 - 白色小卡, emoji+标题, 右下角插画 -->
     <view class="bento-card card-white" bindtap="onQuickAction" data-url="/pages/vote/room">
       <text class="card-emoji">🗳️</text>
       <text class="card-title">投票</text>
@@ -60,7 +60,7 @@
       />
     </view>
 
-    <!-- 随机转盘 - 深色宽卡，插画在左侧 -->
+    <!-- 随机转盘 - 深色宽卡(span 2列), 左侧插画+右侧文字+箭头 -->
     <view class="bento-card card-dark" bindtap="onQuickAction" data-url="/pages/index/index">
       <image
         class="card-illustration card-illustration-left"
@@ -71,6 +71,7 @@
       />
       <view class="card-dark-right">
         <view class="card-dark-text">
+          <text class="card-emoji">🎰</text>
           <text class="card-title">随机转盘</text>
           <text class="card-desc">帮你决定吃什么</text>
         </view>

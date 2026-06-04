@@ -291,7 +291,8 @@
   color: #e94560;
 }
 
-/* 菜谱网格 */
+/* ========== 菜谱网格 ========== */
+
 .recipe-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;

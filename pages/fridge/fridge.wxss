@@ -1,4 +1,4 @@
-/* 冰箱推荐页 — 完全重写 */
+/* 冰箱推荐页 — 严格按设计稿重写 */
 
 /* ==================== 页面基础 ==================== */
 .page {
@@ -7,10 +7,15 @@
   padding-bottom: env(safe-area-inset-bottom);
 }
 
-/* ==================== 已选食材区 ==================== */
-.selected-bar {
+/* ==================== 深色头部区 ==================== */
+.header-dark {
   background: #1A1A2E;
-  padding: 28rpx 28rpx 24rpx;
+  padding: 28rpx 28rpx 0;
+}
+
+/* ==================== 已选食材区 ==================== */
+.selected-section {
+  padding-bottom: 24rpx;
 }
 
 .selected-header {
@@ -21,7 +26,7 @@
 }
 
 .selected-title {
-  font-size: 32rpx;
+  font-size: 30rpx;
   font-weight: 700;
   color: #FFFFFF;
 }
@@ -59,11 +64,6 @@
 }
 
 /* ==================== 搜索条 ==================== */
-.search-row {
-  background: #1A1A2E;
-  padding: 0 28rpx 24rpx;
-}
-
 .search-bar {
   display: flex;
   align-items: center;
@@ -71,6 +71,7 @@
   background: rgba(255, 255, 255, 0.1);
   border-radius: 16rpx;
   padding: 18rpx 24rpx;
+  margin-bottom: 20rpx;
 }
 
 .search-icon {
@@ -91,9 +92,8 @@
 
 /* ==================== 分类标签 ==================== */
 .cat-scroll {
-  padding: 20rpx 28rpx;
+  padding: 0 0 24rpx;
   white-space: nowrap;
-  background: #FFFFFF;
 }
 
 .cat-pill {
@@ -102,9 +102,9 @@
   padding: 12rpx 28rpx;
   margin-right: 16rpx;
   border-radius: 100rpx;
-  background: #F5F5F5;
+  background: rgba(255, 255, 255, 0.12);
   font-size: 24rpx;
-  color: #666666;
+  color: rgba(255, 255, 255, 0.6);
   font-weight: 500;
   line-height: 1;
 }
@@ -114,22 +114,30 @@
   color: #FFFFFF;
 }
 
+/* ==================== 白色内容区 ==================== */
+.content-white {
+  background: #FFFFFF;
+  border-radius: 24rpx 24rpx 0 0;
+  margin-top: -8rpx;
+  position: relative;
+  z-index: 1;
+}
+
 /* ==================== 食材网格 ==================== */
 .ing-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 16rpx;
-  padding: 20rpx 28rpx 24rpx;
-  background: #FFFFFF;
+  padding: 24rpx 28rpx 16rpx;
 }
 
 .ing-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20rpx 0 16rpx;
+  padding: 16rpx 0 12rpx;
   background: #FFFFFF;
-  border-radius: 20rpx;
+  border-radius: 16rpx;
   border: 2rpx solid #F0F0F0;
   position: relative;
   transition: all 0.2s;
@@ -185,12 +193,11 @@
 
 /* ==================== 推荐按钮 ==================== */
 .actions {
-  padding: 16rpx 28rpx 28rpx;
-  background: #FFFFFF;
+  padding: 8rpx 28rpx 32rpx;
 }
 
 .action-btn {
-  border-radius: 20rpx;
+  border-radius: 16rpx;
   padding: 24rpx;
   text-align: center;
   font-size: 28rpx;
@@ -234,7 +241,7 @@
 /* 结果卡片 */
 .result-card {
   background: #FFFFFF;
-  border-radius: 24rpx;
+  border-radius: 16rpx;
   padding: 28rpx;
   margin-bottom: 20rpx;
   box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
@@ -255,7 +262,7 @@
 .result-cover {
   width: 100rpx;
   height: 100rpx;
-  border-radius: 20rpx;
+  border-radius: 16rpx;
   background: #FFF5F7;
   flex-shrink: 0;
   display: flex;

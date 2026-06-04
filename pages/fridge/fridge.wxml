@@ -1,52 +1,56 @@
 <!-- 冰箱推荐 -->
 <view class="page">
 
-  <!-- 已选食材区 -->
-  <view class="selected-bar" wx:if="{{selectedIngredients.length > 0}}">
-    <view class="selected-header">
-      <text class="selected-title">🧊 我的冰箱</text>
-      <text class="selected-clear" bindtap="onClearAll">清空</text>
-    </view>
-    <view class="selected-tags">
-      <view class="sel-tag" wx:for="{{selectedIngredients}}" wx:key="*this" bindtap="onRemoveIngredient" data-name="{{item}}">
-        <text>{{item}}</text>
-        <text class="sel-tag-x">✕</text>
+  <!-- 深色头部区: 已选食材 + 搜索 + 分类 -->
+  <view class="header-dark">
+    <!-- 已选食材区 -->
+    <view class="selected-section" wx:if="{{selectedIngredients.length > 0}}">
+      <view class="selected-header">
+        <text class="selected-title">🧊 我的冰箱</text>
+        <text class="selected-clear" bindtap="onClearAll">清空</text>
+      </view>
+      <view class="selected-tags">
+        <view class="sel-tag" wx:for="{{selectedIngredients}}" wx:key="*this" bindtap="onRemoveIngredient" data-name="{{item}}">
+          <text>{{item}}</text>
+          <text class="sel-tag-x">✕</text>
+        </view>
       </view>
     </view>
-  </view>
 
-  <!-- 搜索条 -->
-  <view class="search-row">
+    <!-- 搜索条 -->
     <view class="search-bar">
       <text class="search-icon">🔍</text>
       <input class="search-input" placeholder="搜索食材" placeholder-class="search-placeholder" value="{{keyword}}" bindinput="onSearchInput" bindconfirm="onSearchIngredient" confirm-type="search" />
     </view>
+
+    <!-- 分类标签 -->
+    <scroll-view scroll-x class="cat-scroll" enable-flex>
+      <view class="cat-pill {{activeCategory === item ? 'active' : ''}}" wx:for="{{categories}}" wx:key="*this" bindtap="onCategoryChange" data-cat="{{item}}">
+        <text>{{item}}</text>
+      </view>
+    </scroll-view>
   </view>
 
-  <!-- 分类标签 -->
-  <scroll-view scroll-x class="cat-scroll" enable-flex>
-    <view class="cat-pill {{activeCategory === item ? 'active' : ''}}" wx:for="{{categories}}" wx:key="*this" bindtap="onCategoryChange" data-cat="{{item}}">
-      <text>{{item}}</text>
-    </view>
-  </scroll-view>
-
-  <!-- 食材网格 -->
-  <view class="ing-grid">
-    <view class="ing-item {{selectedMap[item.name] ? 'selected' : ''}}" wx:for="{{ingredients}}" wx:key="name" bindtap="onToggleIngredient" data-name="{{item.name}}">
-      <view class="ing-check" wx:if="{{selectedMap[item.name]}}">
-        <text class="check-icon">✓</text>
+  <!-- 白色内容区: 食材网格 + 推荐按钮 -->
+  <view class="content-white">
+    <!-- 食材网格 -->
+    <view class="ing-grid">
+      <view class="ing-item {{selectedMap[item.name] ? 'selected' : ''}}" wx:for="{{ingredients}}" wx:key="name" bindtap="onToggleIngredient" data-name="{{item.name}}">
+        <view class="ing-check" wx:if="{{selectedMap[item.name]}}">
+          <text class="check-icon">✓</text>
+        </view>
+        <view class="ing-icon-wrap">
+          <image src="{{item.icon}}" mode="aspectFit" class="ing-img" />
+        </view>
+        <text class="ing-name">{{item.name}}</text>
       </view>
-      <view class="ing-icon-wrap">
-        <image src="{{item.icon}}" mode="aspectFit" class="ing-img" />
-      </view>
-      <text class="ing-name">{{item.name}}</text>
     </view>
-  </view>
 
-  <!-- 推荐按钮 -->
-  <view class="actions" wx:if="{{selectedIngredients.length > 0}}">
-    <view class="action-btn recommend-btn" bindtap="onSearchRecipes">
-      <text>{{isSearching ? '搜索中...' : '推荐菜谱 (' + selectedIngredients.length + ')'}}</text>
+    <!-- 推荐按钮 -->
+    <view class="actions" wx:if="{{selectedIngredients.length > 0}}">
+      <view class="action-btn recommend-btn" bindtap="onSearchRecipes">
+        <text>{{isSearching ? '搜索中...' : '推荐菜谱 (' + selectedIngredients.length + ')'}}</text>
+      </view>
     </view>
   </view>
 

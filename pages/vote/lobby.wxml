@@ -5,17 +5,17 @@
     <text class="page-title">聚餐投票</text>
   </view>
 
-  <!-- 操作卡 -->
+  <!-- 操作卡: 2列 -->
   <view class="action-grid">
     <view class="action-card create" bindtap="onCreateRoom">
       <view class="action-icon-circle">
-        <text class="action-icon-plus">+</text>
+        <text class="action-icon-symbol">+</text>
       </view>
       <text class="action-label">发起投票</text>
     </view>
     <view class="action-card join" bindtap="onJoinRoom">
       <view class="action-icon-circle">
-        <text class="action-icon-join">⊕</text>
+        <text class="action-icon-symbol">⊕</text>
       </view>
       <text class="action-label">加入投票</text>
     </view>
@@ -26,12 +26,15 @@
     <text class="history-title">历史投票</text>
     <view class="history-list">
       <view class="history-card" wx:for="{{myRooms}}" wx:key="code" bindtap="onRoomTap" data-item="{{item}}">
-        <text class="history-card-title">{{item.title}}</text>
-        <view class="history-card-meta">
-          <text class="history-card-date">{{item.createTime}}</text>
-          <text class="history-card-sep">  成员: </text>
-          <text class="history-card-members">{{item.memberCount || 0}}</text>
+        <view class="history-card-body">
+          <text class="history-card-title">{{item.title}}</text>
+          <view class="history-card-meta">
+            <text class="history-card-date">{{item.createTime}}</text>
+            <text class="history-card-sep">·</text>
+            <text class="history-card-members">成员 {{item.memberCount || 0}} 人</text>
+          </view>
         </view>
+        <text class="history-card-arrow">›</text>
       </view>
     </view>
   </view>

@@ -37,7 +37,7 @@
     <view class="slider-block">
       <view class="slider-header">
         <text class="slider-label">辣度</text>
-        <text class="slider-value" style="color:#E94560;">{{preferences.spicy}}</text>
+        <text class="slider-value slider-value-spicy">{{preferences.spicy}}</text>
       </view>
       <slider class="slider-spicy" min="0" max="5" step="1"
         value="{{preferences.spicy}}" activeColor="#E94560" backgroundColor="#F0F0F0"
@@ -48,7 +48,7 @@
     <view class="slider-block">
       <view class="slider-header">
         <text class="slider-label">甜度</text>
-        <text class="slider-value" style="color:#FFB300;">{{preferences.sweet}}</text>
+        <text class="slider-value slider-value-sweet">{{preferences.sweet}}</text>
       </view>
       <slider class="slider-sweet" min="0" max="5" step="1"
         value="{{preferences.sweet}}" activeColor="#FFB300" backgroundColor="#F0F0F0"
@@ -59,7 +59,7 @@
     <view class="slider-block">
       <view class="slider-header">
         <text class="slider-label">酸度</text>
-        <text class="slider-value" style="color:#4ECDC4;">{{preferences.sour}}</text>
+        <text class="slider-value slider-value-sour">{{preferences.sour}}</text>
       </view>
       <slider class="slider-sour" min="0" max="5" step="1"
         value="{{preferences.sour}}" activeColor="#4ECDC4" backgroundColor="#F0F0F0"
