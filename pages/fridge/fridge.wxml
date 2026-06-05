@@ -1,7 +1,7 @@
 <!-- 冰箱推荐 -->
 <view class="page">
 
-  <!-- 深色头部区: 已选食材 + 搜索 + 分类 -->
+  <!-- 深色头部区 -->
   <view class="header-dark">
     <!-- 已选食材区 -->
     <view class="selected-section" wx:if="{{selectedIngredients.length > 0}}">
@@ -25,13 +25,14 @@
 
     <!-- 分类标签 -->
     <scroll-view scroll-x class="cat-scroll" enable-flex>
-      <view class="cat-pill {{activeCategory === item ? 'active' : ''}}" wx:for="{{categories}}" wx:key="*this" bindtap="onCategoryChange" data-cat="{{item}}">
-        <text>{{item}}</text>
+      <view class="cat-pill {{activeCategory === item.name ? 'active' : ''}}" wx:for="{{categories}}" wx:key="name" bindtap="onCategoryChange" data-cat="{{item.name}}">
+        <text class="cat-icon">{{item.icon}}</text>
+        <text class="cat-name">{{item.name}}</text>
       </view>
     </scroll-view>
   </view>
 
-  <!-- 白色内容区: 食材网格 + 推荐按钮 -->
+  <!-- 白色内容区 -->
   <view class="content-white">
     <!-- 食材网格 -->
     <view class="ing-grid">
@@ -49,7 +50,10 @@
     <!-- 推荐按钮 -->
     <view class="actions" wx:if="{{selectedIngredients.length > 0}}">
       <view class="action-btn recommend-btn" bindtap="onSearchRecipes">
-        <text>{{isSearching ? '搜索中...' : '推荐菜谱 (' + selectedIngredients.length + ')'}}</text>
+        <text>{{isSearching ? '🔍 搜索中...' : '🍳 推荐菜谱 (' + selectedIngredients.length + ')'}}</text>
+      </view>
+      <view class="action-btn shopping-btn" wx:if="{{hasSearched}}" bindtap="onShowShoppingList">
+        <text>📝 购物清单</text>
       </view>
     </view>
   </view>
@@ -57,14 +61,13 @@
   <!-- 推荐结果 -->
   <view class="results" wx:if="{{hasSearched}}">
     <view class="results-header">
-      <text class="results-title">推荐结果</text>
-      <text class="results-count">{{results.length}} 道菜</text>
+      <text class="results-title">🔍 推荐结果 ({{results.length}})</text>
     </view>
 
     <block wx:if="{{results.length > 0}}">
       <view class="result-card {{item.missing.length === 0 ? 'can-cook' : ''}}" wx:for="{{results}}" wx:key="name">
 
-        <!-- 卡片头部: 图标 + 菜名 + 匹配率 -->
+        <!-- 卡片头部 -->
         <view class="result-top">
           <view class="result-cover">
             <image src="{{item.coverIcon}}" mode="aspectFit" class="rc-img" />
@@ -72,38 +75,30 @@
           <view class="result-info">
             <text class="result-name">{{item.name}}</text>
             <view class="result-meta">
-              <view class="meta-item" wx:if="{{item.cookTime}}">
-                <text class="meta-icon">⏱</text>
-                <text>{{item.cookTime}}分</text>
-              </view>
-              <view class="meta-item" wx:if="{{item.calories}}">
-                <text class="meta-icon">🔥</text>
-                <text>{{item.calories}}kcal</text>
-              </view>
+              <text class="meta-time" wx:if="{{item.cookTime}}">⏱ {{item.cookTime}}分</text>
+              <text class="meta-cal" wx:if="{{item.calories}}">🔥 {{item.calories}}kcal</text>
             </view>
           </view>
           <view class="result-right">
             <text class="fav-btn" bindtap="onToggleFavorite" data-index="{{index}}">{{item.isFavorited ? '❤️' : '🤍'}}</text>
             <view class="match-badge {{item.missing.length === 0 ? 'perfect' : 'partial'}}">
-              <text>{{item.missing.length === 0 ? '完美匹配' : '差' + item.missing.length + '种'}}</text>
+              <text>{{item.missing.length === 0 ? '✅ 能做' : '差' + item.missing.length + '种'}}</text>
             </view>
           </view>
         </view>
 
         <!-- 用料标签 -->
         <view class="result-ings" wx:if="{{item.ingredients.length > 0}}">
-          <text class="sub-title">用料</text>
+          <text class="sub-title">📋 用料</text>
           <view class="ing-tags">
             <view class="ing-tag" wx:for="{{item.ingredients}}" wx:for-item="ing" wx:key="name">
-              <text>{{ing.name}}</text>
-              <text class="ing-amount" wx:if="{{ing.amount}}">{{ing.amount}}</text>
+              <text>{{ing.name}} {{ing.amount}}</text>
             </view>
           </view>
         </view>
 
         <!-- 缺少食材 -->
         <view class="missing-section" wx:if="{{item.missing.length > 0}}">
-          <text class="missing-icon">⚠️</text>
           <text class="missing-label">还差：</text>
           <text class="missing-items">{{item.missingText}}</text>
         </view>
@@ -111,8 +106,7 @@
         <!-- 步骤 -->
         <view class="steps-section" wx:if="{{item.steps.length > 0}}">
           <view class="steps-toggle" bindtap="onToggleSteps" data-index="{{index}}">
-            <text class="toggle-icon">{{expandedSteps === index ? '▼' : '▶'}}</text>
-            <text>{{expandedSteps === index ? '收起步骤' : '查看步骤'}}</text>
+            <text>{{expandedSteps === index ? '🔽 收起步骤' : '▶️ 查看步骤'}}</text>
           </view>
           <view class="steps-content" wx:if="{{expandedSteps === index}}">
             <view class="step-item" wx:for="{{item.steps}}" wx:for-item="step" wx:for-index="sidx" wx:key="*this">
@@ -153,7 +147,7 @@
   <view class="modal-mask" wx:if="{{showShoppingList}}" bindtap="onHideShoppingList">
     <view class="modal" catchtap>
       <view class="modal-header">
-        <text class="modal-title">购物清单</text>
+        <text class="modal-title">📝 购物清单</text>
       </view>
       <scroll-view scroll-y class="modal-body">
         <text class="modal-text">{{shoppingList}}</text>
@@ -163,7 +157,7 @@
           <text>关闭</text>
         </view>
         <view class="modal-btn confirm" bindtap="onCopyShoppingList">
-          <text>复制清单</text>
+          <text>📋 复制</text>
         </view>
       </view>
     </view>

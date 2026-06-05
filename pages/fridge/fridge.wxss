@@ -99,6 +99,7 @@
 .cat-pill {
   display: inline-flex;
   align-items: center;
+  gap: 8rpx;
   padding: 12rpx 28rpx;
   margin-right: 16rpx;
   border-radius: 100rpx;
@@ -112,6 +113,14 @@
 .cat-pill.active {
   background: #E94560;
   color: #FFFFFF;
+}
+
+.cat-icon {
+  font-size: 24rpx;
+}
+
+.cat-name {
+  font-size: 24rpx;
 }
 
 /* ==================== 白色内容区 ==================== */
@@ -177,6 +186,7 @@
   border-radius: 50%;
   overflow: hidden;
   margin-bottom: 10rpx;
+  background: #F5F5F5;
 }
 
 .ing-img {
@@ -193,10 +203,13 @@
 
 /* ==================== 推荐按钮 ==================== */
 .actions {
+  display: flex;
+  gap: 16rpx;
   padding: 8rpx 28rpx 32rpx;
 }
 
 .action-btn {
+  flex: 1;
   border-radius: 16rpx;
   padding: 24rpx;
   text-align: center;
@@ -215,6 +228,16 @@
   opacity: 0.9;
 }
 
+.shopping-btn {
+  background: #FFFFFF;
+  color: #4ECDC4;
+  border: 2rpx solid #4ECDC4;
+}
+
+.shopping-btn:active {
+  background: #F0FFFE;
+}
+
 /* ==================== 推荐结果区 ==================== */
 .results {
   padding: 28rpx;
@@ -228,14 +251,9 @@
 }
 
 .results-title {
-  font-size: 32rpx;
+  font-size: 28rpx;
   font-weight: 700;
   color: #1A1A2E;
-}
-
-.results-count {
-  font-size: 24rpx;
-  color: #999999;
 }
 
 /* 结果卡片 */
@@ -295,16 +313,15 @@
   gap: 20rpx;
 }
 
-.meta-item {
-  display: flex;
-  align-items: center;
-  gap: 4rpx;
+.meta-time,
+.meta-cal {
   font-size: 22rpx;
   color: #999999;
 }
 
-.meta-icon {
-  font-size: 22rpx;
+.meta-cal {
+  color: #FFB300;
+  font-weight: 500;
 }
 
 .result-right {
@@ -359,19 +376,11 @@
 }
 
 .ing-tag {
-  display: flex;
-  align-items: center;
-  gap: 6rpx;
   background: #F5F5F5;
   padding: 8rpx 18rpx;
   border-radius: 100rpx;
   font-size: 22rpx;
   color: #666666;
-}
-
-.ing-amount {
-  color: #999999;
-  font-size: 20rpx;
 }
 
 /* 缺少食材 */
@@ -383,12 +392,6 @@
   background: #FFF8E1;
   border-radius: 14rpx;
   margin-bottom: 16rpx;
-}
-
-.missing-icon {
-  font-size: 22rpx;
-  flex-shrink: 0;
-  margin-top: 2rpx;
 }
 
 .missing-label {
@@ -418,10 +421,6 @@
   font-size: 24rpx;
   color: #E94560;
   font-weight: 500;
-}
-
-.toggle-icon {
-  font-size: 20rpx;
 }
 
 .steps-content {

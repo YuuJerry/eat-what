@@ -3,8 +3,15 @@ const { getIngredientIcon, getCategoryIcon, getDishIcon } = require('../../utils
 // 菜谱推荐引擎（静态匹配 + AI fallback）
 const recipeEngine = require('../../utils/recipe-engine.js')
 
-// 食材分类列表
-const INGREDIENT_CATEGORIES = ['蔬菜', '肉类', '海鲜', '蛋奶', '主食', '调料']
+// 食材分类列表（带图标）
+const INGREDIENT_CATEGORIES = [
+  { name: '蔬菜', icon: '🥬' },
+  { name: '肉类', icon: '🥩' },
+  { name: '海鲜', icon: '🦐' },
+  { name: '蛋奶', icon: '🥚' },
+  { name: '主食', icon: '🍚' },
+  { name: '调料', icon: '🧂' }
+]
 
 // 预设食材数据
 const DEFAULT_INGREDIENTS = {
